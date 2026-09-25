@@ -97,9 +97,6 @@
 
   /* ---------- controls ---------- */
   .controls{
-    position:sticky;
-    top:env(safe-area-inset-top,0px);
-    z-index:20;
     background:rgba(0,0,0,0.96);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
@@ -332,30 +329,6 @@
     display:none;
   }
 
-  /* ---------- lightbox ---------- */
-  .lightbox{
-    position:fixed;inset:0;
-    background:rgba(0,0,0,0.94);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-    padding:24px;
-    padding-top:calc(24px + env(safe-area-inset-top,0px));
-    padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
-  }
-  .lightbox.open{display:flex;}
-  .lightbox-inner{
-    max-width:520px;
-    width:100%;
-    max-height:100%;
-    overflow-y:auto;
-    background:var(--surface);
-    border:1px solid var(--line);
-  }
-  .lightbox-inner img{width:100%;}
-  .lightbox-body{padding:18px 20px 20px;}
-
   /* ---------- carousel ---------- */
   .carousel{
     position:relative;
@@ -573,21 +546,6 @@
     color:var(--text-muted);
   }
   .fiche-contact strong{color:var(--gold);font-weight:600;}
-  .lightbox-close{
-    position:fixed;
-    top:calc(18px + env(safe-area-inset-top,0px));
-    right:18px;
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    color:var(--text);
-    width:36px;height:36px;
-    border-radius:50%;
-    font-size:18px;
-    cursor:pointer;
-    z-index:101;
-    transition:background .16s ease, transform .16s ease;
-  }
-  .lightbox-close:hover{background:var(--gold);color:#1c1204;transform:scale(1.06);}
 
   footer.site{
     border-top:1px solid var(--line);
@@ -610,51 +568,408 @@
     .controls{padding:10px 12px;gap:8px;}
     .search-wrap{max-width:100%;}
   }
+
+  /* ---------- top navigation ---------- */
+  .topnav{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:#000;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 20px;
+    padding-top:calc(10px + env(safe-area-inset-top,0px));
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .topnav-brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+  }
+  .topnav-logo{height:26px;width:auto;}
+  .topnav-brand-text{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:15px;
+    letter-spacing:0.12em;
+  }
+  .topnav-links{
+    display:flex;
+    gap:4px;
+    flex-wrap:wrap;
+  }
+  .topnav-links a{
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:12.5px;
+    letter-spacing:0.02em;
+    padding:8px 13px;
+    border-radius:999px;
+    transition:background .16s ease, color .16s ease;
+    white-space:nowrap;
+  }
+  .topnav-links a:hover{background:rgba(200,155,60,0.14);color:var(--text);}
+  .topnav-links a.active{background:var(--gold);color:#1c1204;font-weight:600;}
+  @media (max-width:700px){
+    .topnav{justify-content:center;padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0px));}
+    .topnav-links{justify-content:center;width:100%;gap:2px;}
+    .topnav-links a{font-size:10.8px;padding:7px 8px;}
+    .topnav-brand-text{display:none;}
+  }
+
+  /* ---------- product page ---------- */
+  .product-page{
+    max-width:1100px;
+    margin:0 auto;
+    padding:24px 20px 60px;
+  }
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:var(--gold);
+    font-size:13px;
+    text-decoration:none;
+    margin-bottom:20px;
+    letter-spacing:0.03em;
+  }
+  .back-link:hover{text-decoration:underline;}
+  .product-layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:start;
+  }
+  .product-layout .carousel{border:1px solid var(--line);}
+  .product-info{display:flex;flex-direction:column;}
+  .product-title{
+    font-family:'Playfair Display',Georgia,serif;
+    margin:4px 0 8px;
+    font-size:22px;
+    font-weight:500;
+  }
+  @media (max-width:800px){
+    .product-layout{grid-template-columns:1fr;gap:22px;}
+  }
+
+  /* ---------- generic content pages (à propos / service client / plainte) ---------- */
+  .page-content{
+    max-width:820px;
+    margin:0 auto;
+    padding:36px 20px 64px;
+  }
+  .page-hero{
+    text-align:center;
+    margin-bottom:30px;
+    padding-bottom:22px;
+    border-bottom:1px solid var(--line);
+  }
+  .page-hero h1{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:clamp(26px,5vw,36px);
+    margin:0 0 8px;
+    letter-spacing:0.05em;
+    font-weight:500;
+  }
+  .page-lede{
+    font-family:'Playfair Display',Georgia,serif;
+    font-style:italic;
+    color:var(--text-muted);
+    font-size:14px;
+    margin:0;
+  }
+  .content-section{margin-bottom:34px;}
+  .content-section h2{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:19px;
+    margin:0 0 12px;
+    letter-spacing:0.02em;
+    font-weight:500;
+  }
+  .content-section p{
+    color:var(--text);
+    font-size:14px;
+    line-height:1.75;
+    margin:0 0 10px;
+  }
+  .values-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:14px;
+  }
+  .value-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:16px 18px;
+  }
+  .value-title{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:15px;
+    margin-bottom:6px;
+  }
+  .value-card p{font-size:12.5px;color:var(--text-muted);margin:0;line-height:1.6;}
+  .journey-list{
+    padding-left:20px;
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--text);
+  }
+  .journey-list strong{color:var(--gold);}
+  .cta-link{
+    display:inline-block;
+    margin-top:4px;
+    color:var(--gold);
+    font-size:13px;
+    text-decoration:none;
+    font-weight:600;
+    letter-spacing:0.02em;
+  }
+  .cta-link:hover{text-decoration:underline;}
+
+  /* ---------- complaint form ---------- */
+  .complaint-form{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top:18px;
+  }
+  .complaint-form label{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    color:var(--text-muted);
+    text-transform:uppercase;
+  }
+  .complaint-form input,
+  .complaint-form textarea{
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:10px 13px;
+    border-radius:4px;
+    font-family:'Montserrat',sans-serif;
+    font-size:13.5px;
+    outline:none;
+    resize:vertical;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .complaint-form input:focus,
+  .complaint-form textarea:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(200,155,60,0.2);
+  }
+  .complaint-submit{
+    width:fit-content;
+    padding:11px 24px;
+    border:none;
+  }
+
+  @media (max-width:480px){
+    .values-grid{grid-template-columns:1fr;}
+  }
 </style>
 
-<header class="site">
-  <img class="mark" src="logo.png" alt="Aurore">
-  <h1 class="brand">AURORE</h1>
-  <p class="tagline">Le premier pas vers l'élégance</p>
-  <p class="sub" id="subCount">Catalogue de montres — 38 modèles</p>
-  <a class="wa-general" id="waGeneral" target="_blank" rel="noopener">
-    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
-    Commander sur WhatsApp
+<nav class="topnav" id="topnav">
+  <a class="topnav-brand" href="#/">
+    <img class="topnav-logo" src="logo.png" alt="Aurore">
+    <span class="topnav-brand-text">AURORE</span>
   </a>
-</header>
+  <div class="topnav-links" id="topnavLinks">
+    <a href="#/" data-route="home">Accueil</a>
+    <a href="#/about" data-route="about">À propos</a>
+    <a href="#/service" data-route="service">Service client</a>
+    <a href="#/complaint" data-route="complaint">Soumettre une plainte</a>
+  </div>
+</nav>
 
-<div class="controls">
-  <div class="search-row">
-    <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="search" id="search" placeholder="Rechercher une marque, un modèle, une référence…">
+<main id="view-home" class="view">
+  <header class="site">
+    <img class="mark" src="logo.png" alt="Aurore">
+    <h1 class="brand">AURORE</h1>
+    <p class="tagline">Le premier pas vers l'élégance</p>
+    <p class="sub" id="subCount">Catalogue de montres — 38 modèles</p>
+    <a class="wa-general" id="waGeneral" target="_blank" rel="noopener">
+      <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
+      Commander sur WhatsApp
+    </a>
+  </header>
+
+  <div class="controls">
+    <div class="search-row">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="search" id="search" placeholder="Rechercher une marque, un modèle, une référence…">
+      </div>
+    </div>
+    <div class="filters-row">
+      <select id="brandFilter"><option value="">Toutes les marques</option></select>
+      <div class="genre-toggle" id="genreToggle">
+        <button data-genre="" aria-pressed="true">Tous</button>
+        <button data-genre="HOMME" aria-pressed="false">Homme</button>
+        <button data-genre="FEMME" aria-pressed="false">Femme</button>
+        <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
+      </div>
+      <select id="sortBy">
+        <option value="ref">Référence</option>
+        <option value="priceAsc">Prix croissant</option>
+        <option value="priceDesc">Prix décroissant</option>
+      </select>
     </div>
   </div>
-  <div class="filters-row">
-    <select id="brandFilter"><option value="">Toutes les marques</option></select>
-    <div class="genre-toggle" id="genreToggle">
-      <button data-genre="" aria-pressed="true">Tous</button>
-      <button data-genre="HOMME" aria-pressed="false">Homme</button>
-      <button data-genre="FEMME" aria-pressed="false">Femme</button>
-      <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
-    </div>
-    <select id="sortBy">
-      <option value="ref">Référence</option>
-      <option value="priceAsc">Prix croissant</option>
-      <option value="priceDesc">Prix décroissant</option>
-    </select>
+
+  <p class="count-line" id="countLine"></p>
+
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="emptyState">Aucune montre ne correspond à ta recherche. Essaie un autre filtre.</p>
+</main>
+
+<main id="view-product" class="view" hidden></main>
+
+<main id="view-about" class="view page-content" hidden>
+  <div class="page-hero">
+    <h1>À propos d'Aurore</h1>
+    <p class="page-lede">Le premier pas vers l'élégance</p>
   </div>
-</div>
 
-<p class="count-line" id="countLine"></p>
+  <section class="content-section">
+    <h2>Notre histoire</h2>
+    <p>Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.</p>
+    <p>L'entreprise fonctionne selon un modèle hybride : une supervision stratégique assurée depuis le Canada, et une équipe de confiance sur le terrain à Yaoundé qui s'occupe de la sélection des montres, du contrôle qualité, de la présentation et de la livraison — pour que chaque étape reste sérieuse et organisée.</p>
+  </section>
 
-<div class="grid" id="grid"></div>
-<p class="empty" id="emptyState">Aucune montre ne correspond à ta recherche. Essaie un autre filtre.</p>
+  <section class="content-section">
+    <h2>Notre mission</h2>
+    <p>Offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante — de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.</p>
+  </section>
 
-<div class="lightbox" id="lightbox">
-  <div class="lightbox-inner" id="lightboxInner"></div>
-</div>
-<button class="lightbox-close" id="lightboxClose" hidden aria-label="Fermer">✕</button>
+  <section class="content-section">
+    <h2>Nos valeurs</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-title">Confiance</div>
+        <p>La qualité des produits, le professionnalisme du service et l'honnêteté de la marque sont au cœur de chaque interaction.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-title">Discipline</div>
+        <p>Un suivi rigoureux du stock, des délais et des procédures — pour une entreprise stable et fiable.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-title">Qualité</div>
+        <p>Chaque montre est sélectionnée et inspectée avec soin avant d'être proposée à la vente.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-title">Esprit d'équipe</div>
+        <p>Aurore est un projet collectif, porté par une équipe alignée autour d'un objectif commun.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2>Nos collections</h2>
+    <p>Le catalogue Aurore est pensé pour tous : montres Homme, Femme et Mixte, dans des styles Classique, Sport et Look Luxe — pour s'adapter à chaque occasion, du quotidien aux grandes occasions.</p>
+    <a href="#/" class="cta-link">Découvrir le catalogue →</a>
+  </section>
+</main>
+
+<main id="view-service" class="view page-content" hidden>
+  <div class="page-hero">
+    <h1>Service Client</h1>
+    <p class="page-lede">Comment nous prenons soin de toi, avant, pendant et après ton achat</p>
+  </div>
+
+  <section class="content-section">
+    <h2>Ton parcours chez Aurore</h2>
+    <ol class="journey-list">
+      <li><strong>Découverte</strong> — tu découvres nos montres sur ce catalogue, sur nos réseaux, ou par un membre de l'équipe.</li>
+      <li><strong>Choix</strong> — chaque montre a sa fiche complète (matière, mouvement, prix, référence) pour que tu commandes en toute clarté.</li>
+      <li><strong>Commande</strong> — tu confirmes ta commande directement sur WhatsApp.</li>
+      <li><strong>Livraison &amp; vérification</strong> — à la réception, tu vérifies la montre avant que la livraison soit finalisée.</li>
+      <li><strong>Après-vente</strong> — en cas de problème, notre service client centralisé prend le relais.</li>
+    </ol>
+  </section>
+
+  <section class="content-section">
+    <h2>Vérification à la livraison</h2>
+    <p>Au moment de la livraison, prends le temps d'inspecter ta montre : apparence, ajustement, état général. Si un problème est constaté immédiatement, la montre est reprise sur-le-champ et le dossier est traité en interne pour te proposer une solution rapide.</p>
+  </section>
+
+  <section class="content-section">
+    <h2>Garantie</h2>
+    <p id="serviceGarantie">Toutes nos montres sont couvertes par une garantie.</p>
+  </section>
+
+  <section class="content-section">
+    <h2>Une réclamation ?</h2>
+    <p>Toute réclamation — sur un produit, une livraison ou le service reçu — est centralisée via un seul canal officiel : WhatsApp. Cela garantit un suivi cohérent et un traitement sérieux de chaque dossier.</p>
+    <p>Une fois ta réclamation reçue, nous prenons 2 à 3 jours pour l'examiner, vérifier les éléments avec l'équipe, et te proposer la solution la plus adaptée (clarification, réparation, remplacement, ou autre action appropriée).</p>
+    <a href="#/complaint" class="cta-link">Soumettre une plainte →</a>
+  </section>
+
+  <section class="content-section">
+    <h2>Notre engagement</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-title">Transparence</div>
+        <p>Un processus clair, de la commande à la livraison, sans zones d'ombre.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-title">Emballage soigné</div>
+        <p>Chaque montre est livrée avec un emballage professionnel, à l'image de la marque.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-title">Communication claire</div>
+        <p>Des réponses rapides et honnêtes, à chaque étape de ton expérience.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="view-complaint" class="view page-content" hidden>
+  <div class="page-hero">
+    <h1>Soumettre une plainte</h1>
+    <p class="page-lede">Un problème avant, pendant ou après ton achat ? Décris-le ci-dessous.</p>
+  </div>
+
+  <section class="content-section">
+    <p>Remplis ce formulaire : il s'ouvrira directement dans WhatsApp, pré-rempli, pour l'envoyer à notre service client. Nous répondons sous 2 à 3 jours.</p>
+    <form id="complaintForm" class="complaint-form">
+      <label>Nom complet
+        <input type="text" id="cName" required placeholder="Ton nom">
+      </label>
+      <label>Référence de la montre (si connue)
+        <input type="text" id="cRef" placeholder="Ex : AUR-014">
+      </label>
+      <label>Ton numéro (WhatsApp de préférence)
+        <input type="tel" id="cPhone" required placeholder="Ex : +237 6XX XXX XXX">
+      </label>
+      <label>Décris le problème
+        <textarea id="cMsg" rows="5" required placeholder="Explique ce qui s'est passé…"></textarea>
+      </label>
+      <button type="submit" class="order-btn complaint-submit">
+        <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
+        Envoyer via WhatsApp
+      </button>
+    </form>
+  </section>
+
+  <section class="content-section">
+    <h2>Autre moyen de nous contacter</h2>
+    <p id="complaintPhone">Tu peux aussi nous écrire directement sur WhatsApp.</p>
+  </section>
+</main>
 
 <div class="zoom-overlay" id="zoomOverlay">
   <div class="zoom-track" id="zoomTrack"></div>
@@ -691,9 +1006,8 @@
   var emptyState = document.getElementById('emptyState');
   var countLine = document.getElementById('countLine');
   var subCount = document.getElementById('subCount');
-  var lightbox = document.getElementById('lightbox');
-  var lightboxInner = document.getElementById('lightboxInner');
-  var lightboxClose = document.getElementById('lightboxClose');
+  var viewProduct = document.getElementById('view-product');
+  var topnavLinks = document.getElementById('topnavLinks');
   var zoomOverlay = document.getElementById('zoomOverlay');
   var zoomTrack = document.getElementById('zoomTrack');
   var zoomDots = document.getElementById('zoomDots');
@@ -705,6 +1019,11 @@
 
   document.getElementById('waGeneral').href =
     "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Bonjour Aurore, je consulte votre catalogue et j'aimerais avoir des renseignements.");
+
+  var serviceGarantieEl = document.getElementById('serviceGarantie');
+  if (serviceGarantieEl) serviceGarantieEl.textContent = "Toutes nos montres sont couvertes par " + GARANTIE.toLowerCase() + ".";
+  var complaintPhoneEl = document.getElementById('complaintPhone');
+  if (complaintPhoneEl) complaintPhoneEl.innerHTML = "Tu peux aussi nous écrire directement : <strong>" + TELEPHONE + "</strong>";
 
   var brands = Array.from(new Set(DATA.map(function(d){return d.marque;}))).sort();
   brands.forEach(function(b){
@@ -748,7 +1067,7 @@
   var SWIPE_EASE = 'transform .38s cubic-bezier(.22,.61,.36,1)';
 
   // Lightweight horizontal slider: real-time drag-follow + smooth eased snap.
-  // Used for the carousel inside the product lightbox. Calls opts.onTap(index)
+  // Used for the carousel on the product page. Calls opts.onTap(index)
   // when a slide is tapped/clicked without being dragged (opens the full zoom view).
   function createSlider(viewport, track, count, opts){
     opts = opts || {};
@@ -1029,7 +1348,7 @@
       card.innerHTML = cardHTML(item);
       card.addEventListener('click', function(e){
         if (e.target.closest('.order-btn')) return;
-        openLightbox(item);
+        location.hash = '#/watch/' + item.reference;
       });
       grid.appendChild(card);
     });
@@ -1037,7 +1356,7 @@
     countLine.textContent = filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée');
   }
 
-  function openLightbox(item){
+  function renderProductPage(item){
     var title = titleOf(item);
     var photos = item.photos && item.photos.length ? item.photos : [];
 
@@ -1052,16 +1371,19 @@
     var countBadge = photos.length > 1 ? '<div class="carousel-count" id="lbCount">1 / ' + photos.length + '</div>' : '';
     var arrowsHTMLStr = photos.length > 1 ? arrowsHTML() : '';
 
-    lightboxInner.innerHTML =
+    viewProduct.innerHTML =
+      '<div class="product-page">' +
+      '<a href="#/" class="back-link">&larr; Retour au catalogue</a>' +
+      '<div class="product-layout">' +
       '<div class="carousel">' +
         '<div class="carousel-track" id="lbTrack">' + slidesHTML + '</div>' +
         arrowsHTMLStr +
         dotsHTML +
         countBadge +
       '</div>' +
-      '<div class="lightbox-body">' +
+      '<div class="product-info">' +
         '<div class="eyebrow">' + item.marque + '</div>' +
-        '<h3 style="font-family:&quot;Playfair Display&quot;,serif;margin:4px 0 8px;font-size:19px;">' + title + '</h3>' +
+        '<h1 class="product-title">' + title + '</h1>' +
         '<div class="fiche-specs-table">' +
           '<div class="cell"><span class="k">MARQUE</span><span class="v">' + item.marque + '</span></div>' +
           '<div class="cell"><span class="k">MATIÈRE</span><span class="v">' + item.matiere + '</span></div>' +
@@ -1094,11 +1416,9 @@
           '<div>Facebook — ' + FACEBOOK + ' &nbsp;·&nbsp; Instagram — ' + INSTAGRAM + '</div>' +
           '<div>' + TELEPHONE + '</div>' +
         '</div>' +
+      '</div>' +
+      '</div>' +
       '</div>';
-
-    lightbox.classList.add('open');
-    lightboxClose.hidden = false;
-    document.body.style.overflow = 'hidden';
 
     if (photos.length){
       var track = document.getElementById('lbTrack');
@@ -1169,19 +1489,10 @@
     zoomTrack.innerHTML = '';
   }
 
-  function closeLightbox(){
-    lightbox.classList.remove('open');
-    lightboxClose.hidden = true;
-    document.body.style.overflow = '';
-  }
-
-  lightbox.addEventListener('click', function(e){ if (e.target === lightbox) closeLightbox(); });
-  lightboxClose.addEventListener('click', closeLightbox);
   zoomClose.addEventListener('click', closeZoomViewer);
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Escape') return;
     if (zoomOverlay.classList.contains('open')) closeZoomViewer();
-    else closeLightbox();
   });
 
   search.addEventListener('input', function(){ state.q = search.value; render(); });
@@ -1197,7 +1508,75 @@
     render();
   });
 
+  // ---------- complaint form: builds a pre-filled WhatsApp message ----------
+  var complaintForm = document.getElementById('complaintForm');
+  if (complaintForm){
+    complaintForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = document.getElementById('cName').value.trim();
+      var ref = document.getElementById('cRef').value.trim();
+      var phone = document.getElementById('cPhone').value.trim();
+      var msg = document.getElementById('cMsg').value.trim();
+      var text = "Bonjour Aurore, je souhaite soumettre une plainte.\n" +
+        "Nom : " + name + "\n" +
+        (ref ? ("Référence de la montre : " + ref + "\n") : "") +
+        "Mon contact : " + phone + "\n" +
+        "Description : " + msg;
+      window.open("https://wa.me/" + PHONE + "?text=" + encodeURIComponent(text), '_blank');
+    });
+  }
+
+  // ---------- router: hash-based navigation between Accueil / fiche produit / À propos / Service client / Plainte ----------
+  var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+
+  function parseHash(){
+    var h = location.hash.replace(/^#\/?/, '');
+    var parts = h.split('/');
+    return { route: parts[0] || 'home', param: parts[1] ? decodeURIComponent(parts[1]) : null };
+  }
+
+  function updateNavActive(route){
+    Array.prototype.forEach.call(topnavLinks.querySelectorAll('a'), function(a){
+      a.classList.toggle('active', a.getAttribute('data-route') === route);
+    });
+  }
+
+  function showView(id){
+    views.forEach(function(v){ v.hidden = (v.id !== id); });
+  }
+
+  function router(){
+    var r = parseHash();
+    if (r.route === 'watch' && r.param){
+      var item = DATA.filter(function(d){ return d.reference === r.param; })[0];
+      if (item){
+        renderProductPage(item);
+        showView('view-product');
+        updateNavActive('');
+      } else {
+        location.hash = '#/';
+        return;
+      }
+    } else if (r.route === 'about'){
+      showView('view-about');
+      updateNavActive('about');
+    } else if (r.route === 'service'){
+      showView('view-service');
+      updateNavActive('service');
+    } else if (r.route === 'complaint'){
+      showView('view-complaint');
+      updateNavActive('complaint');
+    } else {
+      showView('view-home');
+      updateNavActive('home');
+    }
+    window.scrollTo(0, 0);
+  }
+
+  window.addEventListener('hashchange', router);
+
   render();
+  router();
 })();
 </script>
 
