@@ -38,69 +38,34 @@
     font-family:'Playfair Display',Georgia,serif;
   }
 
-  /* ---------- header ---------- */
-  header.site{
-    padding:28px 20px 18px;
-    border-bottom:1px solid var(--line);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-    text-align:center;
+  /* ---------- buttons (shared) ---------- */
+  .btn-gold{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--cta-bg);color:var(--cta-text);font-weight:600;font-size:13.5px;
+    padding:12px 26px;border-radius:999px;text-decoration:none;letter-spacing:0.02em;
+    border:none;cursor:pointer;
+    transition:transform .18s ease, background .18s ease, box-shadow .18s ease;
   }
-  .mark{
-    height:56px;width:auto;
-    margin-bottom:4px;
+  .btn-gold:hover{transform:translateY(-2px);background:var(--cta-bg-hover);box-shadow:0 6px 16px rgba(200,155,60,0.35);}
+  .btn-gold:active{transform:translateY(0);}
+  .btn-gold svg{width:16px;height:16px;flex:none;}
+  .btn-outline{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:transparent;color:var(--text);font-weight:600;font-size:13.5px;
+    padding:12px 26px;border-radius:999px;text-decoration:none;letter-spacing:0.02em;
+    border:1px solid rgba(248,245,238,0.5);cursor:pointer;
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
   }
-  header.site h1{
-    margin:0;
-    font-size:clamp(28px,6vw,40px);
-    font-weight:500;
-    letter-spacing:0.14em;
-    color:var(--gold);
+  .btn-outline:hover{transform:translateY(-2px);border-color:var(--gold);background:rgba(200,155,60,0.1);}
+  .btn-outline svg{width:16px;height:16px;flex:none;}
+  .btn-gold-outline{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:transparent;color:var(--gold-deep);font-weight:600;font-size:13px;
+    padding:11px 22px;border-radius:999px;text-decoration:none;letter-spacing:0.02em;
+    border:1px solid var(--gold-deep);cursor:pointer;
+    transition:transform .18s ease, background .18s ease, color .18s ease;
   }
-  header.site .tagline{
-    font-family:'Playfair Display',Georgia,serif;
-    font-style:italic;
-    font-size:13px;
-    letter-spacing:0.04em;
-    color:var(--text-muted);
-    margin:0 0 10px;
-  }
-  header.site .hero-intro{
-    max-width:480px;
-    font-size:13.5px;
-    line-height:1.6;
-    color:var(--text);
-    margin:0 0 4px;
-  }
-  header.site .sub{
-    font-size:13px;
-    color:var(--text-muted);
-    letter-spacing:0.03em;
-  }
-  .wa-general{
-    margin-top:14px;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    background:var(--cta-bg);
-    color:var(--cta-text);
-    font-weight:600;
-    font-size:13.5px;
-    padding:10px 20px;
-    border-radius:999px;
-    text-decoration:none;
-    letter-spacing:0.02em;
-    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-  }
-  .wa-general:hover{
-    transform:translateY(-2px);
-    background:var(--cta-bg-hover);
-    box-shadow:0 6px 16px rgba(200,155,60,0.35);
-  }
-  .wa-general:active{transform:translateY(0);}
-  .wa-general svg{width:16px;height:16px;flex:none;}
+  .btn-gold-outline:hover{transform:translateY(-2px);background:var(--gold-deep);color:var(--text);}
 
   /* ---------- controls ---------- */
   .controls{
@@ -218,8 +183,8 @@
   /* ---------- grid ---------- */
   .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-    gap:22px;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:26px;
     padding:20px 20px 60px;
     max-width:1400px;
     margin:0 auto;
@@ -277,7 +242,7 @@
   .card h3{
     font-family:'Playfair Display',Georgia,serif;
     margin:0;
-    font-size:16.5px;
+    font-size:17.5px;
     font-weight:500;
     line-height:1.25;
     min-height:1.25em;
@@ -297,9 +262,9 @@
   }
   .card .price{
     font-family:'Playfair Display',Georgia,serif;
-    font-size:19px;
+    font-size:21px;
     color:var(--gold);
-    font-weight:600;
+    font-weight:700;
   }
   .card .price small{
     font-family:'Montserrat',sans-serif;
@@ -574,6 +539,14 @@
     .card .order-btn{font-size:11px;padding:8px 8px;}
     .controls{padding:10px 12px;gap:8px;}
     .search-wrap{max-width:100%;}
+    .hero-v2{min-height:88vh;}
+    .hero-ctas{flex-direction:column;width:100%;}
+    .hero-ctas .btn-gold,.hero-ctas .btn-outline{width:100%;}
+    .section-black,.section-ivory{padding:44px 16px;}
+    .collections-grid{grid-template-columns:1fr;gap:12px;}
+    .collection-tile{aspect-ratio:16/9;}
+    .steps-row{grid-template-columns:1fr;gap:24px;}
+    .footer-inner{grid-template-columns:1fr;gap:26px;}
   }
 
   /* ---------- top navigation ---------- */
@@ -788,29 +761,307 @@
     .values-grid{grid-template-columns:1fr;}
   }
 
-  /* ---------- "pourquoi Aurore" (page d'accueil, sous le catalogue) ---------- */
-  .home-why{
-    max-width:900px;
-    margin:56px auto 0;
-    padding:36px 20px 8px;
-    border-top:1px solid var(--line);
+  /* ---------- hero (page d'accueil) ---------- */
+  .hero-v2{
+    position:relative;
+    min-height:82vh;
+    background-size:cover;
+    background-position:center 30%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .hero-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.72) 60%, rgba(0,0,0,0.88) 100%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:1;
+    max-width:640px;
+    margin:0 auto;
+    padding:40px 20px 56px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+  }
+  .hero-title{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(40px,9vw,64px);
+    font-weight:500;
+    letter-spacing:0.16em;
+    color:var(--gold);
+    margin:0;
+  }
+  .hero-slogan{
+    font-family:'Playfair Display',Georgia,serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--text);
+    margin:6px 0 4px;
+    letter-spacing:0.02em;
+  }
+  .hero-desc{
+    font-size:14px;
+    line-height:1.6;
+    color:var(--text-muted);
+    margin:0 0 22px;
+    max-width:460px;
+  }
+  .hero-ctas{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    justify-content:center;
+  }
+  .hero-reassurance{
+    margin-top:22px;
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    color:var(--text-muted);
+  }
+  .hero-scroll-cue{
+    margin-top:28px;
+    background:transparent;
+    border:1px solid rgba(248,245,238,0.4);
+    color:var(--text);
+    width:38px;height:38px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .hero-scroll-cue:hover{background:rgba(200,155,60,0.18);transform:translateY(2px);}
+  .hero-scroll-cue svg{width:16px;height:16px;}
+
+  /* ---------- generic alternating section wrappers ---------- */
+  .section-black{background:var(--bg);color:var(--text);padding:64px 20px;}
+  .section-ivory{background:var(--text);color:var(--bg);padding:64px 20px;}
+  .section-ivory + .section-ivory{border-top:1px solid rgba(0,0,0,0.08);}
+  .section-inner{max-width:1100px;margin:0 auto;}
+  .section-head{text-align:center;margin-bottom:36px;}
+  .eyebrow-label{
+    font-size:11px;letter-spacing:0.14em;font-weight:600;
+    text-transform:uppercase;
+  }
+  .section-black .eyebrow-label{color:var(--gold);}
+  .section-ivory .eyebrow-label{color:var(--gold-deep);}
+  .section-head h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(24px,4vw,32px);
+    font-weight:500;
+    letter-spacing:0.02em;
+    margin:8px 0 0;
+  }
+  .section-cta-row{text-align:center;margin-top:32px;}
+
+  /* ---------- Nos collections ---------- */
+  .collections-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  .collection-tile{
+    position:relative;
+    aspect-ratio:4/5;
+    border-radius:var(--radius);
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:flex-end;
+    text-decoration:none;
+    transition:transform .25s ease;
+  }
+  .collection-tile::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%);
+  }
+  .collection-tile:hover{transform:translateY(-4px);}
+  .collection-tile-label{
+    position:relative;z-index:1;
+    width:100%;
+    padding:18px 16px;
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:18px;
+    letter-spacing:0.08em;
+    color:var(--text);
     text-align:center;
   }
-  .home-why h2{
+
+  /* ---------- Sélection Aurore (grille produits vedettes) ---------- */
+  #featuredGrid{padding:0;max-width:none;margin:0;}
+
+  /* ---------- "pourquoi Aurore" (déplacé dans une section ivoire) ---------- */
+  .section-ivory .value-card{
+    background:rgba(0,0,0,0.035);
+    border:1px solid rgba(0,0,0,0.12);
+    color:var(--bg);
+  }
+  .section-ivory .value-title{color:var(--gold-deep);}
+  .section-ivory .value-card p{color:rgba(0,0,0,0.6);}
+  .section-ivory .cta-link{color:var(--gold-deep);}
+
+  /* ---------- storytelling ---------- */
+  .story-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .story-media{
+    aspect-ratio:4/5;
+    background-size:cover;
+    background-position:center;
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+  }
+  .story-copy .eyebrow-label{display:block;margin-bottom:8px;}
+  .story-copy h2{
     font-family:'Playfair Display',Georgia,serif;
-    color:var(--gold);
+    font-size:clamp(22px,4vw,30px);
+    margin:0 0 16px;
+    font-weight:500;
+    letter-spacing:0.02em;
+    color:var(--text);
+  }
+  .story-copy p{font-size:14px;line-height:1.75;color:var(--text-muted);margin:0 0 14px;}
+
+  /* ---------- comment commander ---------- */
+  .steps-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+  }
+  .step{text-align:center;}
+  .step-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:50%;
+    background:var(--gold-deep);color:var(--text);
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:15px;margin-bottom:12px;
+  }
+  .step h3{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:15px;margin:0 0 6px;color:var(--bg);
+  }
+  .step p{font-size:12.5px;line-height:1.55;color:rgba(0,0,0,0.6);margin:0;}
+
+  /* ---------- cadeau ---------- */
+  .gift-band{text-align:center;}
+  .gift-band h2{
+    font-family:'Playfair Display',Georgia,serif;
     font-size:clamp(22px,4vw,28px);
-    margin:0 0 22px;
-    letter-spacing:0.03em;
+    margin:0 0 10px;color:var(--bg);
     font-weight:500;
   }
-  .home-why .values-grid{
-    text-align:left;
-    margin-top:0;
+  .gift-band p{font-size:13.5px;color:rgba(0,0,0,0.6);margin:0 0 22px;}
+
+  /* ---------- CTA finale ---------- */
+  .final-cta{
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    padding:60px 20px;
+    text-align:center;
   }
-  .home-why .cta-link{
-    display:inline-block;
-    margin-top:24px;
+  .final-cta h2{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:clamp(24px,4vw,32px);
+    margin:0 0 24px;
+    font-weight:500;
+  }
+
+  /* ---------- footer v2 ---------- */
+  .footer-v2{
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    padding:50px 20px 24px;
+  }
+  .footer-inner{
+    max-width:1100px;margin:0 auto;
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr 1fr;
+    gap:32px;
+  }
+  .footer-col h4{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:13px;letter-spacing:0.08em;
+    margin:0 0 14px;
+    text-transform:uppercase;
+  }
+  .footer-col a{
+    display:block;
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:13px;
+    margin-bottom:10px;
+    transition:color .16s ease;
+  }
+  .footer-col a:hover{color:var(--gold);}
+  .footer-brand .brand{color:var(--gold);font-size:20px;letter-spacing:0.1em;margin-bottom:8px;}
+  .footer-brand p{font-size:12.5px;color:var(--text-muted);font-style:italic;font-family:'Playfair Display',Georgia,serif;}
+  .footer-contact{font-size:12.5px;color:var(--text-muted);margin-bottom:6px;}
+  .footer-bottom{
+    max-width:1100px;margin:40px auto 0;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    text-align:center;
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- collection route ---------- */
+  .collection-hero{
+    padding:44px 20px 20px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .collection-hero .eyebrow-label{color:var(--gold);}
+  .collection-hero h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(26px,5vw,36px);
+    color:var(--gold);
+    margin:8px 0 8px;
+    letter-spacing:0.05em;
+    font-weight:500;
+  }
+  .collection-hero p{font-size:13.5px;color:var(--text-muted);margin:0;}
+
+  /* ---------- price filter chips ---------- */
+  .chip-row{
+    display:flex;flex-wrap:wrap;gap:8px;
+    justify-content:center;
+    margin-top:4px;
+  }
+  .chip{
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text-muted);
+    font-family:'Montserrat',sans-serif;
+    font-size:12px;
+    padding:7px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .18s ease, color .18s ease;
+  }
+  .chip:hover{background:rgba(200,155,60,0.16);color:var(--text);}
+  .chip[aria-pressed="true"]{background:var(--gold);color:#1c1204;font-weight:600;}
+
+  /* ---------- empty state / réinitialiser les filtres ---------- */
+  .empty .btn-gold-outline{margin-top:16px;}
+
+  @media (max-width:700px){
+    .collections-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+    .collection-tile-label{font-size:13px;padding:12px 8px;}
+    .story-grid{grid-template-columns:1fr;gap:24px;}
+    .steps-row{grid-template-columns:repeat(2,1fr);gap:26px;}
+    .footer-inner{grid-template-columns:1fr 1fr;gap:28px;}
   }
 </style>
 
@@ -821,6 +1072,7 @@
   </a>
   <div class="topnav-links" id="topnavLinks">
     <a href="#/" data-route="home">Accueil</a>
+    <a href="#/collection" data-route="collection">Collection</a>
     <a href="#/about" data-route="about">À propos</a>
     <a href="#/service" data-route="service">Service client</a>
     <a href="#/complaint" data-route="complaint">Soumettre une plainte</a>
@@ -828,17 +1080,163 @@
 </nav>
 
 <main id="view-home" class="view">
-  <header class="site">
-    <img class="mark" src="logo.png" alt="Aurore">
-    <h1 class="brand">AURORE</h1>
-    <p class="tagline">Le premier pas vers l'élégance</p>
-    <p class="hero-intro">Des montres au style soigné, sélectionnées pour accompagner votre élégance au quotidien.</p>
-    <p class="sub" id="subCount">Catalogue de montres — 38 modèles</p>
-    <a class="wa-general" id="waGeneral" target="_blank" rel="noopener">
-      <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
-      Commander sur WhatsApp
-    </a>
-  </header>
+  <section class="hero-v2" id="hero" style="background-image:url('carousel/AUR-004/2.jpg')">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">AURORE</h1>
+      <p class="hero-slogan">Aurore, le premier pas vers l'élégance.</p>
+      <p class="hero-desc">Des montres au style soigné, sélectionnées pour accompagner votre élégance au quotidien.</p>
+      <div class="hero-ctas">
+        <a class="btn-gold" href="#/collection">Découvrir la collection</a>
+        <a class="btn-outline" id="waGeneral" target="_blank" rel="noopener">
+          <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
+          Commander sur WhatsApp
+        </a>
+      </div>
+      <p class="hero-reassurance" id="heroReassurance"></p>
+      <button type="button" class="hero-scroll-cue" id="scrollCue" aria-label="Voir nos collections">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="section-black" id="collections">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow-label">Nos collections</p>
+        <h2>Choisissez votre style</h2>
+      </div>
+      <div class="collections-grid">
+        <a class="collection-tile" href="#/collection/HOMME" style="background-image:url('carousel/AUR-002/2.jpg')">
+          <span class="collection-tile-label">Homme</span>
+        </a>
+        <a class="collection-tile" href="#/collection/FEMME" style="background-image:url('carousel/AUR-003/1.jpg')">
+          <span class="collection-tile-label">Femme</span>
+        </a>
+        <a class="collection-tile" href="#/collection/MIXTE" style="background-image:url('carousel/AUR-012/1.jpg')">
+          <span class="collection-tile-label">Mixte</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-ivory" id="featured">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow-label">Sélection Aurore</p>
+        <h2>Nos coups de cœur</h2>
+      </div>
+      <div class="grid" id="featuredGrid"></div>
+      <div class="section-cta-row">
+        <a class="btn-gold-outline" href="#/collection">Voir toute la collection</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-ivory" id="why-aurore">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow-label">Pourquoi Aurore</p>
+        <h2>Pourquoi Aurore ?</h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-title">Sélection & contrôle qualité</div>
+          <p>Chaque montre est vérifiée avant la vente et avant la livraison, pour protéger votre confiance.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-title">Une marque pensée pour durer</div>
+          <p>Aurore se construit comme une vraie marque, avec une identité claire et cohérente, pas comme un simple revendeur informel.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-title">Service client suivi</div>
+          <p>Vos commandes et vos demandes sont centralisées et suivies, du premier message jusqu'à la livraison.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-title">Élégance accessible</div>
+          <p>Des montres au style soigné, à des prix qui restent accessibles au quotidien.</p>
+        </div>
+      </div>
+      <div class="section-cta-row">
+        <a class="cta-link" href="#/about">En savoir plus sur Aurore →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-black" id="story">
+    <div class="section-inner story-grid">
+      <div class="story-media" style="background-image:url('carousel/AUR-001/1.jpg')"></div>
+      <div class="story-copy">
+        <p class="eyebrow-label">L'histoire Aurore</p>
+        <h2>L'élégance commence par un détail.</h2>
+        <p>Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.</p>
+        <p>Notre mission : offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante, de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.</p>
+        <a class="cta-link" href="#/about">Découvrir notre histoire →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-ivory" id="how-to-order">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow-label">Comment commander</p>
+        <h2>Votre montre en 4 étapes</h2>
+      </div>
+      <div class="steps-row">
+        <div class="step">
+          <span class="step-num">1</span>
+          <h3>Parcourez le catalogue</h3>
+          <p>Explorez nos modèles Homme, Femme et Mixte et trouvez celui qui vous plaît.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <h3>Contactez-nous sur WhatsApp</h3>
+          <p>Un clic sur « Commander » ouvre WhatsApp avec un message pré-rempli citant la référence.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <h3>Confirmez les détails</h3>
+          <p>Notre équipe confirme la disponibilité et les modalités directement avec vous.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">4</span>
+          <h3>Livraison à Yaoundé</h3>
+          <p>Vous recevez votre montre et vous la vérifiez avant que la livraison soit finalisée.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-ivory" id="gift">
+    <div class="section-inner gift-band">
+      <h2>À la recherche d'un cadeau ?</h2>
+      <p>Une montre Aurore fait toujours son effet — pour vous, ou pour quelqu'un que vous aimez.</p>
+      <a class="btn-gold" href="#/collection">Explorer la collection</a>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="section-inner">
+      <h2>Prêt à trouver votre montre ?</h2>
+      <div class="hero-ctas">
+        <a class="btn-gold" id="finalWa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
+          Commander sur WhatsApp
+        </a>
+        <a class="btn-outline" href="#/collection">Voir la collection</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="view-collection" class="view" hidden>
+  <section class="collection-hero">
+    <div class="section-inner">
+      <p class="eyebrow-label">La collection Aurore</p>
+      <h1>LA COLLECTION AURORE</h1>
+      <p id="subCount">Découvrez les modèles disponibles.</p>
+    </div>
+  </section>
 
   <div class="controls">
     <div class="search-row">
@@ -861,35 +1259,17 @@
         <option value="priceDesc">Prix décroissant</option>
       </select>
     </div>
+    <div class="chip-row" id="priceChipRow"></div>
   </div>
 
   <p class="count-line" id="countLine"></p>
 
   <div class="grid" id="grid"></div>
-  <p class="empty" id="emptyState">Aucune montre ne correspond à ta recherche. Essaie un autre filtre.</p>
-
-  <section class="home-why">
-    <h2>Pourquoi Aurore ?</h2>
-    <div class="values-grid">
-      <div class="value-card">
-        <div class="value-title">Sélection & contrôle qualité</div>
-        <p>Chaque montre est vérifiée avant la vente et avant la livraison, pour protéger votre confiance.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-title">Une marque pensée pour durer</div>
-        <p>Aurore se construit comme une vraie marque, avec une identité claire et cohérente, pas comme un simple revendeur informel.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-title">Service client suivi</div>
-        <p>Vos commandes et vos demandes sont centralisées et suivies, du premier message jusqu'à la livraison.</p>
-      </div>
-      <div class="value-card">
-        <div class="value-title">Élégance accessible</div>
-        <p>Des montres au style soigné, à des prix qui restent accessibles au quotidien.</p>
-      </div>
-    </div>
-    <a class="cta-link" href="#/about">En savoir plus sur Aurore →</a>
-  </section>
+  <div class="empty" id="emptyState">
+    Aucune montre ne correspond à ta recherche. Essaie un autre filtre.
+    <br>
+    <button type="button" class="btn-gold-outline" id="resetFiltersBtn">Réinitialiser les filtres</button>
+  </div>
 </main>
 
 <main id="view-product" class="view" hidden></main>
@@ -1035,11 +1415,34 @@
 </div>
 <button class="zoom-close" id="zoomClose" hidden aria-label="Fermer">✕</button>
 
-<footer class="site">
-  <div class="brand">AURORE</div>
-  <div>Yaoundé · Pharmacie EMIA</div>
-  <div>Facebook — Aurore &nbsp;·&nbsp; Instagram — Aurore_bijouterie</div>
-  <div>+1 778 536 0129 &nbsp;–&nbsp; +237 698 868 629</div>
+<footer class="footer-v2">
+  <div class="footer-inner">
+    <div class="footer-col footer-brand">
+      <div class="brand">AURORE</div>
+      <p>Aurore, le premier pas vers l'élégance.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Collection</h4>
+      <a href="#/collection/HOMME">Homme</a>
+      <a href="#/collection/FEMME">Femme</a>
+      <a href="#/collection/MIXTE">Mixte</a>
+      <a href="#/collection">Tout le catalogue</a>
+    </div>
+    <div class="footer-col">
+      <h4>Aurore</h4>
+      <a href="#/about">À propos</a>
+      <a href="#/service">Service client</a>
+      <a href="#/complaint">Soumettre une plainte</a>
+    </div>
+    <div class="footer-col">
+      <h4>Commander</h4>
+      <a id="footerWa" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+      <div class="footer-contact">Yaoundé · Pharmacie EMIA</div>
+      <div class="footer-contact">Facebook — Aurore</div>
+      <div class="footer-contact">Instagram — Aurore_bijouterie</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© AURORE — Tous droits réservés. &nbsp;+1 778 536 0129 &nbsp;–&nbsp; +237 698 868 629</div>
 </footer>
 
 <script>
@@ -1081,10 +1484,23 @@
   var currentSlider = null;
   var currentZoomViewer = null;
 
-  subCount.textContent = "Catalogue de montres — " + DATA.length + " modèles";
+  subCount.textContent = "Découvrez nos " + DATA.length + " modèles disponibles.";
 
-  document.getElementById('waGeneral').href =
-    "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Bonjour Aurore, je consulte votre catalogue et j'aimerais avoir des renseignements.");
+  var waHref = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Bonjour Aurore, je consulte votre catalogue et j'aimerais avoir des renseignements.");
+  document.getElementById('waGeneral').href = waHref;
+  var finalWaEl = document.getElementById('finalWa');
+  if (finalWaEl) finalWaEl.href = waHref;
+  var footerWaEl = document.getElementById('footerWa');
+  if (footerWaEl) footerWaEl.href = waHref;
+
+  var heroReassuranceEl = document.getElementById('heroReassurance');
+  if (heroReassuranceEl) heroReassuranceEl.textContent = DATA.length + " modèles · Contrôle qualité avant chaque livraison · Livraison à Yaoundé";
+
+  var scrollCueEl = document.getElementById('scrollCue');
+  if (scrollCueEl) scrollCueEl.addEventListener('click', function(){
+    var target = document.getElementById('collections');
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
 
   var serviceGarantieEl = document.getElementById('serviceGarantie');
   if (serviceGarantieEl) serviceGarantieEl.textContent = "Toutes nos montres sont couvertes par " + GARANTIE.toLowerCase() + ".";
@@ -1098,7 +1514,7 @@
     brandFilter.appendChild(opt);
   });
 
-  var state = { q:'', brand:'', genre:'', sort:'ref' };
+  var state = { q:'', brand:'', genre:'', sort:'ref', priceBucket:null };
 
   function waLink(item){
     var name = item.modele ? (item.marque + " " + item.modele) : item.marque;
@@ -1119,6 +1535,7 @@
     }
     if (state.brand && item.marque !== state.brand) return false;
     if (state.genre && item.genre !== state.genre) return false;
+    if (state.priceBucket && !state.priceBucket.test(item.prix)) return false;
     return true;
   }
 
@@ -1426,6 +1843,97 @@
     countLine.textContent = filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée');
   }
 
+  // ---------- "Sélection Aurore" — curated homepage picks (real products, chosen for genre/price variety) ----------
+  var FEATURED_REFS = ['AUR-008','AUR-010','AUR-013','AUR-018','AUR-021','AUR-028'];
+  function renderFeatured(){
+    var featuredGrid = document.getElementById('featuredGrid');
+    if (!featuredGrid) return;
+    var items = FEATURED_REFS.map(function(ref){
+      return DATA.filter(function(d){ return d.reference === ref; })[0];
+    }).filter(Boolean);
+    featuredGrid.innerHTML = '';
+    items.forEach(function(item){
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = cardHTML(item);
+      card.addEventListener('click', function(e){
+        if (e.target.closest('.order-btn')) return;
+        location.hash = '#/watch/' + item.reference;
+      });
+      featuredGrid.appendChild(card);
+    });
+  }
+
+  // ---------- price filter chips — buckets derived live from real DATA prices, never hardcoded ----------
+  function computePriceBuckets(){
+    var prices = DATA.map(function(d){ return d.prix; });
+    var min = Math.min.apply(null, prices);
+    var max = Math.max.apply(null, prices);
+    if (min === max) return [];
+    var third = (max - min) / 3;
+    var raw = [
+      { lo: min, hi: min + third },
+      { lo: min + third, hi: min + 2 * third },
+      { lo: min + 2 * third, hi: max }
+    ];
+    var fmt = function(n){ return Math.round(n).toLocaleString('fr-FR'); };
+    var buckets = raw.map(function(b, i){
+      var test = function(p){
+        if (i === 0) return p <= b.hi;
+        if (i === raw.length - 1) return p > b.lo;
+        return p > b.lo && p <= b.hi;
+      };
+      var label;
+      if (i === 0) label = "Moins de " + fmt(b.hi) + " FCFA";
+      else if (i === raw.length - 1) label = fmt(b.lo) + " FCFA et plus";
+      else label = fmt(b.lo) + " – " + fmt(b.hi) + " FCFA";
+      return { lo: b.lo, hi: b.hi, test: test, label: label, count: DATA.filter(function(d){ return test(d.prix); }).length };
+    });
+    return buckets.filter(function(b){ return b.count > 0; });
+  }
+  var priceBuckets = computePriceBuckets();
+  var priceChipRow = document.getElementById('priceChipRow');
+  function renderPriceChips(){
+    if (!priceChipRow) return;
+    var html = '<button type="button" class="chip" data-idx="-1" aria-pressed="true">Tous les prix</button>';
+    priceBuckets.forEach(function(b, i){
+      html += '<button type="button" class="chip" data-idx="' + i + '" aria-pressed="false">' + b.label + '</button>';
+    });
+    priceChipRow.innerHTML = html;
+  }
+  function syncPriceChipsUI(){
+    if (!priceChipRow) return;
+    Array.prototype.forEach.call(priceChipRow.querySelectorAll('.chip'), function(btn){
+      var idx = btn.getAttribute('data-idx');
+      var isActive = idx === '-1' ? !state.priceBucket : state.priceBucket === priceBuckets[idx];
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+  if (priceChipRow) priceChipRow.addEventListener('click', function(e){
+    var btn = e.target.closest('.chip');
+    if (!btn) return;
+    var idx = btn.getAttribute('data-idx');
+    state.priceBucket = (idx === '-1') ? null : priceBuckets[idx];
+    syncPriceChipsUI();
+    render();
+  });
+
+  // ---------- keeps the genre-toggle UI in sync when the filter is set programmatically (e.g. from #/collection/:genre) ----------
+  function syncGenreToggleUI(){
+    Array.prototype.forEach.call(genreToggle.querySelectorAll('button'), function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-genre') === state.genre ? 'true' : 'false');
+    });
+  }
+
+  var resetFiltersBtn = document.getElementById('resetFiltersBtn');
+  if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', function(){
+    state.q = ''; state.brand = ''; state.genre = ''; state.sort = 'ref'; state.priceBucket = null;
+    search.value = ''; brandFilter.value = ''; sortBy.value = 'ref';
+    syncGenreToggleUI();
+    syncPriceChipsUI();
+    render();
+  });
+
   function renderProductPage(item){
     var title = titleOf(item);
     var photos = item.photos && item.photos.length ? item.photos : [];
@@ -1657,6 +2165,14 @@
       currentSlider = null;
       showView('view-complaint');
       updateNavActive('complaint');
+    } else if (r.route === 'collection'){
+      currentSlider = null;
+      showView('view-collection');
+      updateNavActive('collection');
+      var genreParam = r.param ? r.param.toUpperCase() : '';
+      state.genre = (genreParam === 'HOMME' || genreParam === 'FEMME' || genreParam === 'MIXTE') ? genreParam : '';
+      syncGenreToggleUI();
+      render();
     } else {
       currentSlider = null;
       showView('view-home');
@@ -1667,6 +2183,9 @@
 
   window.addEventListener('hashchange', router);
 
+  renderFeatured();
+  renderPriceChips();
+  syncPriceChipsUI();
   render();
   router();
 })();
