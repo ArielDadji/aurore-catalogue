@@ -311,16 +311,23 @@
     overflow:hidden;
     width:100%;
   }
+  /* Défilement natif (scroll-snap) : le navigateur gère le touch/trackpad/molette lui-même,
+     donc plus de JS de drag ni de conflit touch-action — instinctif comme sur Amazon. */
   .carousel-track{
     display:flex;
     width:100%;
-    touch-action:none;
-    will-change:transform;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
+  .carousel-track::-webkit-scrollbar{display:none;}
   .carousel-track .slide{
     flex:0 0 100%;
     width:100%;
     aspect-ratio:4/5;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -518,6 +525,36 @@
     color:var(--text-muted);
   }
   .fiche-contact strong{color:var(--gold);font-weight:600;}
+
+  /* ---------- galerie complète (grand format), sous la fiche produit ---------- */
+  .full-gallery{
+    max-width:900px;
+    margin:44px auto 0;
+    padding:32px 20px 8px;
+    border-top:1px solid var(--line);
+  }
+  .full-gallery-title{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold);
+    font-size:18px;
+    margin:0 0 18px;
+    text-align:center;
+    letter-spacing:0.03em;
+  }
+  .full-gallery-grid{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .full-gallery-grid img{
+    width:100%;
+    max-height:82vh;
+    object-fit:contain;
+    background:#000;
+    border:1px solid var(--line);
+    cursor:zoom-in;
+    display:block;
+  }
 
   footer.site{
     border-top:1px solid var(--line);
@@ -1658,66 +1695,55 @@
   // Lightweight horizontal slider: real-time drag-follow + smooth eased snap.
   // Used for the carousel on the product page. Calls opts.onTap(index)
   // when a slide is tapped/clicked without being dragged (opens the full zoom view).
+  // Défilement natif façon Amazon : le navigateur gère lui-même le touch/trackpad/molette
+  // (scroll-snap), donc plus de machine à états JS qui peut se bloquer après un swipe —
+  // c'est le scroll natif qui fait le travail, comme sur un vrai site e-commerce.
   function createSlider(viewport, track, count, opts){
     opts = opts || {};
     var index = opts.startIndex || 0;
-    var width = viewport.clientWidth;
-    var dragging = false, moved = false, startX = 0, startY = 0, dragDelta = 0, axis = null;
+    var scrollTimer = null;
+    var downX = 0, downY = 0, moved = false;
 
-    function setTransition(on){ track.style.transition = on ? SWIPE_EASE : 'none'; }
-    function place(animate){
-      width = viewport.clientWidth;
-      setTransition(animate !== false);
-      track.style.transform = 'translateX(' + (-index * width) + 'px)';
-      if (opts.onChange) opts.onChange(index);
+    function indexFromScroll(){
+      var w = track.clientWidth || 1;
+      return Math.max(0, Math.min(count - 1, Math.round(track.scrollLeft / w)));
     }
     function goTo(i){
       index = Math.max(0, Math.min(count - 1, i));
-      place(true);
+      track.scrollTo({ left: index * track.clientWidth, behavior: 'smooth' });
+      if (opts.onChange) opts.onChange(index);
     }
 
+    if (index > 0) track.scrollLeft = index * track.clientWidth;
+
+    track.addEventListener('scroll', function(){
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function(){
+        index = indexFromScroll();
+        if (opts.onChange) opts.onChange(index);
+      }, 90);
+    }, { passive: true });
+
+    window.addEventListener('resize', function(){
+      track.scrollLeft = index * track.clientWidth;
+    });
+
+    // Tap-to-zoom : un clic/tap qui n'a pas bougé (donc pas un glissement de scroll) ouvre le
+    // visualiseur plein écran sur la photo concernée.
     track.addEventListener('pointerdown', function(e){
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      dragging = true; moved = false; axis = null;
-      startX = e.clientX; startY = e.clientY; dragDelta = 0;
-      width = viewport.clientWidth;
-      setTransition(false);
-      try { track.setPointerCapture(e.pointerId); } catch(err){}
+      downX = e.clientX; downY = e.clientY; moved = false;
     });
     track.addEventListener('pointermove', function(e){
-      if (!dragging) return;
-      var dx = e.clientX - startX, dy = e.clientY - startY;
-      if (axis === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)){
-        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-      }
-      if (axis !== 'x') return;
-      // Once we've committed to a horizontal swipe, stop the browser from also trying to
-      // interpret this same touch as a page gesture — otherwise, on a genuinely scrollable
-      // page (unlike the old locked modal), the browser can "steal" the very next swipe.
-      e.preventDefault();
-      moved = true;
-      dragDelta = dx;
-      // resist a little past the first/last slide
-      var resist = (index === 0 && dx > 0) || (index === count - 1 && dx < 0) ? 0.35 : 1;
-      track.style.transform = 'translateX(' + (-index * width + dx * resist) + 'px)';
-    }, { passive: false });
-    function finish(e){
-      if (!dragging) return;
-      dragging = false;
-      var wasTap = axis !== 'x';
-      if (axis === 'x'){
-        var threshold = width * 0.16;
-        if (dragDelta < -threshold && index < count - 1) index++;
-        else if (dragDelta > threshold && index > 0) index--;
-        place(true);
-      }
-      if (wasTap && !moved && opts.onTap) opts.onTap(index);
-    }
-    track.addEventListener('pointerup', finish);
-    track.addEventListener('pointercancel', function(){ dragging = false; });
-    window.addEventListener('resize', function(){ place(false); });
+      if (Math.abs(e.clientX - downX) > 6 || Math.abs(e.clientY - downY) > 6) moved = true;
+    });
+    track.addEventListener('click', function(e){
+      if (moved) return;
+      if (!opts.onTap) return;
+      var slideEl = e.target.closest('.slide');
+      var i = slideEl ? parseInt(slideEl.getAttribute('data-index'), 10) : index;
+      opts.onTap(isNaN(i) ? index : i);
+    });
 
-    place(false);
     return { goTo: goTo, getIndex: function(){ return index; } };
   }
 
@@ -2046,7 +2072,7 @@
     var photos = item.photos && item.photos.length ? item.photos : [];
 
     var slidesHTML = photos.map(function(src, i){
-      return '<div class="slide"><img src="' + src + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '"></div>';
+      return '<div class="slide" data-index="' + i + '"><img src="' + src + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '"></div>';
     }).join('');
 
     var dotsHTML = photos.length > 1 ? (
@@ -2103,6 +2129,16 @@
         '</div>' +
       '</div>' +
       '</div>' +
+      (photos.length > 1 ? (
+        '<section class="full-gallery" id="fullGallery">' +
+          '<h2 class="full-gallery-title">Toutes les photos</h2>' +
+          '<div class="full-gallery-grid">' +
+            photos.map(function(src, i){
+              return '<img src="' + src + '" data-index="' + i + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + ' en grand format" loading="lazy">';
+            }).join('') +
+          '</div>' +
+        '</section>'
+      ) : '') +
       '</div>';
 
     if (photos.length){
@@ -2125,6 +2161,15 @@
       currentSlider = slider;
 
       if (dotsEl) wireDots(dotsEl, function(i){ slider.goTo(i); });
+
+      var galleryEl = document.getElementById('fullGallery');
+      if (galleryEl){
+        Array.prototype.forEach.call(galleryEl.querySelectorAll('img'), function(img){
+          img.addEventListener('click', function(){
+            openZoomViewer(item, parseInt(img.getAttribute('data-index'), 10) || 0);
+          });
+        });
+      }
     } else {
       currentSlider = null;
     }
