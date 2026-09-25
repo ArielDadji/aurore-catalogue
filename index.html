@@ -1851,6 +1851,7 @@
     var items = FEATURED_REFS.map(function(ref){
       return DATA.filter(function(d){ return d.reference === ref; })[0];
     }).filter(Boolean);
+    items.sort(function(a, b){ return a.prix - b.prix; }); // moins chère en premier, plus chère en dernier
     featuredGrid.innerHTML = '';
     items.forEach(function(item){
       var card = document.createElement('div');
