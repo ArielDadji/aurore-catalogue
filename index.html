@@ -105,18 +105,41 @@
     border-bottom:1px solid var(--line);
     padding:14px 20px;
     display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .search-row{
+    display:flex;
+    justify-content:center;
+  }
+  .search-wrap{
+    position:relative;
+    width:100%;
+    max-width:420px;
+  }
+  .search-wrap .search-icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    width:15px;
+    height:15px;
+    color:var(--text-muted);
+    pointer-events:none;
+  }
+  .filters-row{
+    display:flex;
     flex-wrap:wrap;
     gap:10px;
     align-items:center;
     justify-content:center;
   }
   .controls input[type="search"]{
-    flex:1 1 220px;
-    max-width:320px;
+    width:100%;
     background:var(--surface);
     border:1px solid var(--line);
     color:var(--text);
-    padding:9px 14px;
+    padding:9px 14px 9px 38px;
     border-radius:999px;
     font-family:'Montserrat',sans-serif;
     font-size:13.5px;
@@ -585,7 +608,7 @@
     .card .price{font-size:15.5px;}
     .card .order-btn{font-size:11px;padding:8px 8px;}
     .controls{padding:10px 12px;gap:8px;}
-    .controls input[type="search"]{flex-basis:100%;max-width:100%;}
+    .search-wrap{max-width:100%;}
   }
 </style>
 
@@ -601,19 +624,26 @@
 </header>
 
 <div class="controls">
-  <input type="search" id="search" placeholder="Rechercher une marque, un modèle, une référence…">
-  <select id="brandFilter"><option value="">Toutes les marques</option></select>
-  <div class="genre-toggle" id="genreToggle">
-    <button data-genre="" aria-pressed="true">Tous</button>
-    <button data-genre="HOMME" aria-pressed="false">Homme</button>
-    <button data-genre="FEMME" aria-pressed="false">Femme</button>
-    <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
+  <div class="search-row">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="search" id="search" placeholder="Rechercher une marque, un modèle, une référence…">
+    </div>
   </div>
-  <select id="sortBy">
-    <option value="ref">Référence</option>
-    <option value="priceAsc">Prix croissant</option>
-    <option value="priceDesc">Prix décroissant</option>
-  </select>
+  <div class="filters-row">
+    <select id="brandFilter"><option value="">Toutes les marques</option></select>
+    <div class="genre-toggle" id="genreToggle">
+      <button data-genre="" aria-pressed="true">Tous</button>
+      <button data-genre="HOMME" aria-pressed="false">Homme</button>
+      <button data-genre="FEMME" aria-pressed="false">Femme</button>
+      <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
+    </div>
+    <select id="sortBy">
+      <option value="ref">Référence</option>
+      <option value="priceAsc">Prix croissant</option>
+      <option value="priceDesc">Prix décroissant</option>
+    </select>
+  </div>
 </div>
 
 <p class="count-line" id="countLine"></p>
