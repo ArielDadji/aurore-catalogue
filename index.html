@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogue Aurore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Palette officielle Aurore (Brand Kit) */
+    --bg:#000000;
+    --surface:#141414;
+    --surface-2:#232323;
+    --line:rgba(200,155,60,0.25);
+    --gold:#C89B3C;
+    --gold-deep:#A67C1B;
+    --text:#F8F5EE;
+    --text-muted:rgba(248,245,238,0.6);
+    --cta-bg:var(--gold);
+    --cta-bg-hover:var(--gold-deep);
+    --cta-text:#141414;
+    --radius:2px;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Montserrat',system-ui,sans-serif;
+    padding-inline:0;
+  }
+  a{color:inherit;}
+  img{display:block;}
+
+  .brand{
+    font-family:'Playfair Display',Georgia,serif;
+  }
+
+  /* ---------- header ---------- */
+  header.site{
+    padding:28px 20px 18px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    text-align:center;
+  }
+  .mark{
+    height:56px;width:auto;
+    margin-bottom:4px;
+  }
+  header.site h1{
+    margin:0;
+    font-size:clamp(28px,6vw,40px);
+    font-weight:500;
+    letter-spacing:0.14em;
+    color:var(--gold);
+  }
+  header.site .tagline{
+    font-family:'Playfair Display',Georgia,serif;
+    font-style:italic;
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:var(--text-muted);
+    margin:0 0 10px;
+  }
+  header.site .sub{
+    font-size:13px;
+    color:var(--text-muted);
+    letter-spacing:0.03em;
+  }
+  .wa-general{
+    margin-top:14px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--cta-bg);
+    color:var(--cta-text);
+    font-weight:600;
+    font-size:13.5px;
+    padding:10px 20px;
+    border-radius:999px;
+    text-decoration:none;
+    letter-spacing:0.02em;
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  }
+  .wa-general:hover{
+    transform:translateY(-2px);
+    background:var(--cta-bg-hover);
+    box-shadow:0 6px 16px rgba(200,155,60,0.35);
+  }
+  .wa-general:active{transform:translateY(0);}
+  .wa-general svg{width:16px;height:16px;flex:none;}
+
+  /* ---------- controls ---------- */
+  .controls{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:20;
+    background:rgba(0,0,0,0.96);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:14px 20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+  }
+  .controls input[type="search"]{
+    flex:1 1 220px;
+    max-width:320px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:9px 14px;
+    border-radius:999px;
+    font-family:'Montserrat',sans-serif;
+    font-size:13.5px;
+    outline:none;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .controls input[type="search"]::placeholder{color:var(--text-muted);}
+  .controls input[type="search"]:hover{border-color:var(--gold-deep);}
+  .controls input[type="search"]:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(200,155,60,0.22);
+  }
+  .controls select{
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:9px 12px;
+    border-radius:999px;
+    font-family:'Montserrat',sans-serif;
+    font-size:13px;
+    outline:none;
+    cursor:pointer;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .controls select:hover{border-color:var(--gold-deep);}
+  .controls select:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(200,155,60,0.22);
+  }
+  .genre-toggle{
+    display:flex;
+    gap:6px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:3px;
+  }
+  .genre-toggle button{
+    background:transparent;
+    border:none;
+    color:var(--text-muted);
+    font-family:'Montserrat',sans-serif;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .18s ease, color .18s ease, transform .12s ease;
+  }
+  .genre-toggle button:hover{
+    background:rgba(200,155,60,0.16);
+    color:var(--text);
+  }
+  .genre-toggle button:active{transform:scale(0.96);}
+  .genre-toggle button[aria-pressed="true"]{
+    background:var(--gold);
+    color:#1c1204;
+    font-weight:600;
+  }
+  .genre-toggle button[aria-pressed="true"]:hover{
+    background:var(--gold);
+    color:#1c1204;
+  }
+  .count-line{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--text-muted);
+    padding:12px 20px 0;
+    letter-spacing:0.02em;
+  }
+
+  /* ---------- grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:22px;
+    padding:20px 20px 60px;
+    max-width:1400px;
+    margin:0 auto;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    cursor:pointer;
+    transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:var(--gold-deep);
+    box-shadow:0 12px 24px rgba(0,0,0,0.35);
+  }
+  .card .thumb{
+    position:relative;
+    width:100%;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:#000;
+  }
+  .card .thumb img{
+    width:100%;height:100%;object-fit:contain;object-position:center center;
+    transition:transform .35s ease;
+  }
+  .card .thumb:hover img{transform:scale(1.04);}
+  .card .ref-badge{
+    position:absolute;top:8px;left:8px;
+    background:rgba(0,0,0,0.8);
+    color:var(--gold);
+    font-size:10.5px;
+    letter-spacing:0.05em;
+    padding:3px 8px;
+    border:1px solid var(--line);
+    border-radius:999px;
+  }
+  .card .body{
+    padding:14px 14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1;
+  }
+  .card .eyebrow{
+    font-size:10.5px;
+    letter-spacing:0.12em;
+    color:var(--gold);
+    font-weight:600;
+  }
+  .card h3{
+    font-family:'Playfair Display',Georgia,serif;
+    margin:0;
+    font-size:16.5px;
+    font-weight:500;
+    line-height:1.25;
+    min-height:1.25em;
+  }
+  .card .specs{
+    font-size:11px;
+    color:var(--text-muted);
+    letter-spacing:0.02em;
+  }
+  .card .price-row{
+    margin-top:auto;
+    padding-top:8px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .card .price{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:19px;
+    color:var(--gold);
+    font-weight:600;
+  }
+  .card .price small{
+    font-family:'Montserrat',sans-serif;
+    font-size:10.5px;
+    color:var(--text-muted);
+    font-weight:400;
+    margin-left:3px;
+  }
+  .order-btn{
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    background:var(--cta-bg);
+    color:var(--cta-text);
+    text-decoration:none;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    padding:9px 10px;
+    border-radius:999px;
+    transition:transform .16s ease, filter .16s ease;
+  }
+  .order-btn:hover{transform:translateY(-2px);background:var(--cta-bg-hover);}
+  .order-btn:active{transform:translateY(0);}
+  .order-btn svg{width:14px;height:14px;flex:none;}
+
+  .empty{
+    text-align:center;
+    color:var(--text-muted);
+    padding:70px 20px;
+    font-size:14px;
+    display:none;
+  }
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.94);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:24px;
+    padding-top:calc(24px + env(safe-area-inset-top,0px));
+    padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{
+    max-width:520px;
+    width:100%;
+    max-height:100%;
+    overflow-y:auto;
+    background:var(--surface);
+    border:1px solid var(--line);
+  }
+  .lightbox-inner img{width:100%;}
+  .lightbox-body{padding:18px 20px 20px;}
+
+  /* ---------- carousel ---------- */
+  .carousel{
+    position:relative;
+    background:#000;
+    overflow:hidden;
+  }
+  .carousel-viewport{
+    overflow:hidden;
+    width:100%;
+  }
+  .carousel-track{
+    display:flex;
+    width:100%;
+    touch-action:pan-y;
+    will-change:transform;
+  }
+  .carousel-track .slide{
+    flex:0 0 100%;
+    width:100%;
+    aspect-ratio:4/5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#000;
+    cursor:zoom-in;
+  }
+  .carousel-track .slide img{
+    max-width:100%;
+    max-height:100%;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    -webkit-user-drag:none;
+    user-select:none;
+    pointer-events:none;
+  }
+  .carousel-dots{
+    position:absolute;
+    left:0;right:0;bottom:10px;
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    pointer-events:none;
+  }
+  .carousel-dots .dot{
+    width:6px;height:6px;
+    border-radius:50%;
+    background:rgba(248,245,238,0.45);
+    border:1px solid rgba(0,0,0,0.3);
+    transition:background .18s ease, transform .18s ease;
+    pointer-events:auto;
+    cursor:pointer;
+  }
+  .carousel-dots .dot.active{
+    background:var(--gold);
+    transform:scale(1.25);
+  }
+  .carousel-count{
+    position:absolute;
+    top:10px;right:10px;
+    background:rgba(0,0,0,0.65);
+    color:var(--text);
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    padding:3px 8px;
+    border-radius:999px;
+    pointer-events:none;
+  }
+  .carousel-arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;height:34px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.55);
+    border:1px solid var(--line);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:5;
+    padding:0;
+    transition:background .16s ease, opacity .16s ease;
+  }
+  .carousel-arrow:hover{background:var(--gold);color:#1c1204;}
+  .carousel-arrow.prev{left:8px;}
+  .carousel-arrow.next{right:8px;}
+  .carousel-arrow[disabled]{opacity:0.28;pointer-events:none;}
+  .carousel-arrow svg{width:16px;height:16px;flex:none;}
+  .zoom-overlay .carousel-arrow{
+    width:46px;height:46px;
+    background:rgba(0,0,0,0.55);
+  }
+  .zoom-overlay .carousel-arrow.prev{left:14px;}
+  .zoom-overlay .carousel-arrow.next{right:14px;}
+  .zoom-overlay .carousel-arrow svg{width:20px;height:20px;}
+
+  .carousel-hint{
+    position:absolute;
+    top:10px;left:10px;
+    background:rgba(0,0,0,0.65);
+    color:var(--text);
+    font-size:9.5px;
+    letter-spacing:0.03em;
+    padding:3px 8px;
+    border-radius:999px;
+    pointer-events:none;
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+
+  /* ---------- fullscreen zoom viewer ---------- */
+  .zoom-overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.97);
+    display:none;
+    z-index:200;
+    overflow:hidden;
+  }
+  .zoom-overlay.open{display:block;}
+  .zoom-track{
+    display:flex;
+    width:100%;height:100%;
+    touch-action:none;
+  }
+  .zoom-slide{
+    flex:0 0 100%;
+    width:100%;height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .zoom-slide img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    -webkit-user-drag:none;
+    user-select:none;
+    transform-origin:center center;
+  }
+  .zoom-close{
+    position:fixed;
+    top:calc(18px + env(safe-area-inset-top,0px));
+    right:18px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--text);
+    width:36px;height:36px;
+    border-radius:50%;
+    font-size:18px;
+    cursor:pointer;
+    z-index:201;
+    transition:background .16s ease, transform .16s ease;
+  }
+  .zoom-close:hover{background:var(--gold);color:#1c1204;transform:scale(1.06);}
+  .zoom-overlay .carousel-dots{bottom:calc(18px + env(safe-area-inset-bottom,0px));}
+  .zoom-overlay .carousel-count{top:calc(18px + env(safe-area-inset-top,0px));right:66px;}
+
+  /* ---------- full fiche text (contrat) ---------- */
+  .fiche-text{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .fiche-text .block-label{
+    font-size:10px;
+    letter-spacing:0.1em;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:3px;
+  }
+  .fiche-text .block-text{
+    font-size:12px;
+    line-height:1.5;
+    color:var(--text-muted);
+  }
+  .fiche-specs-table{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:4px;
+  }
+  .fiche-specs-table .cell{
+    background:var(--surface-2);
+    padding:8px 10px;
+  }
+  .fiche-specs-table .cell .k{
+    font-size:9.5px;
+    letter-spacing:0.08em;
+    color:var(--gold);
+    display:block;
+    margin-bottom:2px;
+  }
+  .fiche-specs-table .cell .v{
+    font-size:12.5px;
+    color:var(--text);
+    font-family:'Playfair Display',Georgia,serif;
+  }
+  .fiche-contact{
+    margin-top:4px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+  .fiche-contact strong{color:var(--gold);font-weight:600;}
+  .lightbox-close{
+    position:fixed;
+    top:calc(18px + env(safe-area-inset-top,0px));
+    right:18px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--text);
+    width:36px;height:36px;
+    border-radius:50%;
+    font-size:18px;
+    cursor:pointer;
+    z-index:101;
+    transition:background .16s ease, transform .16s ease;
+  }
+  .lightbox-close:hover{background:var(--gold);color:#1c1204;transform:scale(1.06);}
+
+  footer.site{
+    border-top:1px solid var(--line);
+    padding:26px 20px calc(26px + env(safe-area-inset-bottom,0px));
+    text-align:center;
+    color:var(--text-muted);
+    font-size:12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  footer.site .brand{color:var(--gold);font-size:14px;letter-spacing:0.08em;}
+
+  @media (max-width:480px){
+    .grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:16px 14px 50px;}
+    .card .body{padding:10px 10px 12px;}
+    .card h3{font-size:13.5px;}
+    .card .price{font-size:15.5px;}
+    .card .order-btn{font-size:11px;padding:8px 8px;}
+    .controls{padding:10px 12px;gap:8px;}
+    .controls input[type="search"]{flex-basis:100%;max-width:100%;}
+  }
+</style>
+
+<header class="site">
+  <img class="mark" src="logo.png" alt="Aurore">
+  <h1 class="brand">AURORE</h1>
+  <p class="tagline">Le premier pas vers l'élégance</p>
+  <p class="sub" id="subCount">Catalogue de montres — 38 modèles</p>
+  <a class="wa-general" id="waGeneral" target="_blank" rel="noopener">
+    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
+    Commander sur WhatsApp
+  </a>
+</header>
+
+<div class="controls">
+  <input type="search" id="search" placeholder="Rechercher une marque, un modèle, une référence…">
+  <select id="brandFilter"><option value="">Toutes les marques</option></select>
+  <div class="genre-toggle" id="genreToggle">
+    <button data-genre="" aria-pressed="true">Tous</button>
+    <button data-genre="HOMME" aria-pressed="false">Homme</button>
+    <button data-genre="FEMME" aria-pressed="false">Femme</button>
+    <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
+  </div>
+  <select id="sortBy">
+    <option value="ref">Référence</option>
+    <option value="priceAsc">Prix croissant</option>
+    <option value="priceDesc">Prix décroissant</option>
+  </select>
+</div>
+
+<p class="count-line" id="countLine"></p>
+
+<div class="grid" id="grid"></div>
+<p class="empty" id="emptyState">Aucune montre ne correspond à ta recherche. Essaie un autre filtre.</p>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner" id="lightboxInner"></div>
+</div>
+<button class="lightbox-close" id="lightboxClose" hidden aria-label="Fermer">✕</button>
+
+<div class="zoom-overlay" id="zoomOverlay">
+  <div class="zoom-track" id="zoomTrack"></div>
+  <div id="zoomArrows"></div>
+  <div class="carousel-dots" id="zoomDots"></div>
+  <div class="carousel-count" id="zoomCount"></div>
+</div>
+<button class="zoom-close" id="zoomClose" hidden aria-label="Fermer">✕</button>
+
+<footer class="site">
+  <div class="brand">AURORE</div>
+  <div>Yaoundé · Pharmacie EMIA</div>
+  <div>Facebook — Aurore &nbsp;·&nbsp; Instagram — Aurore_bijouterie</div>
+  <div>+1 778 536 0129 &nbsp;–&nbsp; +237 698 868 629</div>
+</footer>
+
+<script>
+(function(){
+  var PHONE = "237698868629";
+  var CONTENU = "MONTRE + BOÎTE + PILE DE RECHANGE + GRAVURE FACULTATIVE";
+  var GARANTIE = "45 JOURS DE GARANTIE";
+  var LIVRAISON = "Livraison aux frais du client — sous 3h à 48h. Livraison express avec frais supplémentaire.";
+  var LIEU = "Yaoundé - Pharmacie EMIA";
+  var FACEBOOK = "Aurore";
+  var INSTAGRAM = "Aurore_bijouterie";
+  var TELEPHONE = "+1 778 536 0129 – +237 698 868 629";
+  var DATA = [{"reference": "AUR-001", "marque": "DANIEL WELLINGTON", "modele": "Classic", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "MIXTE", "cadran": "NOIR", "photos": ["carousel/AUR-001/1.jpg", "carousel/AUR-001/2.jpg", "carousel/AUR-001/3.jpg", "carousel/AUR-001/4.jpg"]}, {"reference": "AUR-002", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "CUIR & OR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-002/1.jpg", "carousel/AUR-002/2.jpg", "carousel/AUR-002/3.jpg", "carousel/AUR-002/4.jpg"]}, {"reference": "AUR-003", "marque": "HERMÈS", "modele": "Heure H", "prix": 10000, "matiere": "CUIR & ARGENT", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLANC", "photos": ["carousel/AUR-003/1.jpg", "carousel/AUR-003/2.jpg", "carousel/AUR-003/3.jpg", "carousel/AUR-003/4.jpg"]}, {"reference": "AUR-004", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-004/1.jpg", "carousel/AUR-004/2.jpg", "carousel/AUR-004/3.jpg", "carousel/AUR-004/4.jpg"]}, {"reference": "AUR-005", "marque": "MONTBLANC", "modele": "Timewalker Chronographe", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-005/1.jpg", "carousel/AUR-005/2.jpg", "carousel/AUR-005/3.jpg", "carousel/AUR-005/4.jpg"]}, {"reference": "AUR-006", "marque": "HERMÈS", "modele": "Heure H Diamants", "prix": 10000, "matiere": "CUIR & ARGENT", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLANC", "photos": ["carousel/AUR-006/1.jpg", "carousel/AUR-006/2.jpg"]}, {"reference": "AUR-007", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLEU", "photos": ["carousel/AUR-007/1.jpg", "carousel/AUR-007/2.jpg", "carousel/AUR-007/3.jpg", "carousel/AUR-007/4.jpg"]}, {"reference": "AUR-008", "marque": "CARTIER", "modele": "Calibre Chronographe", "prix": 20000, "matiere": "ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "ARGENTÉ", "photos": ["carousel/AUR-008/1.jpg", "carousel/AUR-008/2.jpg", "carousel/AUR-008/3.jpg", "carousel/AUR-008/4.jpg"]}, {"reference": "AUR-009", "marque": "POEDAGAR", "modele": "Diamond Collection", "prix": 14000, "matiere": "ACIER", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLEU", "photos": ["carousel/AUR-009/1.jpg", "carousel/AUR-009/2.jpg", "carousel/AUR-009/3.jpg", "carousel/AUR-009/4.jpg"]}, {"reference": "AUR-010", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak Offshore Squelette", "prix": 28000, "matiere": "ACIER", "mouvement": "AUTOMATIQUE", "genre": "HOMME", "cadran": "SQUELETTE", "photos": ["carousel/AUR-010/1.jpg", "carousel/AUR-010/2.jpg", "carousel/AUR-010/3.jpg", "carousel/AUR-010/4.jpg"]}, {"reference": "AUR-011", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak Offshore Squelette", "prix": 28000, "matiere": "OR & ACIER", "mouvement": "AUTOMATIQUE", "genre": "HOMME", "cadran": "SQUELETTE", "photos": ["carousel/AUR-011/1.jpg", "carousel/AUR-011/2.jpg", "carousel/AUR-011/3.jpg", "carousel/AUR-011/4.jpg"]}, {"reference": "AUR-012", "marque": "DANIEL WELLINGTON", "modele": "Iconic Square", "prix": 10000, "matiere": "CUIR & ACIER ROSÉ", "mouvement": "QUARTZ", "genre": "MIXTE", "cadran": "CUIVRÉ", "photos": ["carousel/AUR-012/1.jpg", "carousel/AUR-012/2.jpg"]}, {"reference": "AUR-013", "marque": "DANIEL WELLINGTON", "modele": "Iconic Square Noire", "prix": 10000, "matiere": "CUIR & ACIER NOIR", "mouvement": "QUARTZ", "genre": "MIXTE", "cadran": "NOIR", "photos": ["carousel/AUR-013/1.jpg", "carousel/AUR-013/2.jpg", "carousel/AUR-013/3.jpg", "carousel/AUR-013/4.jpg"]}, {"reference": "AUR-014", "marque": "POEDAGAR", "modele": "Classic Gold", "prix": 12000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-014/1.jpg", "carousel/AUR-014/2.jpg", "carousel/AUR-014/3.jpg", "carousel/AUR-014/4.jpg"]}, {"reference": "AUR-015", "marque": "CASIO", "modele": "Square Noire", "prix": 9500, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-015/1.jpg", "carousel/AUR-015/2.jpg", "carousel/AUR-015/3.jpg", "carousel/AUR-015/4.jpg"]}, {"reference": "AUR-016", "marque": "CASIO", "modele": "Square Dorée", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-016/1.jpg", "carousel/AUR-016/2.jpg", "carousel/AUR-016/3.jpg", "carousel/AUR-016/4.jpg"]}, {"reference": "AUR-017", "marque": "CASIO", "modele": "Square Champagne", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-017/1.jpg", "carousel/AUR-017/2.jpg", "carousel/AUR-017/3.jpg"]}, {"reference": "AUR-018", "marque": "CASIO", "modele": "Ronde Turquoise", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "TURQUOISE", "photos": ["carousel/AUR-018/1.jpg", "carousel/AUR-018/2.jpg"]}, {"reference": "AUR-019", "marque": "CASIO", "modele": "Square Dorée", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-019/1.jpg", "carousel/AUR-019/2.jpg", "carousel/AUR-019/3.jpg", "carousel/AUR-019/4.jpg"]}, {"reference": "AUR-020", "marque": "ROLEX", "modele": "Charme Doré", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLANC", "photos": ["carousel/AUR-020/1.jpg", "carousel/AUR-020/2.jpg", "carousel/AUR-020/3.jpg", "carousel/AUR-020/4.jpg"]}, {"reference": "AUR-021", "marque": "DIOR", "modele": "Cristal Noir", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "NOIR", "photos": ["carousel/AUR-021/1.jpg", "carousel/AUR-021/2.jpg", "carousel/AUR-021/3.jpg", "carousel/AUR-021/4.jpg"]}, {"reference": "AUR-022", "marque": "ROLEX", "modele": "Président Doré", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-022/1.jpg", "carousel/AUR-022/2.jpg", "carousel/AUR-022/3.jpg", "carousel/AUR-022/4.jpg"]}, {"reference": "AUR-023", "marque": "ROLEX", "modele": "Éclat Doré", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-023/1.jpg", "carousel/AUR-023/2.jpg", "carousel/AUR-023/3.jpg"]}, {"reference": "AUR-024", "marque": "CALVIN KLEIN", "modele": "Goutte Dorée", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "DORÉ", "photos": ["carousel/AUR-024/1.jpg", "carousel/AUR-024/2.jpg", "carousel/AUR-024/3.jpg"]}, {"reference": "AUR-025", "marque": "BVLGARI", "modele": "Squelette Argenté", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-025/1.jpg", "carousel/AUR-025/2.jpg", "carousel/AUR-025/3.jpg"]}, {"reference": "AUR-026", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-026/1.jpg"]}, {"reference": "AUR-027", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-027/1.jpg", "carousel/AUR-027/2.jpg", "carousel/AUR-027/3.jpg", "carousel/AUR-027/4.jpg"]}, {"reference": "AUR-028", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-028/1.jpg", "carousel/AUR-028/2.jpg", "carousel/AUR-028/3.jpg", "carousel/AUR-028/4.jpg"]}, {"reference": "AUR-029", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLEU", "photos": ["carousel/AUR-029/1.jpg", "carousel/AUR-029/2.jpg", "carousel/AUR-029/3.jpg", "carousel/AUR-029/4.jpg"]}, {"reference": "AUR-030", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-030/1.jpg", "carousel/AUR-030/2.jpg", "carousel/AUR-030/3.jpg", "carousel/AUR-030/4.jpg"]}, {"reference": "AUR-031", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "VERT", "photos": ["carousel/AUR-031/1.jpg", "carousel/AUR-031/2.jpg", "carousel/AUR-031/3.jpg", "carousel/AUR-031/4.jpg"]}, {"reference": "AUR-032", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER NOIR", "mouvement": "MANUEL", "genre": "HOMME", "cadran": "SQUELETTE", "photos": ["carousel/AUR-032/1.jpg", "carousel/AUR-032/2.jpg", "carousel/AUR-032/3.jpg", "carousel/AUR-032/4.jpg"]}, {"reference": "AUR-033", "marque": "CARTIER", "modele": "", "prix": 17500, "matiere": "ACIER ARGENTÉ", "mouvement": "MANUEL", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-033/1.jpg", "carousel/AUR-033/2.jpg", "carousel/AUR-033/3.jpg", "carousel/AUR-033/4.jpg"]}, {"reference": "AUR-034", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-034/1.jpg", "carousel/AUR-034/2.jpg", "carousel/AUR-034/3.jpg", "carousel/AUR-034/4.jpg"]}, {"reference": "AUR-035", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "GRIS", "photos": ["carousel/AUR-035/1.jpg", "carousel/AUR-035/2.jpg", "carousel/AUR-035/3.jpg", "carousel/AUR-035/4.jpg"]}, {"reference": "AUR-036", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-036/1.jpg", "carousel/AUR-036/2.jpg", "carousel/AUR-036/3.jpg", "carousel/AUR-036/4.jpg"]}, {"reference": "AUR-037", "marque": "CALVIN KLEIN", "modele": "", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "GRIS", "photos": ["carousel/AUR-037/1.jpg", "carousel/AUR-037/2.jpg", "carousel/AUR-037/3.jpg"]}, {"reference": "AUR-038", "marque": "JAKDY", "modele": "Keep Moving", "prix": 11000, "matiere": "OR ET CUIR BLEU", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLEU", "photos": ["carousel/AUR-038/1.jpg", "carousel/AUR-038/2.jpg"]}, {"reference": "AUR-039", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-039/1.jpg"]}];
+
+  var grid = document.getElementById('grid');
+  var search = document.getElementById('search');
+  var brandFilter = document.getElementById('brandFilter');
+  var genreToggle = document.getElementById('genreToggle');
+  var sortBy = document.getElementById('sortBy');
+  var emptyState = document.getElementById('emptyState');
+  var countLine = document.getElementById('countLine');
+  var subCount = document.getElementById('subCount');
+  var lightbox = document.getElementById('lightbox');
+  var lightboxInner = document.getElementById('lightboxInner');
+  var lightboxClose = document.getElementById('lightboxClose');
+  var zoomOverlay = document.getElementById('zoomOverlay');
+  var zoomTrack = document.getElementById('zoomTrack');
+  var zoomDots = document.getElementById('zoomDots');
+  var zoomCount = document.getElementById('zoomCount');
+  var zoomArrows = document.getElementById('zoomArrows');
+  var zoomClose = document.getElementById('zoomClose');
+
+  subCount.textContent = "Catalogue de montres — " + DATA.length + " modèles";
+
+  document.getElementById('waGeneral').href =
+    "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Bonjour Aurore, je consulte votre catalogue et j'aimerais avoir des renseignements.");
+
+  var brands = Array.from(new Set(DATA.map(function(d){return d.marque;}))).sort();
+  brands.forEach(function(b){
+    var opt = document.createElement('option');
+    opt.value = b; opt.textContent = b.charAt(0) + b.slice(1).toLowerCase();
+    brandFilter.appendChild(opt);
+  });
+
+  var state = { q:'', brand:'', genre:'', sort:'ref' };
+
+  function waLink(item){
+    var name = item.modele ? (item.marque + " " + item.modele) : item.marque;
+    var msg = "Bonjour Aurore, je suis intéressé(e) par la montre " + name +
+      " — Réf " + item.reference + " (" + item.prix.toLocaleString('fr-FR') + " FCFA). Est-elle disponible ?";
+    return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+  }
+
+  function titleOf(item){
+    return item.modele && item.modele.trim() ? item.modele : (item.marque.charAt(0) + item.marque.slice(1).toLowerCase());
+  }
+
+  function matches(item){
+    var q = state.q.trim().toLowerCase();
+    if (q){
+      var hay = (item.marque + " " + item.modele + " " + item.reference).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    if (state.brand && item.marque !== state.brand) return false;
+    if (state.genre && item.genre !== state.genre) return false;
+    return true;
+  }
+
+  function sortItems(items){
+    var arr = items.slice();
+    if (state.sort === 'priceAsc') arr.sort(function(a,b){return a.prix - b.prix;});
+    else if (state.sort === 'priceDesc') arr.sort(function(a,b){return b.prix - a.prix;});
+    else arr.sort(function(a,b){return a.reference.localeCompare(b.reference);});
+    return arr;
+  }
+
+  var SWIPE_EASE = 'transform .38s cubic-bezier(.22,.61,.36,1)';
+
+  // Lightweight horizontal slider: real-time drag-follow + smooth eased snap.
+  // Used for the carousel inside the product lightbox. Calls opts.onTap(index)
+  // when a slide is tapped/clicked without being dragged (opens the full zoom view).
+  function createSlider(viewport, track, count, opts){
+    opts = opts || {};
+    var index = opts.startIndex || 0;
+    var width = viewport.clientWidth;
+    var dragging = false, moved = false, startX = 0, startY = 0, dragDelta = 0, axis = null;
+
+    function setTransition(on){ track.style.transition = on ? SWIPE_EASE : 'none'; }
+    function place(animate){
+      width = viewport.clientWidth;
+      setTransition(animate !== false);
+      track.style.transform = 'translateX(' + (-index * width) + 'px)';
+      if (opts.onChange) opts.onChange(index);
+    }
+    function goTo(i){
+      index = Math.max(0, Math.min(count - 1, i));
+      place(true);
+    }
+
+    track.addEventListener('pointerdown', function(e){
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      dragging = true; moved = false; axis = null;
+      startX = e.clientX; startY = e.clientY; dragDelta = 0;
+      width = viewport.clientWidth;
+      setTransition(false);
+      try { track.setPointerCapture(e.pointerId); } catch(err){}
+    });
+    track.addEventListener('pointermove', function(e){
+      if (!dragging) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (axis === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)){
+        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (axis !== 'x') return;
+      moved = true;
+      dragDelta = dx;
+      // resist a little past the first/last slide
+      var resist = (index === 0 && dx > 0) || (index === count - 1 && dx < 0) ? 0.35 : 1;
+      track.style.transform = 'translateX(' + (-index * width + dx * resist) + 'px)';
+    });
+    function finish(e){
+      if (!dragging) return;
+      dragging = false;
+      var wasTap = axis !== 'x';
+      if (axis === 'x'){
+        var threshold = width * 0.16;
+        if (dragDelta < -threshold && index < count - 1) index++;
+        else if (dragDelta > threshold && index > 0) index--;
+        place(true);
+      }
+      if (wasTap && !moved && opts.onTap) opts.onTap(index);
+    }
+    track.addEventListener('pointerup', finish);
+    track.addEventListener('pointercancel', function(){ dragging = false; });
+    window.addEventListener('resize', function(){ place(false); });
+
+    place(false);
+    return { goTo: goTo, getIndex: function(){ return index; } };
+  }
+
+  var ARROW_PREV_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+  var ARROW_NEXT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+
+  function arrowsHTML(){
+    return (
+      '<button type="button" class="carousel-arrow prev" data-dir="-1" aria-label="Photo précédente">' + ARROW_PREV_SVG + '</button>' +
+      '<button type="button" class="carousel-arrow next" data-dir="1" aria-label="Photo suivante">' + ARROW_NEXT_SVG + '</button>'
+    );
+  }
+  function wireArrows(container, getIndex, count, goTo){
+    var prev = container.querySelector('.carousel-arrow.prev');
+    var next = container.querySelector('.carousel-arrow.next');
+    if (!prev || !next) return function(){};
+    prev.addEventListener('click', function(e){ e.stopPropagation(); goTo(getIndex() - 1); });
+    next.addEventListener('click', function(e){ e.stopPropagation(); goTo(getIndex() + 1); });
+    function update(i){
+      prev.disabled = i <= 0;
+      next.disabled = i >= count - 1;
+    }
+    update(getIndex());
+    return update;
+  }
+
+  function buildDots(count, activeIndex){
+    var out = '';
+    for (var i = 0; i < count; i++){
+      out += '<span class="dot' + (i === activeIndex ? ' active' : '') + '" data-i="' + i + '"></span>';
+    }
+    return out;
+  }
+  function wireDots(container, onPick){
+    Array.prototype.forEach.call(container.querySelectorAll('.dot'), function(d){
+      d.addEventListener('click', function(){ onPick(parseInt(d.getAttribute('data-i'), 10)); });
+    });
+  }
+  function setDotsActive(container, index){
+    Array.prototype.forEach.call(container.querySelectorAll('.dot'), function(d, i){
+      d.classList.toggle('active', i === index);
+    });
+  }
+
+  // Fullscreen zoom viewer: swipe between photos (only while not zoomed-in),
+  // pinch-to-zoom, double-tap/double-click to zoom, mouse wheel zoom, drag-to-pan when zoomed.
+  function createZoomViewer(track, count, onChange){
+    var index = 0, width = track.parentElement.clientWidth;
+    var scale = 1, panX = 0, panY = 0;
+    var pointers = {};
+    var pinchStartDist = 0, pinchStartScale = 1;
+    var mode = null; // 'swipe' | 'pan' | 'pinch'
+    var startX = 0, startY = 0, downX = 0, downY = 0, dragDelta = 0, moved = false;
+    var lastTapTime = 0, lastTapX = 0, lastTapY = 0;
+
+    function slideEl(i){ return track.children[i]; }
+    function imgEl(i){ return slideEl(i).querySelector('img'); }
+
+    function applyZoom(){
+      var img = imgEl(index);
+      img.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + scale + ')';
+    }
+    function resetZoom(){
+      scale = 1; panX = 0; panY = 0;
+      var img = imgEl(index);
+      if (img) img.style.transform = 'translate(0px,0px) scale(1)';
+    }
+    function setTrackTransition(on){ track.style.transition = on ? SWIPE_EASE : 'none'; }
+    function place(animate){
+      width = track.parentElement.clientWidth;
+      setTrackTransition(animate !== false);
+      track.style.transform = 'translateX(' + (-index * width) + 'px)';
+      if (onChange) onChange(index);
+    }
+    function goTo(i){
+      resetZoom();
+      index = Math.max(0, Math.min(count - 1, i));
+      place(true);
+    }
+
+    function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+
+    function toggleZoomAt(clientX, clientY){
+      if (scale > 1.02){ resetZoom(); return; }
+      var rect = imgEl(index).getBoundingClientRect();
+      scale = 2.4;
+      panX = (rect.width/2 - (clientX - rect.left)) * (scale - 1) / scale;
+      panY = (rect.height/2 - (clientY - rect.top)) * (scale - 1) / scale;
+      applyZoom();
+    }
+
+    track.addEventListener('pointerdown', function(e){
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      try { track.setPointerCapture(e.pointerId); } catch(err){}
+      var ids = Object.keys(pointers);
+      if (ids.length === 2){
+        mode = 'pinch';
+        var p1 = pointers[ids[0]], p2 = pointers[ids[1]];
+        pinchStartDist = dist(p1, p2) || 1;
+        pinchStartScale = scale;
+      } else if (ids.length === 1){
+        moved = false;
+        startX = e.clientX; startY = e.clientY; downX = e.clientX; downY = e.clientY; dragDelta = 0;
+        if (scale > 1.02){
+          mode = 'pan';
+        } else {
+          mode = 'swipe';
+          width = track.parentElement.clientWidth;
+          setTrackTransition(false);
+        }
+      }
+    });
+
+    track.addEventListener('pointermove', function(e){
+      if (!pointers[e.pointerId]) return;
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      var ids = Object.keys(pointers);
+
+      if (mode === 'pinch' && ids.length === 2){
+        var p1 = pointers[ids[0]], p2 = pointers[ids[1]];
+        var d = dist(p1, p2);
+        scale = Math.max(1, Math.min(4, pinchStartScale * (d / pinchStartDist)));
+        applyZoom();
+        return;
+      }
+      if (mode === 'pan'){
+        var dx = e.clientX - startX, dy = e.clientY - startY;
+        startX = e.clientX; startY = e.clientY;
+        panX += dx; panY += dy;
+        if (Math.abs(e.clientX - downX) > 6 || Math.abs(e.clientY - downY) > 6) moved = true;
+        applyZoom();
+        return;
+      }
+      if (mode === 'swipe'){
+        var dxs = e.clientX - startX;
+        if (Math.abs(dxs) > 6) moved = true;
+        dragDelta = dxs;
+        var resist = (index === 0 && dxs > 0) || (index === count - 1 && dxs < 0) ? 0.35 : 1;
+        track.style.transform = 'translateX(' + (-index * width + dxs * resist) + 'px)';
+      }
+    });
+
+    function endPointer(e){
+      delete pointers[e.pointerId];
+      var ids = Object.keys(pointers);
+      if (mode === 'pinch' && ids.length < 2){
+        mode = ids.length === 1 ? 'pan' : null;
+        if (scale < 1.05) resetZoom();
+      } else if (mode === 'swipe'){
+        var threshold = width * 0.16;
+        var wasMoved = moved;
+        if (dragDelta < -threshold && index < count - 1) index++;
+        else if (dragDelta > threshold && index > 0) index--;
+        place(true);
+        mode = null;
+        if (!wasMoved) handleTap(e);
+      } else if (mode === 'pan'){
+        var wasMovedPan = moved;
+        mode = null;
+        if (!wasMovedPan) handleTap(e);
+      }
+    }
+    function handleTap(e){
+      var now = Date.now();
+      var dx = e.clientX - lastTapX, dy = e.clientY - lastTapY;
+      if (now - lastTapTime < 320 && Math.hypot(dx, dy) < 30){
+        toggleZoomAt(e.clientX, e.clientY);
+        lastTapTime = 0;
+      } else {
+        lastTapTime = now; lastTapX = e.clientX; lastTapY = e.clientY;
+      }
+    }
+    track.addEventListener('pointerup', endPointer);
+    track.addEventListener('pointercancel', endPointer);
+
+    track.addEventListener('dblclick', function(e){ e.preventDefault(); });
+
+    track.addEventListener('wheel', function(e){
+      e.preventDefault();
+      var rect = imgEl(index).getBoundingClientRect();
+      var delta = -e.deltaY * 0.0016;
+      var next = Math.max(1, Math.min(4, scale + delta));
+      if (next <= 1.02){ resetZoom(); return; }
+      scale = next;
+      applyZoom();
+    }, { passive: false });
+
+    window.addEventListener('resize', function(){ place(false); });
+
+    place(false);
+    return { goTo: goTo, resetZoom: resetZoom, getIndex: function(){ return index; } };
+  }
+
+  function cardHTML(item){
+    var title = titleOf(item);
+    var thumbSrc = item.photos && item.photos.length ? item.photos[0] : '';
+    return (
+      '<div class="thumb">' +
+        '<span class="ref-badge">' + item.reference + '</span>' +
+        '<img src="' + thumbSrc + '" alt="' + item.marque + ' ' + title + '" loading="lazy">' +
+      '</div>' +
+      '<div class="body">' +
+        '<div class="eyebrow">' + item.marque + '</div>' +
+        '<h3>' + title + '</h3>' +
+        '<div class="specs">' + item.matiere + ' · ' + item.mouvement + ' · ' + item.genre + '</div>' +
+        '<div class="price-row"><span class="price">' + item.prix.toLocaleString('fr-FR') + '<small>FCFA</small></span></div>' +
+        '<a class="order-btn" href="' + waLink(item) + '" target="_blank" rel="noopener">' +
+          '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>' +
+          'Commander' +
+        '</a>' +
+      '</div>'
+    );
+  }
+
+  function render(){
+    var filtered = sortItems(DATA.filter(matches));
+    grid.innerHTML = '';
+    filtered.forEach(function(item){
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = cardHTML(item);
+      card.addEventListener('click', function(e){
+        if (e.target.closest('.order-btn')) return;
+        openLightbox(item);
+      });
+      grid.appendChild(card);
+    });
+    emptyState.style.display = filtered.length ? 'none' : 'block';
+    countLine.textContent = filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée');
+  }
+
+  function openLightbox(item){
+    var title = titleOf(item);
+    var photos = item.photos && item.photos.length ? item.photos : [];
+
+    var slidesHTML = photos.map(function(src, i){
+      return '<div class="slide"><img src="' + src + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '"></div>';
+    }).join('');
+
+    var dotsHTML = photos.length > 1 ? (
+      '<div class="carousel-dots" id="lbDots">' + buildDots(photos.length, 0) + '</div>'
+    ) : '';
+
+    var countBadge = photos.length > 1 ? '<div class="carousel-count" id="lbCount">1 / ' + photos.length + '</div>' : '';
+    var arrowsHTMLStr = photos.length > 1 ? arrowsHTML() : '';
+
+    lightboxInner.innerHTML =
+      '<div class="carousel">' +
+        '<div class="carousel-track" id="lbTrack">' + slidesHTML + '</div>' +
+        arrowsHTMLStr +
+        dotsHTML +
+        countBadge +
+      '</div>' +
+      '<div class="lightbox-body">' +
+        '<div class="eyebrow">' + item.marque + '</div>' +
+        '<h3 style="font-family:&quot;Playfair Display&quot;,serif;margin:4px 0 8px;font-size:19px;">' + title + '</h3>' +
+        '<div class="fiche-specs-table">' +
+          '<div class="cell"><span class="k">MARQUE</span><span class="v">' + item.marque + '</span></div>' +
+          '<div class="cell"><span class="k">MATIÈRE</span><span class="v">' + item.matiere + '</span></div>' +
+          '<div class="cell"><span class="k">MOUVEMENT</span><span class="v">' + item.mouvement + '</span></div>' +
+          '<div class="cell"><span class="k">GENRE</span><span class="v">' + item.genre + '</span></div>' +
+          '<div class="cell"><span class="k">COULEUR DU CADRAN</span><span class="v">' + item.cadran + '</span></div>' +
+          '<div class="cell"><span class="k">RÉFÉRENCE</span><span class="v">' + item.reference + '</span></div>' +
+        '</div>' +
+        '<div class="price" style="margin-top:12px;">' + item.prix.toLocaleString('fr-FR') + '<small style="font-family:Montserrat,sans-serif;font-size:11px;color:var(--text-muted);margin-left:3px;">FCFA</small></div>' +
+        '<a class="order-btn" style="display:flex;" href="' + waLink(item) + '" target="_blank" rel="noopener">' +
+          '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>' +
+          'Commander sur WhatsApp' +
+        '</a>' +
+        '<div class="fiche-text">' +
+          '<div>' +
+            '<div class="block-label">CONTENU</div>' +
+            '<div class="block-text">' + CONTENU + '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="block-label">GARANTIE</div>' +
+            '<div class="block-text">' + GARANTIE + '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="block-label">LIVRAISON</div>' +
+            '<div class="block-text">' + LIVRAISON + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="fiche-contact">' +
+          '<div>' + LIEU + '</div>' +
+          '<div>Facebook — ' + FACEBOOK + ' &nbsp;·&nbsp; Instagram — ' + INSTAGRAM + '</div>' +
+          '<div>' + TELEPHONE + '</div>' +
+        '</div>' +
+      '</div>';
+
+    lightbox.classList.add('open');
+    lightboxClose.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    if (photos.length){
+      var track = document.getElementById('lbTrack');
+      var viewport = track.closest('.carousel');
+      var dotsEl = document.getElementById('lbDots');
+      var countEl = document.getElementById('lbCount');
+
+      var slider;
+      var updateArrows = wireArrows(viewport, function(){ return slider ? slider.getIndex() : 0; }, photos.length, function(i){ slider.goTo(i); });
+
+      slider = createSlider(viewport, track, photos.length, {
+        onChange: function(i){
+          if (dotsEl) setDotsActive(dotsEl, i);
+          if (countEl) countEl.textContent = (i+1) + ' / ' + photos.length;
+          updateArrows(i);
+        },
+        onTap: function(i){ openZoomViewer(item, i); }
+      });
+
+      if (dotsEl) wireDots(dotsEl, function(i){ slider.goTo(i); });
+    }
+  }
+
+  function openZoomViewer(item, startIndex){
+    var title = titleOf(item);
+    var photos = item.photos && item.photos.length ? item.photos : [];
+    if (!photos.length) return;
+
+    zoomTrack.innerHTML = photos.map(function(src, i){
+      return '<div class="zoom-slide"><img src="' + src + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + '"></div>';
+    }).join('');
+
+    var updateZoomArrows = function(){};
+    if (photos.length > 1){
+      zoomDots.innerHTML = buildDots(photos.length, startIndex || 0);
+      zoomDots.style.display = 'flex';
+      zoomCount.style.display = 'block';
+      zoomCount.textContent = ((startIndex||0)+1) + ' / ' + photos.length;
+      zoomArrows.innerHTML = arrowsHTML();
+    } else {
+      zoomDots.innerHTML = '';
+      zoomDots.style.display = 'none';
+      zoomCount.style.display = 'none';
+      zoomArrows.innerHTML = '';
+    }
+
+    var viewer;
+    if (photos.length > 1){
+      updateZoomArrows = wireArrows(zoomArrows, function(){ return viewer ? viewer.getIndex() : (startIndex||0); }, photos.length, function(i){ viewer.goTo(i); });
+    }
+    viewer = createZoomViewer(zoomTrack, photos.length, function(i){
+      if (photos.length > 1){
+        setDotsActive(zoomDots, i);
+        zoomCount.textContent = (i+1) + ' / ' + photos.length;
+        updateZoomArrows(i);
+      }
+    });
+    if (photos.length > 1) wireDots(zoomDots, function(i){ viewer.goTo(i); });
+    if (startIndex) viewer.goTo(startIndex);
+
+    zoomOverlay.classList.add('open');
+    zoomClose.hidden = false;
+  }
+
+  function closeZoomViewer(){
+    zoomOverlay.classList.remove('open');
+    zoomClose.hidden = true;
+    zoomTrack.innerHTML = '';
+  }
+
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightboxClose.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  lightbox.addEventListener('click', function(e){ if (e.target === lightbox) closeLightbox(); });
+  lightboxClose.addEventListener('click', closeLightbox);
+  zoomClose.addEventListener('click', closeZoomViewer);
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    if (zoomOverlay.classList.contains('open')) closeZoomViewer();
+    else closeLightbox();
+  });
+
+  search.addEventListener('input', function(){ state.q = search.value; render(); });
+  brandFilter.addEventListener('change', function(){ state.brand = brandFilter.value; render(); });
+  sortBy.addEventListener('change', function(){ state.sort = sortBy.value; render(); });
+  genreToggle.addEventListener('click', function(e){
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    state.genre = btn.getAttribute('data-genre');
+    Array.from(genreToggle.querySelectorAll('button')).forEach(function(b){
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+
+</html>
