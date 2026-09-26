@@ -30,8 +30,14 @@
   :root{
     /* Palette officielle Aurore (Brand Kit) — 2026-09-26 : rééquilibrage clair/sombre,
        le noir (--bg) devient une couleur minoritaire réservée au chrome (entête, pied
-       de page, bandeau de recherche, visualiseur photo), l'ivoire/or devient dominant. */
-    --bg:#000000;
+       de page, bandeau de recherche, visualiseur photo), l'ivoire/or devient dominant.
+       Nuance affinee le 2026-09-26 : plusieurs audits externes independants ont
+       chacun juge le noir pur (#000) trop froid/plat a cote de l'ivoire et de l'or —
+       sans reprendre aucune de leurs teintes exactes, on passe a un noir chaud
+       (leger sous-ton bronze) plus qualitatif pour ces memes zones chrome, sans
+       agrandir leur perimetre ni reintroduire un theme sombre. */
+    --bg:#120D09;
+    --bg-rgb:18,13,9;
     --surface:#FFFFFF;
     --surface-2:#F3ECDA;
     --line:rgba(200,155,60,0.3);
@@ -112,7 +118,7 @@
 
   /* ---------- controls ---------- */
   .controls{
-    background:rgba(0,0,0,0.96);
+    background:rgba(var(--bg-rgb),0.96);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
     padding:14px 20px;
@@ -618,7 +624,7 @@
   /* ---------- fullscreen zoom viewer ---------- */
   .zoom-overlay{
     position:fixed;inset:0;
-    background:rgba(0,0,0,0.97);
+    background:rgba(var(--bg-rgb),0.97);
     display:none;
     z-index:200;
     overflow:hidden;
@@ -802,7 +808,7 @@
     position:sticky;
     top:0;
     z-index:30;
-    background:#000;
+    background:var(--bg);
     border-bottom:1px solid var(--line);
     display:flex;
     align-items:center;
@@ -1497,7 +1503,7 @@
     position:fixed;
     left:0;right:0;bottom:0;
     z-index:40;
-    background:#000;
+    background:var(--bg);
     border-top:1px solid var(--line);
     padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
     align-items:stretch;
@@ -1594,7 +1600,7 @@
     position:fixed;
     left:0;right:0;bottom:0;
     z-index:41;
-    background:#000;
+    background:var(--bg);
     border-top:1px solid var(--line);
     padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
     align-items:center;
