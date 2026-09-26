@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" id="htmlRoot">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -855,11 +855,27 @@
   }
   .topnav-links a:hover{background:rgba(200,155,60,0.14);color:var(--text);}
   .topnav-links a.active{background:var(--gold);color:#1c1204;font-weight:600;}
+  .lang-toggle-btn{
+    color:var(--text-muted);
+    background:transparent;
+    border:1px solid var(--line);
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    padding:7px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .16s ease, color .16s ease, border-color .16s ease;
+    font-family:Montserrat,sans-serif;
+  }
+  .lang-toggle-btn:hover{background:rgba(200,155,60,0.14);color:var(--text);border-color:var(--gold);}
   @media (max-width:700px){
     .topnav{justify-content:center;padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0px));}
     .topnav-links{justify-content:center;width:100%;gap:2px;}
     .topnav-links a{font-size:10.8px;padding:7px 8px;}
     .topnav-brand-text{display:none;}
+    .lang-toggle-btn{font-size:10.5px;padding:6px 10px;}
   }
 
   /* ---------- product page ---------- */
@@ -1497,7 +1513,7 @@
   }
 
   @media (max-width:700px){
-    .collections-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+    .collections-grid{gap:10px;}
     .collection-tile-label{font-size:13px;padding:12px 8px;}
     .story-grid{grid-template-columns:1fr;gap:24px;}
     .steps-row{grid-template-columns:repeat(2,1fr);gap:26px;}
@@ -1701,44 +1717,45 @@
   }
 </style>
 
-<a href="#" class="skip-link" id="skipLink">Aller au contenu principal</a>
+<a href="#" class="skip-link" id="skipLink" data-i18n="skip_link">Aller au contenu principal</a>
 <nav class="topnav" id="topnav">
   <a class="topnav-brand" href="#/">
     <img class="topnav-logo" src="logo.png" alt="Aurore">
     <span class="topnav-brand-text">AURORE</span>
   </a>
   <div class="topnav-links" id="topnavLinks">
-    <a href="#/" data-route="home">Accueil</a>
-    <a href="#/collection" data-route="collection">Collection</a>
-    <a href="#/about" data-route="about">À propos</a>
-    <a href="#/service" data-route="service">Service client</a>
-    <a href="#/complaint" data-route="complaint">Soumettre une plainte</a>
+    <a href="#/" data-route="home" data-i18n="nav_home">Accueil</a>
+    <a href="#/collection" data-route="collection" data-i18n="nav_collection">Collection</a>
+    <a href="#/about" data-route="about" data-i18n="nav_about">À propos</a>
+    <a href="#/service" data-route="service" data-i18n="nav_service">Service client</a>
+    <a href="#/complaint" data-route="complaint" data-i18n="nav_complaint">Soumettre une plainte</a>
+    <button type="button" class="lang-toggle-btn" id="langToggleBtn" aria-label="Switch language / Changer de langue"><span id="langToggleLabel">EN</span></button>
   </div>
 </nav>
 
 <nav class="bottom-nav" id="bottomNav" aria-label="Navigation rapide">
   <a href="#/collection" class="bn-item" data-route="collection">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
-    <span>Catalogue</span>
+    <span data-i18n="bottom_catalogue">Catalogue</span>
   </a>
   <button type="button" class="bn-item" id="bnSearchBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-    <span>Recherche</span>
+    <span data-i18n="bottom_search">Recherche</span>
   </button>
   <a href="#/favoris" class="bn-item" data-route="favoris">
     <span class="bn-heart">&#9825;</span>
-    <span>Favoris</span>
+    <span data-i18n="bottom_favoris">Favoris</span>
     <span class="bn-badge" id="bnFavBadge" hidden>0</span>
   </a>
   <a id="bnWhatsapp" class="bn-item" target="_blank" rel="noopener">
     <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
-    <span>WhatsApp</span>
+    <span data-i18n="bottom_whatsapp">WhatsApp</span>
   </a>
 </nav>
 
 <div class="sticky-order-bar" id="stickyOrderBar">
   <span class="sob-price" id="sobPrice"></span>
-  <a class="sob-btn" id="sobBtn" target="_blank" rel="noopener">Commander</a>
+  <a class="sob-btn" id="sobBtn" target="_blank" rel="noopener" data-i18n="sob_order">Commander</a>
 </div>
 
 <main id="view-home" class="view">
@@ -1746,17 +1763,17 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1 class="hero-title">AURORE</h1>
-      <p class="hero-slogan">Aurore, le premier pas vers l'élégance.</p>
-      <p class="hero-desc">Des montres au style soigné, sélectionnées pour accompagner votre élégance au quotidien.</p>
+      <p class="hero-slogan" data-i18n="brand_slogan">Aurore, le premier pas vers l'élégance.</p>
+      <p class="hero-desc" data-i18n="brand_desc">Des montres au style soigné, sélectionnées pour accompagner votre élégance au quotidien.</p>
       <div class="hero-ctas">
-        <a class="btn-gold" href="#/collection">Découvrir la collection</a>
+        <a class="btn-gold" href="#/collection" data-i18n="cta_discover_collection">Découvrir la collection</a>
         <a class="btn-outline" id="waGeneral" target="_blank" rel="noopener">
           <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
-          Commander sur WhatsApp
+          <span data-i18n="cta_order_whatsapp">Commander sur WhatsApp</span>
         </a>
       </div>
       <p class="hero-reassurance" id="heroReassurance"></p>
-      <button type="button" class="hero-scroll-cue" id="scrollCue" aria-label="Voir nos collections">
+      <button type="button" class="hero-scroll-cue" id="scrollCue" data-i18n-aria="hero_scroll_aria" aria-label="Voir nos collections">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </button>
     </div>
@@ -1765,18 +1782,18 @@
   <section class="section-ivory" id="collections">
     <div class="section-inner">
       <div class="section-head">
-        <p class="eyebrow-label">Nos collections</p>
-        <h2>Choisissez votre style</h2>
+        <p class="eyebrow-label" data-i18n="collections_eyebrow">Nos collections</p>
+        <h2 data-i18n="collections_h2">Choisissez votre style</h2>
       </div>
       <div class="collections-grid">
         <a class="collection-tile" href="#/collection/HOMME" style="background-image:url('carousel/AUR-002/2.jpg')">
-          <span class="collection-tile-label">Homme</span>
+          <span class="collection-tile-label" data-i18n="genre_homme">Homme</span>
         </a>
         <a class="collection-tile" href="#/collection/FEMME" style="background-image:url('carousel/AUR-003/1.jpg')">
-          <span class="collection-tile-label">Femme</span>
+          <span class="collection-tile-label" data-i18n="genre_femme">Femme</span>
         </a>
         <a class="collection-tile" href="#/collection/MIXTE" style="background-image:url('carousel/AUR-012/1.jpg')">
-          <span class="collection-tile-label">Mixte</span>
+          <span class="collection-tile-label" data-i18n="genre_mixte">Mixte</span>
         </a>
       </div>
     </div>
@@ -1785,12 +1802,12 @@
   <section class="section-ivory" id="featured">
     <div class="section-inner">
       <div class="section-head">
-        <p class="eyebrow-label">Sélection Aurore</p>
-        <h2>Nos coups de cœur</h2>
+        <p class="eyebrow-label" data-i18n="featured_eyebrow">Sélection Aurore</p>
+        <h2 data-i18n="featured_h2">Nos coups de cœur</h2>
       </div>
       <div class="grid" id="featuredGrid"></div>
       <div class="section-cta-row">
-        <a class="btn-gold-outline" href="#/collection">Voir toute la collection</a>
+        <a class="btn-gold-outline" href="#/collection" data-i18n="featured_cta">Voir toute la collection</a>
       </div>
     </div>
   </section>
@@ -1798,8 +1815,8 @@
   <section class="section-ivory" id="brands">
     <div class="section-inner">
       <div class="section-head">
-        <p class="eyebrow-label">Nos marques</p>
-        <h2>Parcourez par marque</h2>
+        <p class="eyebrow-label" data-i18n="brands_eyebrow">Nos marques</p>
+        <h2 data-i18n="brands_h2">Parcourez par marque</h2>
       </div>
       <div class="brand-pill-row" id="brandPillRow"></div>
     </div>
@@ -1808,29 +1825,29 @@
   <section class="section-ivory" id="why-aurore">
     <div class="section-inner">
       <div class="section-head">
-        <p class="eyebrow-label">Pourquoi Aurore</p>
-        <h2>Pourquoi Aurore ?</h2>
+        <p class="eyebrow-label" data-i18n="why_eyebrow">Pourquoi Aurore</p>
+        <h2 data-i18n="why_h2">Pourquoi Aurore ?</h2>
       </div>
       <div class="values-grid">
         <div class="value-card">
-          <div class="value-title">Sélection & contrôle qualité</div>
-          <p>Chaque montre est vérifiée avant la vente et avant la livraison, pour protéger votre confiance.</p>
+          <div class="value-title" data-i18n="why_card1_title">Sélection & contrôle qualité</div>
+          <p data-i18n="why_card1_text">Chaque montre est vérifiée avant la vente et avant la livraison, pour protéger votre confiance.</p>
         </div>
         <div class="value-card">
-          <div class="value-title">Une marque pensée pour durer</div>
-          <p>Aurore se construit comme une vraie marque, avec une identité claire et cohérente, pas comme un simple revendeur informel.</p>
+          <div class="value-title" data-i18n="why_card2_title">Une marque pensée pour durer</div>
+          <p data-i18n="why_card2_text">Aurore se construit comme une vraie marque, avec une identité claire et cohérente, pas comme un simple revendeur informel.</p>
         </div>
         <div class="value-card">
-          <div class="value-title">Service client suivi</div>
-          <p>Vos commandes et vos demandes sont centralisées et suivies, du premier message jusqu'à la livraison.</p>
+          <div class="value-title" data-i18n="why_card3_title">Service client suivi</div>
+          <p data-i18n="why_card3_text">Vos commandes et vos demandes sont centralisées et suivies, du premier message jusqu'à la livraison.</p>
         </div>
         <div class="value-card">
-          <div class="value-title">Élégance accessible</div>
-          <p>Des montres au style soigné, à des prix qui restent accessibles au quotidien.</p>
+          <div class="value-title" data-i18n="why_card4_title">Élégance accessible</div>
+          <p data-i18n="why_card4_text">Des montres au style soigné, à des prix qui restent accessibles au quotidien.</p>
         </div>
       </div>
       <div class="section-cta-row">
-        <a class="cta-link" href="#/about">En savoir plus sur Aurore →</a>
+        <a class="cta-link" href="#/about" data-i18n="why_cta">En savoir plus sur Aurore →</a>
       </div>
     </div>
   </section>
@@ -1839,11 +1856,11 @@
     <div class="section-inner story-grid">
       <div class="story-media" style="background-image:url('carousel/AUR-001/1.jpg')"></div>
       <div class="story-copy">
-        <p class="eyebrow-label">L'histoire Aurore</p>
-        <h2>L'élégance commence par un détail.</h2>
-        <p>Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.</p>
-        <p>Notre mission : offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante, de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.</p>
-        <a class="cta-link" href="#/about">Découvrir notre histoire →</a>
+        <p class="eyebrow-label" data-i18n="story_eyebrow">L'histoire Aurore</p>
+        <h2 data-i18n="story_h2">L'élégance commence par un détail.</h2>
+        <p data-i18n="story_p1">Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.</p>
+        <p data-i18n="story_p2">Notre mission : offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante, de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.</p>
+        <a class="cta-link" href="#/about" data-i18n="story_cta">Découvrir notre histoire →</a>
       </div>
     </div>
   </section>
@@ -1851,29 +1868,29 @@
   <section class="section-ivory" id="how-to-order">
     <div class="section-inner">
       <div class="section-head">
-        <p class="eyebrow-label">Comment commander</p>
-        <h2>Votre montre en 4 étapes</h2>
+        <p class="eyebrow-label" data-i18n="howto_eyebrow">Comment commander</p>
+        <h2 data-i18n="howto_h2">Votre montre en 4 étapes</h2>
       </div>
       <div class="steps-row">
         <div class="step">
           <span class="step-num">1</span>
-          <h3>Parcourez le catalogue</h3>
-          <p>Explorez nos modèles Homme, Femme et Mixte et trouvez celui qui vous plaît.</p>
+          <h3 data-i18n="howto1_title">Parcourez le catalogue</h3>
+          <p data-i18n="howto1_text">Explorez nos modèles Homme, Femme et Mixte et trouvez celui qui vous plaît.</p>
         </div>
         <div class="step">
           <span class="step-num">2</span>
-          <h3>Contactez-nous sur WhatsApp</h3>
-          <p>Un clic sur « Commander » ouvre WhatsApp avec un message pré-rempli citant la référence.</p>
+          <h3 data-i18n="howto2_title">Contactez-nous sur WhatsApp</h3>
+          <p data-i18n="howto2_text">Un clic sur « Commander » ouvre WhatsApp avec un message pré-rempli citant la référence.</p>
         </div>
         <div class="step">
           <span class="step-num">3</span>
-          <h3>Confirmez les détails</h3>
-          <p>Notre équipe confirme la disponibilité et les modalités directement avec vous.</p>
+          <h3 data-i18n="howto3_title">Confirmez les détails</h3>
+          <p data-i18n="howto3_text">Notre équipe confirme la disponibilité et les modalités directement avec vous.</p>
         </div>
         <div class="step">
           <span class="step-num">4</span>
-          <h3>Livraison à Yaoundé</h3>
-          <p>Vous recevez votre montre et vous la vérifiez avant que la livraison soit finalisée.</p>
+          <h3 data-i18n="howto4_title">Livraison à Yaoundé</h3>
+          <p data-i18n="howto4_text">Vous recevez votre montre et vous la vérifiez avant que la livraison soit finalisée.</p>
         </div>
       </div>
     </div>
@@ -1882,37 +1899,37 @@
   <section class="section-ivory" id="faq">
     <div class="section-inner">
       <div class="section-head">
-        <p class="eyebrow-label">Questions fréquentes</p>
-        <h2>Vous vous posez une question ?</h2>
+        <p class="eyebrow-label" data-i18n="faq_eyebrow">Questions fréquentes</p>
+        <h2 data-i18n="faq_h2">Vous vous posez une question ?</h2>
       </div>
       <div class="faq-list">
         <details class="faq-item">
-          <summary>Comment commander une montre ?</summary>
-          <p>Ouvrez la fiche de la montre qui vous plaît et appuyez sur « Commander sur WhatsApp ». Un message pré-rempli s'ouvre avec la référence, le prix et le lien de la montre — il ne vous reste qu'à l'envoyer.</p>
+          <summary data-i18n="faq1_q">Comment commander une montre ?</summary>
+          <p data-i18n="faq1_a">Ouvrez la fiche de la montre qui vous plaît et appuyez sur « Commander sur WhatsApp ». Un message pré-rempli s'ouvre avec la référence, le prix et le lien de la montre — il ne vous reste qu'à l'envoyer.</p>
         </details>
         <details class="faq-item">
-          <summary>Comment se passe le paiement ?</summary>
-          <p>Les modalités de paiement sont confirmées directement avec vous sur WhatsApp au moment de la commande.</p>
+          <summary data-i18n="faq2_q">Comment se passe le paiement ?</summary>
+          <p data-i18n="faq2_a">Les modalités de paiement sont confirmées directement avec vous sur WhatsApp au moment de la commande.</p>
         </details>
         <details class="faq-item">
-          <summary>Livrez-vous en dehors de Yaoundé ?</summary>
-          <p>Nous livrons à Yaoundé, généralement sous 3h à 48h, avec une option de livraison express moyennant des frais supplémentaires. Pour une livraison ailleurs, contactez-nous sur WhatsApp afin de vérifier la faisabilité.</p>
+          <summary data-i18n="faq3_q">Livrez-vous en dehors de Yaoundé ?</summary>
+          <p data-i18n="faq3_a">Nous livrons à Yaoundé, généralement sous 3h à 48h, avec une option de livraison express moyennant des frais supplémentaires. Pour une livraison ailleurs, contactez-nous sur WhatsApp afin de vérifier la faisabilité.</p>
         </details>
         <details class="faq-item">
-          <summary>Puis-je vérifier la montre à la livraison ?</summary>
-          <p>Oui — vous vérifiez toujours la montre à la réception, avant que la livraison soit finalisée.</p>
+          <summary data-i18n="faq4_q">Puis-je vérifier la montre à la livraison ?</summary>
+          <p data-i18n="faq4_a">Oui — vous vérifiez toujours la montre à la réception, avant que la livraison soit finalisée.</p>
         </details>
         <details class="faq-item">
-          <summary>Quelle garantie accompagne une montre Aurore ?</summary>
-          <p>Chaque montre est couverte par une garantie de 45 jours.</p>
+          <summary data-i18n="faq5_q">Quelle garantie accompagne une montre Aurore ?</summary>
+          <p data-i18n="faq5_a">Chaque montre est couverte par une garantie de 45 jours.</p>
         </details>
         <details class="faq-item">
-          <summary>Ma montre présente un problème, que faire ?</summary>
-          <p>Rendez-vous sur la page <a href="#/complaint">Soumettre une plainte</a> — notre service client vous répond directement.</p>
+          <summary data-i18n="faq6_q">Ma montre présente un problème, que faire ?</summary>
+          <p><span data-i18n="faq6_a_pre">Rendez-vous sur la page </span><a href="#/complaint" data-i18n="nav_complaint">Soumettre une plainte</a><span data-i18n="faq6_a_post"> — notre service client vous répond directement.</span></p>
         </details>
         <details class="faq-item">
-          <summary>Comment contacter Aurore ?</summary>
-          <p>Le plus simple est WhatsApp : <a id="faqWa" target="_blank" rel="noopener">écrivez-nous ici</a> pour une question générale, ou utilisez le bouton « Commander sur WhatsApp » directement sur une montre.</p>
+          <summary data-i18n="faq7_q">Comment contacter Aurore ?</summary>
+          <p><span data-i18n="faq7_a_pre">Le plus simple est WhatsApp : </span><a id="faqWa" target="_blank" rel="noopener" data-i18n="faq7_a_link">écrivez-nous ici</a><span data-i18n="faq7_a_post"> pour une question générale, ou utilisez le bouton « Commander sur WhatsApp » directement sur une montre.</span></p>
         </details>
       </div>
     </div>
@@ -1920,21 +1937,21 @@
 
   <section class="section-ivory" id="gift">
     <div class="section-inner gift-band">
-      <h2>À la recherche d'un cadeau ?</h2>
-      <p>Une montre Aurore fait toujours son effet — pour vous, ou pour quelqu'un que vous aimez.</p>
-      <a class="btn-gold" href="#/collection">Explorer la collection</a>
+      <h2 data-i18n="gift_h2">À la recherche d'un cadeau ?</h2>
+      <p data-i18n="gift_p">Une montre Aurore fait toujours son effet — pour vous, ou pour quelqu'un que vous aimez.</p>
+      <a class="btn-gold" href="#/collection" data-i18n="gift_cta">Explorer la collection</a>
     </div>
   </section>
 
   <section class="final-cta">
     <div class="section-inner">
-      <h2>Prêt à trouver votre montre ?</h2>
+      <h2 data-i18n="final_h2">Prêt à trouver votre montre ?</h2>
       <div class="hero-ctas">
         <a class="btn-gold" id="finalWa" target="_blank" rel="noopener">
           <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
-          Commander sur WhatsApp
+          <span data-i18n="cta_order_whatsapp">Commander sur WhatsApp</span>
         </a>
-        <a class="btn-outline" href="#/collection">Voir la collection</a>
+        <a class="btn-outline" href="#/collection" data-i18n="final_cta_collection">Voir la collection</a>
       </div>
     </div>
   </section>
@@ -1945,7 +1962,7 @@
     <div class="section-inner">
       <p class="eyebrow-label" id="collectionEyebrow">La collection Aurore</p>
       <h1 id="collectionH1">LA COLLECTION AURORE</h1>
-      <p id="subCount">Découvrez les modèles disponibles.</p>
+      <p id="subCount"></p>
     </div>
   </section>
 
@@ -1953,36 +1970,36 @@
     <div class="filters-compact-bar" id="filtersCompactBar">
       <button type="button" id="filtersToggleBtn" class="filters-toggle-btn" aria-expanded="false" aria-controls="controlsPanel">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"></line><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"></circle><line x1="4" y1="12" x2="20" y2="12"></line><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"></circle><line x1="4" y1="18" x2="20" y2="18"></line><circle cx="11" cy="18" r="2" fill="currentColor" stroke="none"></circle></svg>
-        Filtres
+        <span data-i18n="filters_btn">Filtres</span>
         <span class="filters-count-badge" id="filtersCountBadge"></span>
       </button>
       <div class="active-chips-row" id="activeFilterChips"></div>
     </div>
-    <button type="button" class="filters-close-btn" id="filtersCloseBtn" aria-label="Fermer les filtres">&times;</button>
+    <button type="button" class="filters-close-btn" id="filtersCloseBtn" data-i18n-aria="filters_close_aria" aria-label="Fermer les filtres">&times;</button>
     <div class="search-row">
       <div class="search-wrap">
         <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input type="search" id="search" placeholder="Rechercher une marque, un modèle, une référence…">
+        <input type="search" id="search" data-i18n-ph="search_placeholder" placeholder="Rechercher une marque, un modèle, une référence…">
       </div>
     </div>
     <div class="filters-row">
-      <select id="sortBy" aria-label="Trier par">
-        <option value="ref">Trier par : Référence</option>
-        <option value="priceAsc">Trier par : Prix croissant</option>
-        <option value="priceDesc">Trier par : Prix décroissant</option>
-        <option value="new">Trier par : Nouveautés</option>
+      <select id="sortBy" data-i18n-aria="sort_aria" aria-label="Trier par">
+        <option value="ref" data-i18n="sort_ref">Trier par : Référence</option>
+        <option value="priceAsc" data-i18n="sort_price_asc">Trier par : Prix croissant</option>
+        <option value="priceDesc" data-i18n="sort_price_desc">Trier par : Prix décroissant</option>
+        <option value="new" data-i18n="sort_new">Trier par : Nouveautés</option>
       </select>
       <div class="filters-detailed" id="filtersDetailed">
-        <select id="brandFilter"><option value="">Toutes les marques</option></select>
-        <select id="mouvementFilter"><option value="">Tous mouvements</option></select>
+        <select id="brandFilter"><option value="" data-i18n="brand_all">Toutes les marques</option></select>
+        <select id="mouvementFilter"><option value="" data-i18n="mouvement_all">Tous mouvements</option></select>
         <div class="genre-toggle" id="genreToggle">
-          <button data-genre="" aria-pressed="true">Tous</button>
-          <button data-genre="HOMME" aria-pressed="false">Homme</button>
-          <button data-genre="FEMME" aria-pressed="false">Femme</button>
-          <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
+          <button data-genre="" aria-pressed="true" data-i18n="genre_all">Tous</button>
+          <button data-genre="HOMME" aria-pressed="false" data-i18n="genre_homme">Homme</button>
+          <button data-genre="FEMME" aria-pressed="false" data-i18n="genre_femme">Femme</button>
+          <button data-genre="MIXTE" aria-pressed="false" data-i18n="genre_mixte">Mixte</button>
         </div>
-        <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> Mes favoris (<span id="favCount">0</span>)</button>
-        <button type="button" id="shareFavBtn" class="fav-toggle-btn" style="display:none;">Partager mes favoris &#8631;</button>
+        <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> <span data-i18n="my_favorites">Mes favoris</span> (<span id="favCount">0</span>)</button>
+        <button type="button" id="shareFavBtn" class="fav-toggle-btn" style="display:none;" data-i18n="share_fav_btn">Partager mes favoris &#8631;</button>
       </div>
     </div>
     <div class="chip-row" id="priceChipRow"></div>
@@ -1993,14 +2010,14 @@
   <div class="grid" id="grid"></div>
   <div class="empty" id="emptyState">
     <div id="emptyDefault">
-      Aucune montre ne correspond à ta recherche. Essaie un autre filtre.
+      <span data-i18n="empty_default">Aucune montre ne correspond à votre recherche. Essayez un autre filtre.</span>
       <br>
-      <button type="button" class="btn-gold-outline" id="resetFiltersBtn">Réinitialiser les filtres</button>
+      <button type="button" class="btn-gold-outline" id="resetFiltersBtn" data-i18n="reset_filters">Réinitialiser les filtres</button>
     </div>
     <div id="emptyFav" style="display:none;">
-      Tu n'as pas encore de favoris. Parcours la collection et appuie sur ♡ pour en ajouter.
+      <span data-i18n="empty_fav">Vous n'avez pas encore de favoris. Parcourez la collection et appuyez sur ♡ pour en ajouter.</span>
       <br>
-      <a class="btn-gold-outline" href="#/collection">Découvrir la collection</a>
+      <a class="btn-gold-outline" href="#/collection" data-i18n="cta_discover_collection">Découvrir la collection</a>
     </div>
   </div>
 </main>
@@ -2009,130 +2026,130 @@
 
 <main id="view-about" class="view page-content" hidden>
   <div class="page-hero">
-    <h1>À propos d'Aurore</h1>
-    <p class="page-lede">Le premier pas vers l'élégance</p>
+    <h1 data-i18n="about_title">À propos d'Aurore</h1>
+    <p class="page-lede" data-i18n="about_lede">Le premier pas vers l'élégance</p>
   </div>
 
   <section class="content-section">
-    <h2>Notre histoire</h2>
-    <p>Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.</p>
-    <p>L'entreprise fonctionne selon un modèle hybride : une supervision stratégique assurée depuis le Canada, et une équipe de confiance sur le terrain à Yaoundé qui s'occupe de la sélection des montres, du contrôle qualité, de la présentation et de la livraison — pour que chaque étape reste sérieuse et organisée.</p>
+    <h2 data-i18n="about_history_h2">Notre histoire</h2>
+    <p data-i18n="story_p1">Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.</p>
+    <p data-i18n="about_history_p2">L'entreprise fonctionne selon un modèle hybride : une supervision stratégique assurée depuis le Canada, et une équipe de confiance sur le terrain à Yaoundé qui s'occupe de la sélection des montres, du contrôle qualité, de la présentation et de la livraison — pour que chaque étape reste sérieuse et organisée.</p>
     <div class="hybrid-grid">
       <div class="hybrid-card">
         <span class="flag">🇨🇦</span>
-        <h3>Supervision · Canada</h3>
-        <p>Supervision stratégique de la marque et de ses standards, pilotée depuis le Canada.</p>
+        <h3 data-i18n="about_hybrid_ca_title">Supervision · Canada</h3>
+        <p data-i18n="about_hybrid_ca_text">Supervision stratégique de la marque et de ses standards, pilotée depuis le Canada.</p>
       </div>
       <div class="hybrid-card">
         <span class="flag">🇨🇲</span>
-        <h3>Équipe terrain · Yaoundé</h3>
-        <p>Sélection des montres, contrôle qualité, présentation et livraison, assurés sur place par une équipe de confiance.</p>
+        <h3 data-i18n="about_hybrid_ym_title">Équipe terrain · Yaoundé</h3>
+        <p data-i18n="about_hybrid_ym_text">Sélection des montres, contrôle qualité, présentation et livraison, assurés sur place par une équipe de confiance.</p>
       </div>
     </div>
   </section>
 
   <section class="content-section">
-    <h2>Notre mission</h2>
-    <p>Offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante — de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.</p>
+    <h2 data-i18n="about_mission_h2">Notre mission</h2>
+    <p data-i18n="about_mission_p">Offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante — de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.</p>
   </section>
 
   <section class="content-section">
-    <h2>Nos valeurs</h2>
+    <h2 data-i18n="about_values_h2">Nos valeurs</h2>
     <div class="values-grid">
       <div class="value-card">
-        <div class="value-title">Confiance</div>
-        <p>La qualité des produits, le professionnalisme du service et l'honnêteté de la marque sont au cœur de chaque interaction.</p>
+        <div class="value-title" data-i18n="value_confiance_title">Confiance</div>
+        <p data-i18n="value_confiance_text">La qualité des produits, le professionnalisme du service et l'honnêteté de la marque sont au cœur de chaque interaction.</p>
       </div>
       <div class="value-card">
-        <div class="value-title">Discipline</div>
-        <p>Un suivi rigoureux du stock, des délais et des procédures — pour une entreprise stable et fiable.</p>
+        <div class="value-title" data-i18n="value_discipline_title">Discipline</div>
+        <p data-i18n="value_discipline_text">Un suivi rigoureux du stock, des délais et des procédures — pour une entreprise stable et fiable.</p>
       </div>
       <div class="value-card">
-        <div class="value-title">Qualité</div>
-        <p>Chaque montre est sélectionnée et inspectée avec soin avant d'être proposée à la vente.</p>
+        <div class="value-title" data-i18n="value_qualite_title">Qualité</div>
+        <p data-i18n="value_qualite_text">Chaque montre est sélectionnée et inspectée avec soin avant d'être proposée à la vente.</p>
       </div>
       <div class="value-card">
-        <div class="value-title">Esprit d'équipe</div>
-        <p>Aurore est un projet collectif, porté par une équipe alignée autour d'un objectif commun.</p>
+        <div class="value-title" data-i18n="value_equipe_title">Esprit d'équipe</div>
+        <p data-i18n="value_equipe_text">Aurore est un projet collectif, porté par une équipe alignée autour d'un objectif commun.</p>
       </div>
     </div>
   </section>
 
   <section class="content-section">
-    <h2>Nos collections</h2>
-    <p>Le catalogue Aurore est pensé pour tous : montres Homme, Femme et Mixte — pour s'adapter à chaque occasion, du quotidien aux grandes occasions.</p>
-    <a href="#/" class="cta-link">Découvrir le catalogue →</a>
+    <h2 data-i18n="about_collections_h2">Nos collections</h2>
+    <p data-i18n="about_collections_p">Le catalogue Aurore est pensé pour tous : montres Homme, Femme et Mixte — pour s'adapter à chaque occasion, du quotidien aux grandes occasions.</p>
+    <a href="#/" class="cta-link" data-i18n="about_collections_cta">Découvrir le catalogue →</a>
   </section>
 </main>
 
 <main id="view-service" class="view page-content" hidden>
   <div class="page-hero">
-    <h1>Service Client</h1>
-    <p class="page-lede">Comment nous prenons soin de toi, avant, pendant et après ton achat</p>
+    <h1 data-i18n="service_title">Service Client</h1>
+    <p class="page-lede" data-i18n="service_lede">Comment nous prenons soin de vous, avant, pendant et après votre achat</p>
   </div>
 
   <section class="content-section">
-    <h2>Ton parcours chez Aurore</h2>
+    <h2 data-i18n="service_journey_h2">Votre parcours chez Aurore</h2>
     <div class="process-steps">
       <div class="process-step">
         <span class="step-num">1</span>
-        <h3>Découverte</h3>
-        <p>Tu découvres nos montres sur ce catalogue, sur nos réseaux, ou par un membre de l'équipe.</p>
+        <h3 data-i18n="service_step1_title">Découverte</h3>
+        <p data-i18n="service_step1_text">Vous découvrez nos montres sur ce catalogue, sur nos réseaux, ou par un membre de l'équipe.</p>
       </div>
       <div class="process-step">
         <span class="step-num">2</span>
-        <h3>Choix</h3>
-        <p>Chaque montre a sa fiche complète (matière, mouvement, prix, référence) pour que tu commandes en toute clarté.</p>
+        <h3 data-i18n="service_step2_title">Choix</h3>
+        <p data-i18n="service_step2_text">Chaque montre a sa fiche complète (matière, mouvement, prix, référence) pour que vous commandiez en toute clarté.</p>
       </div>
       <div class="process-step">
         <span class="step-num">3</span>
-        <h3>Commande</h3>
-        <p>Tu confirmes ta commande directement sur WhatsApp.</p>
+        <h3 data-i18n="service_step3_title">Commande</h3>
+        <p data-i18n="service_step3_text">Vous confirmez votre commande directement sur WhatsApp.</p>
       </div>
       <div class="process-step">
         <span class="step-num">4</span>
-        <h3>Livraison &amp; vérification</h3>
-        <p>À la réception, tu vérifies la montre avant que la livraison soit finalisée.</p>
+        <h3 data-i18n="service_step4_title">Livraison &amp; vérification</h3>
+        <p data-i18n="service_step4_text">À la réception, vous vérifiez la montre avant que la livraison soit finalisée.</p>
       </div>
       <div class="process-step">
         <span class="step-num">5</span>
-        <h3>Après-vente</h3>
-        <p>En cas de problème, notre service client centralisé prend le relais.</p>
+        <h3 data-i18n="service_step5_title">Après-vente</h3>
+        <p data-i18n="service_step5_text">En cas de problème, notre service client centralisé prend le relais.</p>
       </div>
     </div>
   </section>
 
   <section class="content-section">
-    <h2>Vérification à la livraison</h2>
-    <p>Au moment de la livraison, prends le temps d'inspecter ta montre : apparence, ajustement, état général. Si un problème est constaté immédiatement, la montre est reprise sur-le-champ et le dossier est traité en interne pour te proposer une solution rapide.</p>
+    <h2 data-i18n="service_delivery_h2">Vérification à la livraison</h2>
+    <p data-i18n="service_delivery_p">Au moment de la livraison, prenez le temps d'inspecter votre montre : apparence, ajustement, état général. Si un problème est constaté immédiatement, la montre est reprise sur-le-champ et le dossier est traité en interne pour vous proposer une solution rapide.</p>
   </section>
 
   <section class="content-section">
-    <h2>Garantie</h2>
+    <h2 data-i18n="service_warranty_h2">Garantie</h2>
     <p id="serviceGarantie">Toutes nos montres sont couvertes par une garantie.</p>
   </section>
 
   <section class="content-section">
-    <h2>Une réclamation ?</h2>
-    <p>Toute réclamation — sur un produit, une livraison ou le service reçu — est centralisée via un seul canal officiel : WhatsApp. Cela garantit un suivi cohérent et un traitement sérieux de chaque dossier.</p>
-    <p>Une fois ta réclamation reçue, nous prenons 2 à 3 jours pour l'examiner, vérifier les éléments avec l'équipe, et te proposer la solution la plus adaptée (clarification, réparation, remplacement, ou autre action appropriée).</p>
-    <a href="#/complaint" class="cta-link">Soumettre une plainte →</a>
+    <h2 data-i18n="service_complaint_h2">Une réclamation ?</h2>
+    <p data-i18n="service_complaint_p1">Toute réclamation — sur un produit, une livraison ou le service reçu — est centralisée via un seul canal officiel : WhatsApp. Cela garantit un suivi cohérent et un traitement sérieux de chaque dossier.</p>
+    <p data-i18n="service_complaint_p2">Une fois votre réclamation reçue, nous prenons 2 à 3 jours pour l'examiner, vérifier les éléments avec l'équipe, et vous proposer la solution la plus adaptée (clarification, réparation, remplacement, ou autre action appropriée).</p>
+    <a href="#/complaint" class="cta-link" data-i18n="service_complaint_cta">Soumettre une plainte →</a>
   </section>
 
   <section class="content-section">
-    <h2>Notre engagement</h2>
+    <h2 data-i18n="service_commitment_h2">Notre engagement</h2>
     <div class="values-grid">
       <div class="value-card">
-        <div class="value-title">Transparence</div>
-        <p>Un processus clair, de la commande à la livraison, sans zones d'ombre.</p>
+        <div class="value-title" data-i18n="commit1_title">Transparence</div>
+        <p data-i18n="commit1_text">Un processus clair, de la commande à la livraison, sans zones d'ombre.</p>
       </div>
       <div class="value-card">
-        <div class="value-title">Emballage soigné</div>
-        <p>Chaque montre est livrée avec un emballage professionnel, à l'image de la marque.</p>
+        <div class="value-title" data-i18n="commit2_title">Emballage soigné</div>
+        <p data-i18n="commit2_text">Chaque montre est livrée avec un emballage professionnel, à l'image de la marque.</p>
       </div>
       <div class="value-card">
-        <div class="value-title">Communication claire</div>
-        <p>Des réponses rapides et honnêtes, à chaque étape de ton expérience.</p>
+        <div class="value-title" data-i18n="commit3_title">Communication claire</div>
+        <p data-i18n="commit3_text">Des réponses rapides et honnêtes, à chaque étape de votre expérience.</p>
       </div>
     </div>
   </section>
@@ -2140,36 +2157,36 @@
 
 <main id="view-complaint" class="view page-content" hidden>
   <div class="page-hero">
-    <h1>Soumettre une plainte</h1>
-    <p class="page-lede">Un problème avant, pendant ou après ton achat ? Décris-le ci-dessous.</p>
+    <h1 data-i18n="complaint_title">Soumettre une plainte</h1>
+    <p class="page-lede" data-i18n="complaint_lede">Un problème avant, pendant ou après votre achat ? Décrivez-le ci-dessous.</p>
   </div>
 
   <section class="content-section">
-    <p>Remplis ce formulaire : il s'ouvrira directement dans WhatsApp, pré-rempli, pour l'envoyer à notre service client. Nous répondons sous 2 à 3 jours.</p>
+    <p data-i18n="complaint_intro">Remplissez ce formulaire : il s'ouvrira directement dans WhatsApp, pré-rempli, pour l'envoyer à notre service client. Nous répondons sous 2 à 3 jours.</p>
     <form id="complaintForm" class="complaint-form">
-      <label>Nom complet
-        <input type="text" id="cName" required placeholder="Ton nom">
+      <label data-i18n="label_fullname">Nom complet
+        <input type="text" id="cName" required data-i18n-ph="placeholder_name" placeholder="Votre nom">
       </label>
-      <label>Référence de la montre (si ta plainte concerne un article — sinon laisse vide)
+      <label data-i18n="label_ref">Référence de la montre (si votre plainte concerne un article — sinon laissez vide)
         <input type="text" id="cRef" placeholder="Ex : AUR-014">
       </label>
-      <label>Ton numéro (WhatsApp de préférence)
+      <label data-i18n="label_phone">Votre numéro (WhatsApp de préférence)
         <input type="tel" id="cPhone" required placeholder="Ex : +237 6XX XXX XXX">
       </label>
-      <label>Décris le problème
-        <textarea id="cMsg" rows="5" required placeholder="Explique ce qui s'est passé — que ce soit lié à une montre ou à autre chose…"></textarea>
+      <label data-i18n="label_message">Décrivez le problème
+        <textarea id="cMsg" rows="5" required data-i18n-ph="placeholder_message" placeholder="Expliquez ce qui s'est passé — que ce soit lié à une montre ou à autre chose…"></textarea>
       </label>
       <button type="submit" class="order-btn complaint-submit">
         <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>
-        Envoyer via WhatsApp
+        <span data-i18n="submit_whatsapp">Envoyer via WhatsApp</span>
       </button>
       <div class="ticket-confirm" id="ticketConfirm"></div>
     </form>
   </section>
 
   <section class="content-section">
-    <h2>Autre moyen de nous contacter</h2>
-    <p id="complaintPhone">Tu peux aussi nous écrire directement sur WhatsApp.</p>
+    <h2 data-i18n="complaint_other_h2">Autre moyen de nous contacter</h2>
+    <p id="complaintPhone">Vous pouvez aussi nous écrire directement sur WhatsApp.</p>
   </section>
 </main>
 
@@ -2179,36 +2196,36 @@
   <div class="carousel-dots" id="zoomDots"></div>
   <div class="carousel-count" id="zoomCount"></div>
 </div>
-<button class="zoom-close" id="zoomClose" hidden aria-label="Fermer">✕</button>
+<button class="zoom-close" id="zoomClose" hidden data-i18n-aria="zoom_close_aria" aria-label="Fermer">✕</button>
 
 <footer class="footer-v2">
   <div class="footer-inner">
     <div class="footer-col footer-brand">
       <div class="brand">AURORE</div>
-      <p>Aurore, le premier pas vers l'élégance.</p>
+      <p data-i18n="brand_slogan">Aurore, le premier pas vers l'élégance.</p>
     </div>
     <div class="footer-col">
-      <h4>Collection</h4>
-      <a href="#/collection/HOMME">Homme</a>
-      <a href="#/collection/FEMME">Femme</a>
-      <a href="#/collection/MIXTE">Mixte</a>
-      <a href="#/collection">Tout le catalogue</a>
+      <h4 data-i18n="footer_collection_h4">Collection</h4>
+      <a href="#/collection/HOMME" data-i18n="genre_homme">Homme</a>
+      <a href="#/collection/FEMME" data-i18n="genre_femme">Femme</a>
+      <a href="#/collection/MIXTE" data-i18n="genre_mixte">Mixte</a>
+      <a href="#/collection" data-i18n="footer_all_catalog">Tout le catalogue</a>
     </div>
     <div class="footer-col">
-      <h4>Aurore</h4>
-      <a href="#/about">À propos</a>
-      <a href="#/service">Service client</a>
-      <a href="#/complaint">Soumettre une plainte</a>
+      <h4 data-i18n="footer_aurore_h4">Aurore</h4>
+      <a href="#/about" data-i18n="nav_about">À propos</a>
+      <a href="#/service" data-i18n="nav_service">Service client</a>
+      <a href="#/complaint" data-i18n="nav_complaint">Soumettre une plainte</a>
     </div>
     <div class="footer-col">
-      <h4>Commander</h4>
-      <a id="footerWa" target="_blank" rel="noopener">Commander sur WhatsApp</a>
+      <h4 data-i18n="footer_order_h4">Commander</h4>
+      <a id="footerWa" target="_blank" rel="noopener" data-i18n="cta_order_whatsapp">Commander sur WhatsApp</a>
       <div class="footer-contact">Yaoundé · Pharmacie EMIA</div>
       <div class="footer-contact">Facebook — <a href="https://www.facebook.com/share/1Di3SCHyL6/?mibextid=wwXIfr" target="_blank" rel="noopener">Aurore</a></div>
       <div class="footer-contact">Instagram — <a href="https://www.instagram.com/aurore_bijouterie?stkn=Z2s2NndsOThhb3F5&amp;utm_source=qr" target="_blank" rel="noopener">Aurore_bijouterie</a></div>
     </div>
   </div>
-  <div class="footer-bottom" id="footerBottom">© AURORE — Tous droits réservés.</div>
+  <div class="footer-bottom" id="footerBottom" data-i18n="footer_bottom">© AURORE — Tous droits réservés.</div>
 </footer>
 
 <script>
@@ -2227,6 +2244,61 @@
   var FACEBOOK_URL = "https://www.facebook.com/share/1Di3SCHyL6/?mibextid=wwXIfr";
   var INSTAGRAM_URL = "https://www.instagram.com/aurore_bijouterie?stkn=Z2s2NndsOThhb3F5&utm_source=qr";
   var TELEPHONE = "+1 778 536 0129 – +237 698 868 629";
+
+  var I18N_FR = {"skip_link": "Aller au contenu principal", "nav_home": "Accueil", "nav_collection": "Collection", "nav_about": "À propos", "nav_service": "Service client", "nav_complaint": "Soumettre une plainte", "bottom_catalogue": "Catalogue", "bottom_search": "Recherche", "bottom_favoris": "Favoris", "bottom_whatsapp": "WhatsApp", "sob_order": "Commander", "brand_slogan": "Aurore, le premier pas vers l'élégance.", "brand_desc": "Des montres au style soigné, sélectionnées pour accompagner votre élégance au quotidien.", "cta_discover_collection": "Découvrir la collection", "cta_order_whatsapp": "Commander sur WhatsApp", "hero_scroll_aria": "Voir nos collections", "collections_eyebrow": "Nos collections", "collections_h2": "Choisissez votre style", "genre_homme": "Homme", "genre_femme": "Femme", "genre_mixte": "Mixte", "featured_eyebrow": "Sélection Aurore", "featured_h2": "Nos coups de cœur", "featured_cta": "Voir toute la collection", "brands_eyebrow": "Nos marques", "brands_h2": "Parcourez par marque", "why_eyebrow": "Pourquoi Aurore", "why_h2": "Pourquoi Aurore ?", "why_card1_title": "Sélection & contrôle qualité", "why_card1_text": "Chaque montre est vérifiée avant la vente et avant la livraison, pour protéger votre confiance.", "why_card2_title": "Une marque pensée pour durer", "why_card2_text": "Aurore se construit comme une vraie marque, avec une identité claire et cohérente, pas comme un simple revendeur informel.", "why_card3_title": "Service client suivi", "why_card3_text": "Vos commandes et vos demandes sont centralisées et suivies, du premier message jusqu'à la livraison.", "why_card4_title": "Élégance accessible", "why_card4_text": "Des montres au style soigné, à des prix qui restent accessibles au quotidien.", "why_cta": "En savoir plus sur Aurore →", "story_eyebrow": "L'histoire Aurore", "story_h2": "L'élégance commence par un détail.", "story_p1": "Aurore est née d'une ambition simple : rendre l'élégance accessible. Le nom Aurore évoque un nouveau commencement, le raffinement et la croissance — l'idée qu'une petite activité peut devenir une marque forte, reconnue et digne de confiance.", "story_p2": "Notre mission : offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante, de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.", "story_cta": "Découvrir notre histoire →", "howto_eyebrow": "Comment commander", "howto_h2": "Votre montre en 4 étapes", "howto1_title": "Parcourez le catalogue", "howto1_text": "Explorez nos modèles Homme, Femme et Mixte et trouvez celui qui vous plaît.", "howto2_title": "Contactez-nous sur WhatsApp", "howto2_text": "Un clic sur « Commander » ouvre WhatsApp avec un message pré-rempli citant la référence.", "howto3_title": "Confirmez les détails", "howto3_text": "Notre équipe confirme la disponibilité et les modalités directement avec vous.", "howto4_title": "Livraison à Yaoundé", "howto4_text": "Vous recevez votre montre et vous la vérifiez avant que la livraison soit finalisée.", "faq_eyebrow": "Questions fréquentes", "faq_h2": "Vous vous posez une question ?", "faq1_q": "Comment commander une montre ?", "faq1_a": "Ouvrez la fiche de la montre qui vous plaît et appuyez sur « Commander sur WhatsApp ». Un message pré-rempli s'ouvre avec la référence, le prix et le lien de la montre — il ne vous reste qu'à l'envoyer.", "faq2_q": "Comment se passe le paiement ?", "faq2_a": "Les modalités de paiement sont confirmées directement avec vous sur WhatsApp au moment de la commande.", "faq3_q": "Livrez-vous en dehors de Yaoundé ?", "faq3_a": "Nous livrons à Yaoundé, généralement sous 3h à 48h, avec une option de livraison express moyennant des frais supplémentaires. Pour une livraison ailleurs, contactez-nous sur WhatsApp afin de vérifier la faisabilité.", "faq4_q": "Puis-je vérifier la montre à la livraison ?", "faq4_a": "Oui — vous vérifiez toujours la montre à la réception, avant que la livraison soit finalisée.", "faq5_q": "Quelle garantie accompagne une montre Aurore ?", "faq5_a": "Chaque montre est couverte par une garantie de 45 jours.", "faq6_q": "Ma montre présente un problème, que faire ?", "faq6_a_pre": "Rendez-vous sur la page ", "faq6_a_post": " — notre service client vous répond directement.", "faq7_q": "Comment contacter Aurore ?", "faq7_a_pre": "Le plus simple est WhatsApp : ", "faq7_a_link": "écrivez-nous ici", "faq7_a_post": " pour une question générale, ou utilisez le bouton « Commander sur WhatsApp » directement sur une montre.", "gift_h2": "À la recherche d'un cadeau ?", "gift_p": "Une montre Aurore fait toujours son effet — pour vous, ou pour quelqu'un que vous aimez.", "gift_cta": "Explorer la collection", "final_h2": "Prêt à trouver votre montre ?", "final_cta_collection": "Voir la collection", "filters_btn": "Filtres", "filters_close_aria": "Fermer les filtres", "search_placeholder": "Rechercher une marque, un modèle, une référence…", "sort_aria": "Trier par", "sort_ref": "Trier par : Référence", "sort_price_asc": "Trier par : Prix croissant", "sort_price_desc": "Trier par : Prix décroissant", "sort_new": "Trier par : Nouveautés", "brand_all": "Toutes les marques", "mouvement_all": "Tous mouvements", "genre_all": "Tous", "my_favorites": "Mes favoris", "share_fav_btn": "Partager mes favoris ↷", "empty_default": "Aucune montre ne correspond à votre recherche. Essayez un autre filtre.", "reset_filters": "Réinitialiser les filtres", "empty_fav": "Vous n'avez pas encore de favoris. Parcourez la collection et appuyez sur ♡ pour en ajouter.", "about_title": "À propos d'Aurore", "about_lede": "Le premier pas vers l'élégance", "about_history_h2": "Notre histoire", "about_history_p2": "L'entreprise fonctionne selon un modèle hybride : une supervision stratégique assurée depuis le Canada, et une équipe de confiance sur le terrain à Yaoundé qui s'occupe de la sélection des montres, du contrôle qualité, de la présentation et de la livraison — pour que chaque étape reste sérieuse et organisée.", "about_hybrid_ca_title": "Supervision · Canada", "about_hybrid_ca_text": "Supervision stratégique de la marque et de ses standards, pilotée depuis le Canada.", "about_hybrid_ym_title": "Équipe terrain · Yaoundé", "about_hybrid_ym_text": "Sélection des montres, contrôle qualité, présentation et livraison, assurés sur place par une équipe de confiance.", "about_mission_h2": "Notre mission", "about_mission_p": "Offrir des montres élégantes et accessibles, tout en garantissant une expérience client fluide et rassurante — de la découverte du produit jusqu'à la résolution de tout problème après l'achat, s'il devait y en avoir un.", "about_values_h2": "Nos valeurs", "value_confiance_title": "Confiance", "value_confiance_text": "La qualité des produits, le professionnalisme du service et l'honnêteté de la marque sont au cœur de chaque interaction.", "value_discipline_title": "Discipline", "value_discipline_text": "Un suivi rigoureux du stock, des délais et des procédures — pour une entreprise stable et fiable.", "value_qualite_title": "Qualité", "value_qualite_text": "Chaque montre est sélectionnée et inspectée avec soin avant d'être proposée à la vente.", "value_equipe_title": "Esprit d'équipe", "value_equipe_text": "Aurore est un projet collectif, porté par une équipe alignée autour d'un objectif commun.", "about_collections_h2": "Nos collections", "about_collections_p": "Le catalogue Aurore est pensé pour tous : montres Homme, Femme et Mixte — pour s'adapter à chaque occasion, du quotidien aux grandes occasions.", "about_collections_cta": "Découvrir le catalogue →", "service_title": "Service Client", "service_lede": "Comment nous prenons soin de vous, avant, pendant et après votre achat", "service_journey_h2": "Votre parcours chez Aurore", "service_step1_title": "Découverte", "service_step1_text": "Vous découvrez nos montres sur ce catalogue, sur nos réseaux, ou par un membre de l'équipe.", "service_step2_title": "Choix", "service_step2_text": "Chaque montre a sa fiche complète (matière, mouvement, prix, référence) pour que vous commandiez en toute clarté.", "service_step3_title": "Commande", "service_step3_text": "Vous confirmez votre commande directement sur WhatsApp.", "service_step4_title": "Livraison &amp; vérification", "service_step4_text": "À la réception, vous vérifiez la montre avant que la livraison soit finalisée.", "service_step5_title": "Après-vente", "service_step5_text": "En cas de problème, notre service client centralisé prend le relais.", "service_delivery_h2": "Vérification à la livraison", "service_delivery_p": "Au moment de la livraison, prenez le temps d'inspecter votre montre : apparence, ajustement, état général. Si un problème est constaté immédiatement, la montre est reprise sur-le-champ et le dossier est traité en interne pour vous proposer une solution rapide.", "service_warranty_h2": "Garantie", "service_complaint_h2": "Une réclamation ?", "service_complaint_p1": "Toute réclamation — sur un produit, une livraison ou le service reçu — est centralisée via un seul canal officiel : WhatsApp. Cela garantit un suivi cohérent et un traitement sérieux de chaque dossier.", "service_complaint_p2": "Une fois votre réclamation reçue, nous prenons 2 à 3 jours pour l'examiner, vérifier les éléments avec l'équipe, et vous proposer la solution la plus adaptée (clarification, réparation, remplacement, ou autre action appropriée).", "service_complaint_cta": "Soumettre une plainte →", "service_commitment_h2": "Notre engagement", "commit1_title": "Transparence", "commit1_text": "Un processus clair, de la commande à la livraison, sans zones d'ombre.", "commit2_title": "Emballage soigné", "commit2_text": "Chaque montre est livrée avec un emballage professionnel, à l'image de la marque.", "commit3_title": "Communication claire", "commit3_text": "Des réponses rapides et honnêtes, à chaque étape de votre expérience.", "complaint_title": "Soumettre une plainte", "complaint_lede": "Un problème avant, pendant ou après votre achat ? Décrivez-le ci-dessous.", "complaint_intro": "Remplissez ce formulaire : il s'ouvrira directement dans WhatsApp, pré-rempli, pour l'envoyer à notre service client. Nous répondons sous 2 à 3 jours.", "label_fullname": "Nom complet", "placeholder_name": "Votre nom", "label_ref": "Référence de la montre (si votre plainte concerne un article — sinon laissez vide)", "label_phone": "Votre numéro (WhatsApp de préférence)", "label_message": "Décrivez le problème", "placeholder_message": "Expliquez ce qui s'est passé — que ce soit lié à une montre ou à autre chose…", "submit_whatsapp": "Envoyer via WhatsApp", "complaint_other_h2": "Autre moyen de nous contacter", "zoom_close_aria": "Fermer", "footer_collection_h4": "Collection", "footer_all_catalog": "Tout le catalogue", "footer_aurore_h4": "Aurore", "footer_order_h4": "Commander", "footer_bottom": "© AURORE — Tous droits réservés.", "collection_eyebrow_default": "La collection Aurore", "collection_eyebrow_favoris": "Vos favoris", "collection_h1_default": "LA COLLECTION AURORE", "collection_h1_favoris": "VOS FAVORIS", "subcount_tpl": "Découvrez nos {n} modèles disponibles.", "hero_reassurance_tpl": "{n} modèles · Contrôle qualité avant chaque livraison · Livraison à Yaoundé", "complaint_phone_text": "Vous pouvez aussi nous écrire directement sur WhatsApp : ", "service_garantie_tpl": "Toutes nos montres sont couvertes par {garantie}.", "count_pieces_one": " pièce affichée", "count_pieces_many": " pièces affichées", "count_fav_one": " favori", "count_fav_many": " favoris", "price_all": "Tous les prix", "price_under": "Moins de {hi} FCFA", "price_over": "{lo} FCFA et plus", "price_range": "{lo} – {hi} FCFA", "remove_filter_aria": "Retirer ce filtre", "chip_watch_genre_prefix": "Montre ", "back_link": "&larr; Retour au catalogue", "fav_add": "Ajouter aux favoris", "fav_added": "Dans vos favoris", "share_btn": "Partager", "share_copied": "Lien copié !", "spec_marque": "MARQUE", "spec_matiere": "MATIÈRE", "spec_mouvement": "MOUVEMENT", "spec_genre": "GENRE", "spec_cadran": "COULEUR DU CADRAN", "spec_reference": "RÉFÉRENCE", "ask_question": "Poser une question", "trust1": "Montre vérifiée avant l'envoi", "trust2": "Vérification possible à la livraison", "trust3": "Garantie 45 jours", "block_contenu_label": "CONTENU", "block_garantie_label": "GARANTIE", "block_livraison_label": "LIVRAISON", "related_title": "Vous pourriez également aimer", "gallery_title": "Toutes les photos", "content_val": "MONTRE + BOÎTE + PILE DE RECHANGE + GRAVURE FACULTATIVE", "garantie_val": "45 JOURS DE GARANTIE", "livraison_val": "Livraison aux frais du client — sous 3h à 48h. Livraison express avec frais supplémentaire.", "doc_title_home": "Aurore — Catalogue de montres", "doc_title_about": "À propos — Aurore", "doc_title_service": "Service client — Aurore", "doc_title_complaint": "Soumettre une plainte — Aurore", "doc_title_favoris": "Mes favoris — Aurore", "doc_title_collection": "Collection — Aurore", "ticket_msg1": "Votre plainte a été préparée sous la référence <strong>{id}</strong>. ", "ticket_msg2": "Notez-la : elle nous permet de retrouver rapidement votre dossier si vous nous réécrivez."};
+  var I18N_EN = {"skip_link": "Skip to main content", "nav_home": "Home", "nav_collection": "Collection", "nav_about": "About", "nav_service": "Customer Service", "nav_complaint": "Submit a Complaint", "bottom_catalogue": "Catalog", "bottom_search": "Search", "bottom_favoris": "Favorites", "bottom_whatsapp": "WhatsApp", "sob_order": "Order", "brand_slogan": "Aurore, the first step towards elegance.", "brand_desc": "Elegant, carefully chosen watches to accompany your everyday style.", "cta_discover_collection": "Discover the collection", "cta_order_whatsapp": "Order on WhatsApp", "hero_scroll_aria": "See our collections", "collections_eyebrow": "Our Collections", "collections_h2": "Choose your style", "genre_homme": "Men", "genre_femme": "Women", "genre_mixte": "Unisex", "featured_eyebrow": "Aurore Selection", "featured_h2": "Our Favorites", "featured_cta": "View the full collection", "brands_eyebrow": "Our Brands", "brands_h2": "Browse by Brand", "why_eyebrow": "Why Aurore", "why_h2": "Why Aurore?", "why_card1_title": "Selection & Quality Control", "why_card1_text": "Every watch is checked before sale and before delivery, to protect your trust.", "why_card2_title": "A Brand Built to Last", "why_card2_text": "Aurore is built as a real brand, with a clear and consistent identity — not just an informal reseller.", "why_card3_title": "Dedicated Customer Service", "why_card3_text": "Your orders and requests are centralized and tracked, from the first message through to delivery.", "why_card4_title": "Accessible Elegance", "why_card4_text": "Elegant watches at prices that stay accessible every day.", "why_cta": "Learn more about Aurore →", "story_eyebrow": "The Aurore Story", "story_h2": "Elegance begins with a detail.", "story_p1": "Aurore was born from a simple ambition: making elegance accessible. The name Aurore (\"dawn\") evokes a new beginning, refinement and growth — the idea that a small venture can grow into a strong, trusted, well-known brand.", "story_p2": "Our mission: to offer elegant, accessible watches while guaranteeing a smooth, reassuring customer experience — from discovering the product to resolving any issue after the purchase, should one arise.", "story_cta": "Discover our story →", "howto_eyebrow": "How to Order", "howto_h2": "Your watch in 4 steps", "howto1_title": "Browse the catalog", "howto1_text": "Explore our Men's, Women's and Unisex models and find the one you love.", "howto2_title": "Contact us on WhatsApp", "howto2_text": "A tap on “Order” opens WhatsApp with a pre-filled message quoting the reference.", "howto3_title": "Confirm the details", "howto3_text": "Our team confirms availability and arrangements directly with you.", "howto4_title": "Delivery in Yaoundé", "howto4_text": "You receive your watch and check it before the delivery is finalized.", "faq_eyebrow": "Frequently Asked Questions", "faq_h2": "Have a question?", "faq1_q": "How do I order a watch?", "faq1_a": "Open the page for the watch you like and tap “Order on WhatsApp”. A pre-filled message opens with the reference, price and link to the watch — all you have to do is send it.", "faq2_q": "How does payment work?", "faq2_a": "Payment arrangements are confirmed directly with you on WhatsApp when you order.", "faq3_q": "Do you deliver outside Yaoundé?", "faq3_a": "We deliver in Yaoundé, usually within 3 to 48 hours, with an express delivery option for an extra fee. For delivery elsewhere, contact us on WhatsApp to check feasibility.", "faq4_q": "Can I check the watch on delivery?", "faq4_a": "Yes — you always check the watch on receipt, before the delivery is finalized.", "faq5_q": "What warranty comes with an Aurore watch?", "faq5_a": "Every watch is covered by a 45-day warranty.", "faq6_q": "My watch has a problem, what should I do?", "faq6_a_pre": "Go to the ", "faq6_a_post": " page — our customer service will respond to you directly.", "faq7_q": "How do I contact Aurore?", "faq7_a_pre": "The easiest way is WhatsApp: ", "faq7_a_link": "write to us here", "faq7_a_post": " for a general question, or use the “Order on WhatsApp” button directly on a watch.", "gift_h2": "Looking for a gift?", "gift_p": "An Aurore watch always makes an impression — for you, or for someone you love.", "gift_cta": "Explore the collection", "final_h2": "Ready to find your watch?", "final_cta_collection": "View the collection", "filters_btn": "Filters", "filters_close_aria": "Close filters", "search_placeholder": "Search a brand, model, or reference…", "sort_aria": "Sort by", "sort_ref": "Sort by: Reference", "sort_price_asc": "Sort by: Price (low to high)", "sort_price_desc": "Sort by: Price (high to low)", "sort_new": "Sort by: Newest", "brand_all": "All brands", "mouvement_all": "All movements", "genre_all": "All", "my_favorites": "My favorites", "share_fav_btn": "Share my favorites ↷", "empty_default": "No watch matches your search. Try a different filter.", "reset_filters": "Reset filters", "empty_fav": "You don't have any favorites yet. Browse the collection and tap ♡ to add some.", "about_title": "About Aurore", "about_lede": "The first step towards elegance", "about_history_h2": "Our Story", "about_history_p2": "The company runs on a hybrid model: strategic oversight from Canada, and a trusted team on the ground in Yaoundé who handle watch selection, quality control, presentation and delivery — so every step stays serious and well organized.", "about_hybrid_ca_title": "Oversight · Canada", "about_hybrid_ca_text": "Strategic oversight of the brand and its standards, run from Canada.", "about_hybrid_ym_title": "Field Team · Yaoundé", "about_hybrid_ym_text": "Watch selection, quality control, presentation and delivery, handled locally by a trusted team.", "about_mission_h2": "Our Mission", "about_mission_p": "To offer elegant, accessible watches while guaranteeing a smooth, reassuring customer experience — from discovering the product to resolving any issue after the purchase, should one arise.", "about_values_h2": "Our Values", "value_confiance_title": "Trust", "value_confiance_text": "Product quality, professional service and brand honesty are at the heart of every interaction.", "value_discipline_title": "Discipline", "value_discipline_text": "Rigorous tracking of stock, timelines and procedures — for a stable, reliable business.", "value_qualite_title": "Quality", "value_qualite_text": "Every watch is carefully selected and inspected before being offered for sale.", "value_equipe_title": "Team Spirit", "value_equipe_text": "Aurore is a collective project, driven by a team aligned around a shared goal.", "about_collections_h2": "Our Collections", "about_collections_p": "The Aurore catalog is designed for everyone: Men's, Women's and Unisex watches — to suit every occasion, from everyday to special events.", "about_collections_cta": "Discover the catalog →", "service_title": "Customer Service", "service_lede": "How we take care of you, before, during and after your purchase", "service_journey_h2": "Your journey with Aurore", "service_step1_title": "Discovery", "service_step1_text": "You discover our watches on this catalog, on our social media, or through a team member.", "service_step2_title": "Choice", "service_step2_text": "Each watch has its full listing (material, movement, price, reference) so you can order with full clarity.", "service_step3_title": "Order", "service_step3_text": "You confirm your order directly on WhatsApp.", "service_step4_title": "Delivery &amp; Inspection", "service_step4_text": "On receipt, you inspect the watch before the delivery is finalized.", "service_step5_title": "After-sales", "service_step5_text": "If there's an issue, our centralized customer service takes over.", "service_delivery_h2": "Checking on Delivery", "service_delivery_p": "At the time of delivery, take a moment to inspect your watch: appearance, fit, overall condition. If a problem is spotted immediately, the watch is taken back on the spot and the case is handled internally to offer you a quick solution.", "service_warranty_h2": "Warranty", "service_complaint_h2": "Have a complaint?", "service_complaint_p1": "Every complaint — about a product, a delivery, or the service received — is centralized through one official channel: WhatsApp. This ensures consistent follow-up and serious handling of every case.", "service_complaint_p2": "Once we receive your complaint, we take 2 to 3 days to review it, check the details with the team, and offer you the most suitable solution (clarification, repair, replacement, or other appropriate action).", "service_complaint_cta": "Submit a complaint →", "service_commitment_h2": "Our Commitment", "commit1_title": "Transparency", "commit1_text": "A clear process, from order to delivery, with no grey areas.", "commit2_title": "Careful Packaging", "commit2_text": "Every watch is delivered with professional packaging, reflecting the brand.", "commit3_title": "Clear Communication", "commit3_text": "Fast, honest answers, at every step of your experience.", "complaint_title": "Submit a Complaint", "complaint_lede": "A problem before, during, or after your purchase? Describe it below.", "complaint_intro": "Fill out this form: it will open directly in WhatsApp, pre-filled, to send to our customer service. We respond within 2 to 3 days.", "label_fullname": "Full name", "placeholder_name": "Your name", "label_ref": "Watch reference (if your complaint concerns an item — otherwise leave blank)", "label_phone": "Your number (WhatsApp preferred)", "label_message": "Describe the problem", "placeholder_message": "Explain what happened — whether it's related to a watch or something else…", "submit_whatsapp": "Send via WhatsApp", "complaint_other_h2": "Another way to reach us", "zoom_close_aria": "Close", "footer_collection_h4": "Collection", "footer_all_catalog": "Full catalog", "footer_aurore_h4": "Aurore", "footer_order_h4": "Order", "footer_bottom": "© AURORE — All rights reserved.", "collection_eyebrow_default": "The Aurore Collection", "collection_eyebrow_favoris": "Your Favorites", "collection_h1_default": "THE AURORE COLLECTION", "collection_h1_favoris": "YOUR FAVORITES", "subcount_tpl": "Discover our {n} available models.", "hero_reassurance_tpl": "{n} models · Quality check before every delivery · Delivery in Yaoundé", "complaint_phone_text": "You can also write to us directly on WhatsApp: ", "service_garantie_tpl": "All our watches are covered by {garantie}.", "count_pieces_one": " item shown", "count_pieces_many": " items shown", "count_fav_one": " favorite", "count_fav_many": " favorites", "price_all": "All prices", "price_under": "Under {hi} FCFA", "price_over": "{lo} FCFA and up", "price_range": "{lo} – {hi} FCFA", "remove_filter_aria": "Remove this filter", "chip_watch_genre_prefix": "", "back_link": "&larr; Back to catalog", "fav_add": "Add to favorites", "fav_added": "In your favorites", "share_btn": "Share", "share_copied": "Link copied!", "spec_marque": "BRAND", "spec_matiere": "MATERIAL", "spec_mouvement": "MOVEMENT", "spec_genre": "GENDER", "spec_cadran": "DIAL COLOR", "spec_reference": "REFERENCE", "ask_question": "Ask a question", "trust1": "Watch checked before shipping", "trust2": "Can be checked on delivery", "trust3": "45-day warranty", "block_contenu_label": "WHAT'S INCLUDED", "block_garantie_label": "WARRANTY", "block_livraison_label": "DELIVERY", "related_title": "You might also like", "gallery_title": "All photos", "content_val": "WATCH + BOX + SPARE BATTERY + OPTIONAL ENGRAVING", "garantie_val": "45-DAY WARRANTY", "livraison_val": "Delivery at the customer's expense — within 3 to 48 hours. Express delivery available for an extra fee.", "doc_title_home": "Aurore — Watch Catalog", "doc_title_about": "About — Aurore", "doc_title_service": "Customer Service — Aurore", "doc_title_complaint": "Submit a Complaint — Aurore", "doc_title_favoris": "My Favorites — Aurore", "doc_title_collection": "Collection — Aurore", "ticket_msg1": "Your complaint has been prepared under reference <strong>{id}</strong>. ", "ticket_msg2": "Save it: it lets us quickly find your case if you write to us again."};
+  var I18N = { fr: I18N_FR, en: I18N_EN };
+  var MATIERE_EN = {"CUIR & ACIER": "Leather & Steel", "CUIR & OR": "Leather & Gold", "CUIR & ARGENT": "Leather & Silver", "OR & ACIER": "Gold & Steel", "CUIR & ACIER ROSÉ": "Leather & Rose Steel", "CUIR & ACIER NOIR": "Leather & Black Steel", "ACIER DORÉ": "Gold-Plated Steel", "ACIER NOIR": "Black Steel", "ACIER": "Steel", "ACIER ARGENTÉ": "Silver Steel", "OR ET CUIR BLEU": "Gold & Blue Leather"};
+  var CADRAN_EN = {"NOIR": "Black", "BLANC": "White", "BLEU": "Blue", "ARGENTÉ": "Silver", "SQUELETTE": "Skeleton", "DORÉ": "Gold", "TURQUOISE": "Turquoise", "CUIVRÉ": "Copper", "VERT": "Green", "GRIS": "Grey"};
+  var MOUVEMENT_EN = {"QUARTZ": "Quartz", "AUTOMATIQUE": "Automatic", "MANUEL": "Manual"};
+  var GENRE_EN = {"HOMME": "Men", "FEMME": "Women", "MIXTE": "Unisex"};
+
+  var LANG_KEY = 'AUR_LANG';
+  function detectLang(){
+    var saved = null;
+    try { saved = localStorage.getItem(LANG_KEY); } catch(e){}
+    if (saved === 'fr' || saved === 'en') return saved;
+    var nav = ((navigator.language || navigator.userLanguage || 'fr') + '').toLowerCase();
+    return nav.indexOf('fr') === 0 ? 'fr' : 'en';
+  }
+  var currentLang = detectLang();
+  function t(key){
+    var dict = I18N[currentLang] || I18N_FR;
+    if (Object.prototype.hasOwnProperty.call(dict, key)) return dict[key];
+    return I18N_FR[key] !== undefined ? I18N_FR[key] : key;
+  }
+  function tf(key, vars){
+    var s = t(key);
+    if (vars){
+      Object.keys(vars).forEach(function(k){
+        s = s.split('{' + k + '}').join(vars[k]);
+      });
+    }
+    return s;
+  }
+  function labelMatiere(m){ return currentLang === 'en' ? (MATIERE_EN[m] || m) : m; }
+  function labelCadran(c){ return currentLang === 'en' ? (CADRAN_EN[c] || c) : c; }
+  function labelMouvement(m){ return currentLang === 'en' ? (MOUVEMENT_EN[m] || m) : (m ? (m.charAt(0) + m.slice(1).toLowerCase()) : m); }
+  function labelGenre(g){
+    if (currentLang === 'en') return GENRE_EN[g] || g;
+    if (g === 'HOMME') return 'Homme';
+    if (g === 'FEMME') return 'Femme';
+    if (g === 'MIXTE') return 'Mixte';
+    return g;
+  }
+  function applyI18nStatic(root){
+    var scope = root || document;
+    Array.prototype.forEach.call(scope.querySelectorAll('[data-i18n]'), function(el){
+      el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    Array.prototype.forEach.call(scope.querySelectorAll('[data-i18n-ph]'), function(el){
+      el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
+    });
+    Array.prototype.forEach.call(scope.querySelectorAll('[data-i18n-aria]'), function(el){
+      el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+    });
+  }
+
   var DATA = [{"reference": "AUR-001", "marque": "DANIEL WELLINGTON", "modele": "Classic", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "MIXTE", "cadran": "NOIR", "photos": ["carousel/AUR-001/1.jpg", "carousel/AUR-001/2.jpg", "carousel/AUR-001/3.jpg", "carousel/AUR-001/4.jpg"]}, {"reference": "AUR-002", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "CUIR & OR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-002/1.jpg", "carousel/AUR-002/2.jpg", "carousel/AUR-002/3.jpg", "carousel/AUR-002/4.jpg"]}, {"reference": "AUR-003", "marque": "HERMÈS", "modele": "Heure H", "prix": 10000, "matiere": "CUIR & ARGENT", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLANC", "photos": ["carousel/AUR-003/1.jpg", "carousel/AUR-003/2.jpg", "carousel/AUR-003/3.jpg", "carousel/AUR-003/4.jpg"]}, {"reference": "AUR-004", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-004/1.jpg", "carousel/AUR-004/2.jpg", "carousel/AUR-004/3.jpg", "carousel/AUR-004/4.jpg"]}, {"reference": "AUR-005", "marque": "MONTBLANC", "modele": "Timewalker Chronographe", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-005/1.jpg", "carousel/AUR-005/2.jpg", "carousel/AUR-005/3.jpg", "carousel/AUR-005/4.jpg"]}, {"reference": "AUR-006", "marque": "HERMÈS", "modele": "Heure H Diamants", "prix": 10000, "matiere": "CUIR & ARGENT", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLANC", "photos": ["carousel/AUR-006/1.jpg", "carousel/AUR-006/2.jpg"]}, {"reference": "AUR-007", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "CUIR & ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLEU", "photos": ["carousel/AUR-007/1.jpg", "carousel/AUR-007/2.jpg", "carousel/AUR-007/3.jpg", "carousel/AUR-007/4.jpg"]}, {"reference": "AUR-008", "marque": "CARTIER", "modele": "Calibre Chronographe", "prix": 20000, "matiere": "ACIER", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "ARGENTÉ", "photos": ["carousel/AUR-008/1.jpg", "carousel/AUR-008/2.jpg", "carousel/AUR-008/3.jpg", "carousel/AUR-008/4.jpg"]}, {"reference": "AUR-009", "marque": "POEDAGAR", "modele": "Diamond Collection", "prix": 14000, "matiere": "ACIER", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLEU", "photos": ["carousel/AUR-009/1.jpg", "carousel/AUR-009/2.jpg", "carousel/AUR-009/3.jpg", "carousel/AUR-009/4.jpg"]}, {"reference": "AUR-010", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak Offshore Squelette", "prix": 28000, "matiere": "ACIER", "mouvement": "AUTOMATIQUE", "genre": "HOMME", "cadran": "SQUELETTE", "photos": ["carousel/AUR-010/1.jpg", "carousel/AUR-010/2.jpg", "carousel/AUR-010/3.jpg", "carousel/AUR-010/4.jpg"]}, {"reference": "AUR-011", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak Offshore Squelette", "prix": 28000, "matiere": "OR & ACIER", "mouvement": "AUTOMATIQUE", "genre": "HOMME", "cadran": "SQUELETTE", "photos": ["carousel/AUR-011/1.jpg", "carousel/AUR-011/2.jpg", "carousel/AUR-011/3.jpg", "carousel/AUR-011/4.jpg"]}, {"reference": "AUR-012", "marque": "DANIEL WELLINGTON", "modele": "Iconic Square", "prix": 10000, "matiere": "CUIR & ACIER ROSÉ", "mouvement": "QUARTZ", "genre": "MIXTE", "cadran": "CUIVRÉ", "photos": ["carousel/AUR-012/1.jpg", "carousel/AUR-012/2.jpg"]}, {"reference": "AUR-013", "marque": "DANIEL WELLINGTON", "modele": "Iconic Square Noire", "prix": 10000, "matiere": "CUIR & ACIER NOIR", "mouvement": "QUARTZ", "genre": "MIXTE", "cadran": "NOIR", "photos": ["carousel/AUR-013/1.jpg", "carousel/AUR-013/2.jpg", "carousel/AUR-013/3.jpg", "carousel/AUR-013/4.jpg"]}, {"reference": "AUR-014", "marque": "POEDAGAR", "modele": "Classic Gold", "prix": 12000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-014/1.jpg", "carousel/AUR-014/2.jpg", "carousel/AUR-014/3.jpg", "carousel/AUR-014/4.jpg"]}, {"reference": "AUR-015", "marque": "CASIO", "modele": "Square Noire", "prix": 9500, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-015/1.jpg", "carousel/AUR-015/2.jpg", "carousel/AUR-015/3.jpg", "carousel/AUR-015/4.jpg"]}, {"reference": "AUR-016", "marque": "CASIO", "modele": "Square Dorée", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-016/1.jpg", "carousel/AUR-016/2.jpg", "carousel/AUR-016/3.jpg", "carousel/AUR-016/4.jpg"]}, {"reference": "AUR-017", "marque": "CASIO", "modele": "Square Champagne", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-017/1.jpg", "carousel/AUR-017/2.jpg", "carousel/AUR-017/3.jpg"]}, {"reference": "AUR-018", "marque": "CASIO", "modele": "Ronde Turquoise", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "TURQUOISE", "photos": ["carousel/AUR-018/1.jpg", "carousel/AUR-018/2.jpg"]}, {"reference": "AUR-019", "marque": "CASIO", "modele": "Square Dorée", "prix": 9500, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-019/1.jpg", "carousel/AUR-019/2.jpg", "carousel/AUR-019/3.jpg", "carousel/AUR-019/4.jpg"]}, {"reference": "AUR-020", "marque": "ROLEX", "modele": "Charme Doré", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "BLANC", "photos": ["carousel/AUR-020/1.jpg", "carousel/AUR-020/2.jpg", "carousel/AUR-020/3.jpg", "carousel/AUR-020/4.jpg"]}, {"reference": "AUR-021", "marque": "DIOR", "modele": "Cristal Noir", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "NOIR", "photos": ["carousel/AUR-021/1.jpg", "carousel/AUR-021/2.jpg", "carousel/AUR-021/3.jpg", "carousel/AUR-021/4.jpg"]}, {"reference": "AUR-022", "marque": "ROLEX", "modele": "Président Doré", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-022/1.jpg", "carousel/AUR-022/2.jpg", "carousel/AUR-022/3.jpg", "carousel/AUR-022/4.jpg"]}, {"reference": "AUR-023", "marque": "ROLEX", "modele": "Éclat Doré", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-023/1.jpg", "carousel/AUR-023/2.jpg", "carousel/AUR-023/3.jpg"]}, {"reference": "AUR-024", "marque": "CALVIN KLEIN", "modele": "Goutte Dorée", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "DORÉ", "photos": ["carousel/AUR-024/1.jpg", "carousel/AUR-024/2.jpg", "carousel/AUR-024/3.jpg"]}, {"reference": "AUR-025", "marque": "BVLGARI", "modele": "Squelette Argenté", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-025/1.jpg", "carousel/AUR-025/2.jpg", "carousel/AUR-025/3.jpg"]}, {"reference": "AUR-026", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-026/1.jpg"]}, {"reference": "AUR-027", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 11000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-027/1.jpg", "carousel/AUR-027/2.jpg", "carousel/AUR-027/3.jpg", "carousel/AUR-027/4.jpg"]}, {"reference": "AUR-028", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "DORÉ", "photos": ["carousel/AUR-028/1.jpg", "carousel/AUR-028/2.jpg", "carousel/AUR-028/3.jpg", "carousel/AUR-028/4.jpg"]}, {"reference": "AUR-029", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLEU", "photos": ["carousel/AUR-029/1.jpg", "carousel/AUR-029/2.jpg", "carousel/AUR-029/3.jpg", "carousel/AUR-029/4.jpg"]}, {"reference": "AUR-030", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-030/1.jpg", "carousel/AUR-030/2.jpg", "carousel/AUR-030/3.jpg", "carousel/AUR-030/4.jpg"]}, {"reference": "AUR-031", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER ARGENTÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "VERT", "photos": ["carousel/AUR-031/1.jpg", "carousel/AUR-031/2.jpg", "carousel/AUR-031/3.jpg", "carousel/AUR-031/4.jpg"]}, {"reference": "AUR-032", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER NOIR", "mouvement": "MANUEL", "genre": "HOMME", "cadran": "SQUELETTE", "photos": ["carousel/AUR-032/1.jpg", "carousel/AUR-032/2.jpg", "carousel/AUR-032/3.jpg", "carousel/AUR-032/4.jpg"]}, {"reference": "AUR-033", "marque": "CARTIER", "modele": "", "prix": 17500, "matiere": "ACIER ARGENTÉ", "mouvement": "MANUEL", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-033/1.jpg", "carousel/AUR-033/2.jpg", "carousel/AUR-033/3.jpg", "carousel/AUR-033/4.jpg"]}, {"reference": "AUR-034", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLANC", "photos": ["carousel/AUR-034/1.jpg", "carousel/AUR-034/2.jpg", "carousel/AUR-034/3.jpg", "carousel/AUR-034/4.jpg"]}, {"reference": "AUR-035", "marque": "AUDEMARS PIGUET", "modele": "Royal Oak", "prix": 13000, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "GRIS", "photos": ["carousel/AUR-035/1.jpg", "carousel/AUR-035/2.jpg", "carousel/AUR-035/3.jpg", "carousel/AUR-035/4.jpg"]}, {"reference": "AUR-036", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "ACIER NOIR", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-036/1.jpg", "carousel/AUR-036/2.jpg", "carousel/AUR-036/3.jpg", "carousel/AUR-036/4.jpg"]}, {"reference": "AUR-037", "marque": "CALVIN KLEIN", "modele": "", "prix": 11000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "FEMME", "cadran": "GRIS", "photos": ["carousel/AUR-037/1.jpg", "carousel/AUR-037/2.jpg", "carousel/AUR-037/3.jpg"]}, {"reference": "AUR-038", "marque": "JAKDY", "modele": "Keep Moving", "prix": 11000, "matiere": "OR ET CUIR BLEU", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "BLEU", "photos": ["carousel/AUR-038/1.jpg", "carousel/AUR-038/2.jpg"]}, {"reference": "AUR-039", "marque": "ROLEX", "modele": "Oyster Perpetual Day-Date", "prix": 10000, "matiere": "ACIER DORÉ", "mouvement": "QUARTZ", "genre": "HOMME", "cadran": "NOIR", "photos": ["carousel/AUR-039/1.jpg"]}];
 
   var grid = document.getElementById('grid');
@@ -2256,7 +2328,11 @@
   var currentSlider = null;
   var currentZoomViewer = null;
 
-  subCount.textContent = "Découvrez nos " + DATA.length + " modèles disponibles.";
+  function renderCountTexts(){
+    subCount.textContent = tf('subcount_tpl', { n: DATA.length });
+    if (heroReassuranceEl) heroReassuranceEl.textContent = tf('hero_reassurance_tpl', { n: DATA.length });
+    if (serviceGarantieEl) serviceGarantieEl.textContent = tf('service_garantie_tpl', { garantie: t('garantie_val').toLowerCase() });
+  }
 
   var waHref = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Bonjour Aurore, je consulte votre catalogue et j'aimerais avoir des renseignements.");
   document.getElementById('waGeneral').href = waHref;
@@ -2270,14 +2346,16 @@
   if (faqWaEl) faqWaEl.href = waHref;
 
   var footerBottomEl = document.getElementById('footerBottom');
-  if (footerBottomEl){
-    footerBottomEl.innerHTML = '© AURORE — Tous droits réservés. ' +
-      '<a href="tel:+17785360129">+1 778 536 0129</a> &nbsp;–&nbsp; ' +
-      '<a href="tel:+237698868629">+237 698 868 629</a>';
+  function renderFooterBottom(){
+    if (footerBottomEl){
+      footerBottomEl.innerHTML = t('footer_bottom') + ' ' +
+        '<a href="tel:+17785360129">+1 778 536 0129</a> &nbsp;–&nbsp; ' +
+        '<a href="tel:+237698868629">+237 698 868 629</a>';
+    }
   }
+  renderFooterBottom();
 
   var heroReassuranceEl = document.getElementById('heroReassurance');
-  if (heroReassuranceEl) heroReassuranceEl.textContent = DATA.length + " modèles · Contrôle qualité avant chaque livraison · Livraison à Yaoundé";
 
   var scrollCueEl = document.getElementById('scrollCue');
   if (scrollCueEl) scrollCueEl.addEventListener('click', function(){
@@ -2286,15 +2364,19 @@
   });
 
   var serviceGarantieEl = document.getElementById('serviceGarantie');
-  if (serviceGarantieEl) serviceGarantieEl.textContent = "Toutes nos montres sont couvertes par " + GARANTIE.toLowerCase() + ".";
+  renderCountTexts();
   var complaintPhoneEl = document.getElementById('complaintPhone');
-  if (complaintPhoneEl) complaintPhoneEl.innerHTML = "Tu peux aussi nous écrire directement sur WhatsApp : " +
-    '<a href="https://wa.me/' + COMPLAINT_PHONE + '" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline;"><strong>' + COMPLAINT_PHONE_DISPLAY + '</strong></a>';
+  function renderComplaintPhone(){
+    if (complaintPhoneEl) complaintPhoneEl.innerHTML = t('complaint_phone_text') +
+      '<a href="https://wa.me/' + COMPLAINT_PHONE + '" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline;"><strong>' + COMPLAINT_PHONE_DISPLAY + '</strong></a>';
+  }
+  renderComplaintPhone();
 
   var brands = Array.from(new Set(DATA.map(function(d){return d.marque;}))).sort();
   brands.forEach(function(b){
     var opt = document.createElement('option');
     opt.value = b; opt.textContent = b.charAt(0) + b.slice(1).toLowerCase();
+    opt.setAttribute('data-brand-raw', b);
     brandFilter.appendChild(opt);
   });
 
@@ -2304,9 +2386,15 @@
   var mouvementFilter = document.getElementById('mouvementFilter');
   MOUVEMENT_ORDER.filter(function(m){ return mouvementsPresent.indexOf(m) !== -1; }).forEach(function(m){
     var opt = document.createElement('option');
-    opt.value = m; opt.textContent = m.charAt(0) + m.slice(1).toLowerCase();
+    opt.value = m; opt.textContent = labelMouvement(m);
+    opt.setAttribute('data-mvt-raw', m);
     mouvementFilter.appendChild(opt);
   });
+  function relabelMouvementOptions(){
+    Array.prototype.forEach.call(mouvementFilter.querySelectorAll('option[data-mvt-raw]'), function(opt){
+      opt.textContent = labelMouvement(opt.getAttribute('data-mvt-raw'));
+    });
+  }
 
   var state = { q:'', brand:'', genre:'', mouvement:'', sort:'ref', priceBucket:null };
 
@@ -2344,7 +2432,7 @@
       navigator.clipboard.writeText(url).then(function(){
         if (btnEl){
           var original = btnEl.textContent;
-          btnEl.textContent = 'Lien copié !';
+          btnEl.textContent = t('share_copied');
           setTimeout(function(){ btnEl.innerHTML = original; }, 1800);
         }
       }).catch(function(){});
@@ -2723,18 +2811,18 @@
     return (
       '<div class="thumb">' +
         '<span class="ref-badge">' + item.reference + '</span>' +
-        '<button type="button" class="fav-btn' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '" aria-label="Ajouter aux favoris"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span></button>' +
+        '<button type="button" class="fav-btn' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '" aria-label="' + t('fav_add') + '"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span></button>' +
         '<img src="' + thumbSrc + '" alt="' + item.marque + ' ' + title + '" loading="lazy" onerror="aurImgRetry(this)">' +
         (altSrc ? '<img class="thumb-alt" src="' + altSrc + '" alt="" loading="lazy" onerror="aurImgRetry(this)">' : '') +
       '</div>' +
       '<div class="body">' +
         '<div class="eyebrow">' + item.marque + '</div>' +
         '<h3>' + title + '</h3>' +
-        '<div class="specs">' + item.matiere + ' · ' + item.mouvement + ' · ' + item.genre + '</div>' +
+        '<div class="specs">' + labelMatiere(item.matiere) + ' · ' + labelMouvement(item.mouvement) + ' · ' + labelGenre(item.genre) + '</div>' +
         '<div class="price-row"><span class="price">' + item.prix.toLocaleString('fr-FR') + '<small>FCFA</small></span></div>' +
         '<a class="order-btn" href="' + waLink(item) + '" target="_blank" rel="noopener">' +
           '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>' +
-          'Commander' +
+          t('sob_order') +
         '</a>' +
       '</div>'
     );
@@ -2790,8 +2878,8 @@
       emptyFavEl.style.display = routeShowFavorites ? 'block' : 'none';
     }
     countLine.textContent = routeShowFavorites
-      ? (filtered.length + (filtered.length > 1 ? ' favoris' : ' favori'))
-      : (filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée'));
+      ? (filtered.length + (filtered.length > 1 ? t('count_fav_many') : t('count_fav_one')))
+      : (filtered.length + (filtered.length > 1 ? t('count_pieces_many') : t('count_pieces_one')));
     var shareFavBtnEl = document.getElementById('shareFavBtn');
     if (shareFavBtnEl) shareFavBtnEl.style.display = (routeShowFavorites && filtered.length) ? 'inline-flex' : 'none';
     renderActiveFilterChips();
@@ -2840,9 +2928,9 @@
         return p > b.lo && p <= b.hi;
       };
       var label;
-      if (i === 0) label = "Moins de " + fmt(b.hi) + " FCFA";
-      else if (i === raw.length - 1) label = fmt(b.lo) + " FCFA et plus";
-      else label = fmt(b.lo) + " – " + fmt(b.hi) + " FCFA";
+      if (i === 0) label = tf('price_under', { hi: fmt(b.hi) });
+      else if (i === raw.length - 1) label = tf('price_over', { lo: fmt(b.lo) });
+      else label = tf('price_range', { lo: fmt(b.lo), hi: fmt(b.hi) });
       return { lo: b.lo, hi: b.hi, test: test, label: label, count: DATA.filter(function(d){ return test(d.prix); }).length };
     });
     return buckets.filter(function(b){ return b.count > 0; });
@@ -2851,7 +2939,7 @@
   var priceChipRow = document.getElementById('priceChipRow');
   function renderPriceChips(){
     if (!priceChipRow) return;
-    var html = '<button type="button" class="chip" data-idx="-1" aria-pressed="true">Tous les prix</button>';
+    var html = '<button type="button" class="chip" data-idx="-1" aria-pressed="true">' + t('price_all') + '</button>';
     priceBuckets.forEach(function(b, i){
       html += '<button type="button" class="chip" data-idx="' + i + '" aria-pressed="false">' + b.label + '</button>';
     });
@@ -2930,7 +3018,7 @@
     var iconEl = favBtn.querySelector('.fav-icon');
     if (iconEl) iconEl.textContent = nowFav ? '\u2665' : '\u2661';
     var labelEl = favBtn.querySelector('.fav-label');
-    if (labelEl) labelEl.textContent = nowFav ? 'Dans vos favoris' : 'Ajouter aux favoris';
+    if (labelEl) labelEl.textContent = nowFav ? t('fav_added') : t('fav_add');
     if (routeShowFavorites) render();
   });
 
@@ -2975,15 +3063,8 @@
   }
 
   // ---------- barre de filtres compacte mobile : chips reflentant les filtres actifs + ouverture/fermeture du panneau ----------
-  function humanGenreLabel(g){
-    if (g === 'HOMME') return 'Homme';
-    if (g === 'FEMME') return 'Femme';
-    if (g === 'MIXTE') return 'Mixte';
-    return g;
-  }
-  function humanMouvementLabel(m){
-    return m ? (m.charAt(0) + m.slice(1).toLowerCase()) : m;
-  }
+  function humanGenreLabel(g){ return labelGenre(g); }
+  function humanMouvementLabel(m){ return labelMouvement(m); }
   var filtersToggleBtn = document.getElementById('filtersToggleBtn');
   var filtersCloseBtn = document.getElementById('filtersCloseBtn');
   var filtersCountBadge = document.getElementById('filtersCountBadge');
@@ -2991,13 +3072,13 @@
   function renderActiveFilterChips(){
     if (!activeFilterChipsEl) return;
     var chips = [];
-    if (state.genre) chips.push({ type:'genre', label:'Montre ' + humanGenreLabel(state.genre).toLowerCase() });
+    if (state.genre) chips.push({ type:'genre', label:(currentLang === 'fr' ? ('Montre ' + humanGenreLabel(state.genre).toLowerCase()) : humanGenreLabel(state.genre)) });
     if (state.brand) chips.push({ type:'brand', label: state.brand });
     if (state.mouvement) chips.push({ type:'mouvement', label: humanMouvementLabel(state.mouvement) });
     if (state.priceBucket) chips.push({ type:'price', label: state.priceBucket.label });
     activeFilterChipsEl.innerHTML = chips.map(function(c){
       return '<span class="active-chip" data-filter-type="' + c.type + '">' + c.label +
-        '<button type="button" class="chip-remove" data-filter-type="' + c.type + '" aria-label="Retirer ce filtre">&times;</button></span>';
+        '<button type="button" class="chip-remove" data-filter-type="' + c.type + '" aria-label="' + t('remove_filter_aria') + '">&times;</button></span>';
     }).join('');
     if (filtersCountBadge){
       if (chips.length){ filtersCountBadge.textContent = String(chips.length); filtersCountBadge.style.display = 'inline-flex'; }
@@ -3052,7 +3133,7 @@
     var relatedItems = getRelatedItems(item, 3);
     var relatedSectionHTML = relatedItems.length ? (
       '<section class="related-products">' +
-        '<h2 class="related-products-title">Vous pourriez également aimer</h2>' +
+        '<h2 class="related-products-title">' + t('related_title') + '</h2>' +
         '<div class="grid related-grid" id="relatedGrid">' +
           relatedItems.map(function(r){ return '<div class="card" data-ref="' + r.reference + '">' + cardHTML(r) + '</div>'; }).join('') +
         '</div>' +
@@ -3061,7 +3142,7 @@
 
     viewProduct.innerHTML =
       '<div class="product-page">' +
-      '<a href="#/collection" class="back-link">&larr; Retour au catalogue</a>' +
+      '<a href="#/collection" class="back-link">' + t('back_link') + '</a>' +
       '<div class="product-layout">' +
       '<div class="carousel">' +
         '<div class="carousel-track" id="lbTrack">' + slidesHTML + '</div>' +
@@ -3073,40 +3154,40 @@
         '<div class="eyebrow">' + item.marque + '</div>' +
         '<h1 class="product-title">' + title + '</h1>' +
         '<div class="product-actions-row">' +
-          '<button type="button" class="fav-btn fav-btn-inline' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span><span class="fav-label">' + (isFavorite(item.reference) ? 'Dans vos favoris' : 'Ajouter aux favoris') + '</span></button>' +
-          '<button type="button" class="share-btn" id="shareWatchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>Partager</button>' +
+          '<button type="button" class="fav-btn fav-btn-inline' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span><span class="fav-label">' + (isFavorite(item.reference) ? t('fav_added') : t('fav_add')) + '</span></button>' +
+          '<button type="button" class="share-btn" id="shareWatchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>' + t('share_btn') + '</button>' +
         '</div>' +
         '<div class="fiche-specs-table">' +
-          '<div class="cell"><span class="k">MARQUE</span><span class="v">' + item.marque + '</span></div>' +
-          '<div class="cell"><span class="k">MATIÈRE</span><span class="v">' + item.matiere + '</span></div>' +
-          '<div class="cell"><span class="k">MOUVEMENT</span><span class="v">' + item.mouvement + '</span></div>' +
-          '<div class="cell"><span class="k">GENRE</span><span class="v">' + item.genre + '</span></div>' +
-          '<div class="cell"><span class="k">COULEUR DU CADRAN</span><span class="v">' + item.cadran + '</span></div>' +
-          '<div class="cell"><span class="k">RÉFÉRENCE</span><span class="v">' + item.reference + '</span></div>' +
+          '<div class="cell"><span class="k">' + t('spec_marque') + '</span><span class="v">' + item.marque + '</span></div>' +
+          '<div class="cell"><span class="k">' + t('spec_matiere') + '</span><span class="v">' + labelMatiere(item.matiere) + '</span></div>' +
+          '<div class="cell"><span class="k">' + t('spec_mouvement') + '</span><span class="v">' + labelMouvement(item.mouvement) + '</span></div>' +
+          '<div class="cell"><span class="k">' + t('spec_genre') + '</span><span class="v">' + labelGenre(item.genre) + '</span></div>' +
+          '<div class="cell"><span class="k">' + t('spec_cadran') + '</span><span class="v">' + labelCadran(item.cadran) + '</span></div>' +
+          '<div class="cell"><span class="k">' + t('spec_reference') + '</span><span class="v">' + item.reference + '</span></div>' +
         '</div>' +
         '<div class="price" style="margin-top:12px;">' + item.prix.toLocaleString('fr-FR') + '<small style="font-family:Montserrat,sans-serif;font-size:11px;color:var(--ink-muted);margin-left:3px;">FCFA</small></div>' +
         '<a class="order-btn order-btn-primary" style="display:flex;" href="' + waLink(item) + '" target="_blank" rel="noopener">' +
           '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>' +
-          'Commander sur WhatsApp' +
+          t('cta_order_whatsapp') +
         '</a>' +
-        '<a class="order-btn order-btn-secondary" style="display:flex;" href="' + waQuestionLink(item) + '" target="_blank" rel="noopener">Poser une question</a>' +
+        '<a class="order-btn order-btn-secondary" style="display:flex;" href="' + waQuestionLink(item) + '" target="_blank" rel="noopener">' + t('ask_question') + '</a>' +
         '<ul class="trust-badges">' +
-          '<li><span class="tb-check">&#10003;</span> Montre vérifiée avant l\'envoi</li>' +
-          '<li><span class="tb-check">&#10003;</span> Vérification possible à la livraison</li>' +
-          '<li><span class="tb-check">&#10003;</span> Garantie 45 jours</li>' +
+          '<li><span class="tb-check">&#10003;</span> ' + t('trust1') + '</li>' +
+          '<li><span class="tb-check">&#10003;</span> ' + t('trust2') + '</li>' +
+          '<li><span class="tb-check">&#10003;</span> ' + t('trust3') + '</li>' +
         '</ul>' +
         '<div class="fiche-text">' +
           '<div>' +
-            '<div class="block-label">CONTENU</div>' +
-            '<div class="block-text">' + CONTENU + '</div>' +
+            '<div class="block-label">' + t('block_contenu_label') + '</div>' +
+            '<div class="block-text">' + t('content_val') + '</div>' +
           '</div>' +
           '<div>' +
-            '<div class="block-label">GARANTIE</div>' +
-            '<div class="block-text">' + GARANTIE + '</div>' +
+            '<div class="block-label">' + t('block_garantie_label') + '</div>' +
+            '<div class="block-text">' + t('garantie_val') + '</div>' +
           '</div>' +
           '<div>' +
-            '<div class="block-label">LIVRAISON</div>' +
-            '<div class="block-text">' + LIVRAISON + '</div>' +
+            '<div class="block-label">' + t('block_livraison_label') + '</div>' +
+            '<div class="block-text">' + t('livraison_val') + '</div>' +
           '</div>' +
         '</div>' +
         '<div class="fiche-contact">' +
@@ -3118,7 +3199,7 @@
       '</div>' +
       (photos.length > 1 ? (
         '<section class="full-gallery" id="fullGallery">' +
-          '<h2 class="full-gallery-title">Toutes les photos</h2>' +
+          '<h2 class="full-gallery-title">' + t('gallery_title') + '</h2>' +
           '<div class="full-gallery-grid">' +
             photos.map(function(src, i){
               return '<img src="' + src + '" data-index="' + i + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + ' en grand format" loading="lazy" onerror="aurImgRetry(this)">';
@@ -3278,8 +3359,7 @@
       window.open("https://wa.me/" + COMPLAINT_PHONE + "?text=" + encodeURIComponent(waMsg), "_blank", "noopener");
       var ticketEl = document.getElementById('ticketConfirm');
       if (ticketEl){
-        ticketEl.innerHTML = "Ta plainte a été préparée sous la référence <strong>" + ticketId + "</strong>. " +
-          "Note-la : elle nous permet de retrouver rapidement ton dossier si tu nous réécris.";
+        ticketEl.innerHTML = tf('ticket_msg1', { id: ticketId }) + t('ticket_msg2');
         ticketEl.style.display = 'block';
       }
     });
@@ -3380,44 +3460,44 @@
       currentSlider = null;
       showView('view-about', animate, scrollAfterShown);
       updateNavActive('about');
-      document.title = 'À propos — Aurore';
+      document.title = t('doc_title_about');
     } else if (r.route === 'service'){
       currentSlider = null;
       showView('view-service', animate, scrollAfterShown);
       updateNavActive('service');
-      document.title = 'Service client — Aurore';
+      document.title = t('doc_title_service');
     } else if (r.route === 'complaint'){
       currentSlider = null;
       showView('view-complaint', animate, scrollAfterShown);
       updateNavActive('complaint');
-      document.title = 'Soumettre une plainte — Aurore';
+      document.title = t('doc_title_complaint');
     } else if (r.route === 'favoris'){
       currentSlider = null;
       routeShowFavorites = true;
       state.genre = '';
       syncGenreToggleUI();
-      if (collectionEyebrowEl) collectionEyebrowEl.textContent = 'Vos favoris';
-      if (collectionH1El) collectionH1El.textContent = 'VOS FAVORIS';
+      if (collectionEyebrowEl) collectionEyebrowEl.textContent = t('collection_eyebrow_favoris');
+      if (collectionH1El) collectionH1El.textContent = t('collection_h1_favoris');
       render();
       showView('view-collection', animate, scrollAfterShown);
       updateNavActive('favoris');
-      document.title = 'Mes favoris — Aurore';
+      document.title = t('doc_title_favoris');
     } else if (r.route === 'collection'){
       currentSlider = null;
-      if (collectionEyebrowEl) collectionEyebrowEl.textContent = 'La collection Aurore';
-      if (collectionH1El) collectionH1El.textContent = 'LA COLLECTION AURORE';
+      if (collectionEyebrowEl) collectionEyebrowEl.textContent = t('collection_eyebrow_default');
+      if (collectionH1El) collectionH1El.textContent = t('collection_h1_default');
       var genreParam = r.param ? r.param.toUpperCase() : '';
       state.genre = (genreParam === 'HOMME' || genreParam === 'FEMME' || genreParam === 'MIXTE') ? genreParam : '';
       syncGenreToggleUI();
       render();
       showView('view-collection', animate, scrollAfterShown);
       updateNavActive('collection');
-      document.title = 'Collection — Aurore';
+      document.title = t('doc_title_collection');
     } else {
       currentSlider = null;
       showView('view-home', animate, scrollAfterShown);
       updateNavActive('home');
-      document.title = 'Aurore — Catalogue de montres';
+      document.title = t('doc_title_home');
     }
   }
 
@@ -3457,12 +3537,46 @@
   window.addEventListener('resize', updateControlsStickyOffset);
   window.addEventListener('orientationchange', updateControlsStickyOffset);
 
+  var langToggleBtn = document.getElementById('langToggleBtn');
+  var langToggleLabel = document.getElementById('langToggleLabel');
+  function updateLangToggleLabel(){
+    if (langToggleLabel) langToggleLabel.textContent = currentLang === 'fr' ? 'EN' : 'FR';
+  }
+  function refreshAllI18n(){
+    document.documentElement.setAttribute('lang', currentLang);
+    applyI18nStatic(document);
+    updateLangToggleLabel();
+    renderCountTexts();
+    renderComplaintPhone();
+    renderFooterBottom();
+    relabelMouvementOptions();
+    renderPriceChips();
+    syncPriceChipsUI();
+    renderFeatured();
+    renderBrandStrip();
+    render();
+    router();
+  }
+  function setLang(lang){
+    if (lang !== 'fr' && lang !== 'en') return;
+    if (lang === currentLang) return;
+    currentLang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
+    refreshAllI18n();
+  }
+  if (langToggleBtn) langToggleBtn.addEventListener('click', function(){
+    setLang(currentLang === 'fr' ? 'en' : 'fr');
+  });
+
   renderFeatured();
   renderBrandStrip();
   renderPriceChips();
   syncPriceChipsUI();
   updateFavCount();
   updateControlsStickyOffset();
+  document.documentElement.setAttribute('lang', currentLang);
+  applyI18nStatic(document);
+  updateLangToggleLabel();
   render();
   router();
 })();
