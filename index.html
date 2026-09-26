@@ -2044,6 +2044,17 @@
     return { goTo: goTo, resetZoom: resetZoom, getIndex: function(){ return index; } };
   }
 
+  // Filet de sécurité réseau : sur une connexion mobile instable, une photo peut échouer
+  // au premier chargement (coupure, timeout) — on retente une fois après un court délai
+  // avant d'abandonner (évite les vignettes qui restent vides côté client alors que le
+  // fichier existe bel et bien sur le serveur).
+  function aurImgRetry(img){
+    if (img.dataset.aurRetried) return;
+    img.dataset.aurRetried = '1';
+    var base = img.src.split('?')[0];
+    setTimeout(function(){ img.src = base + '?r=' + Date.now(); }, 1200);
+  }
+
   function cardHTML(item){
     var title = titleOf(item);
     var photos = item.photos || [];
@@ -2052,8 +2063,8 @@
     return (
       '<div class="thumb">' +
         '<span class="ref-badge">' + item.reference + '</span>' +
-        '<img src="' + thumbSrc + '" alt="' + item.marque + ' ' + title + '" loading="lazy">' +
-        (altSrc ? '<img class="thumb-alt" src="' + altSrc + '" alt="" loading="lazy">' : '') +
+        '<img src="' + thumbSrc + '" alt="' + item.marque + ' ' + title + '" loading="lazy" onerror="aurImgRetry(this)">' +
+        (altSrc ? '<img class="thumb-alt" src="' + altSrc + '" alt="" loading="lazy" onerror="aurImgRetry(this)">' : '') +
       '</div>' +
       '<div class="body">' +
         '<div class="eyebrow">' + item.marque + '</div>' +
@@ -2240,7 +2251,7 @@
     var photos = item.photos && item.photos.length ? item.photos : [];
 
     var slidesHTML = photos.map(function(src, i){
-      return '<div class="slide" data-index="' + i + '"><img src="' + src + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '"></div>';
+      return '<div class="slide" data-index="' + i + '"><img src="' + src + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" onerror="aurImgRetry(this)"></div>';
     }).join('');
 
     var dotsHTML = photos.length > 1 ? (
@@ -2252,7 +2263,7 @@
 
     viewProduct.innerHTML =
       '<div class="product-page">' +
-      '<a href="#/" class="back-link">&larr; Retour au catalogue</a>' +
+      '<a href="#/collection" class="back-link">&larr; Retour au catalogue</a>' +
       '<div class="product-layout">' +
       '<div class="carousel">' +
         '<div class="carousel-track" id="lbTrack">' + slidesHTML + '</div>' +
@@ -2302,7 +2313,7 @@
           '<h2 class="full-gallery-title">Toutes les photos</h2>' +
           '<div class="full-gallery-grid">' +
             photos.map(function(src, i){
-              return '<img src="' + src + '" data-index="' + i + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + ' en grand format" loading="lazy">';
+              return '<img src="' + src + '" data-index="' + i + '" alt="' + item.marque + ' ' + title + ' — photo ' + (i+1) + ' en grand format" loading="lazy" onerror="aurImgRetry(this)">';
             }).join('') +
           '</div>' +
         '</section>'
