@@ -80,10 +80,10 @@
     position:absolute;top:0;left:-150%;width:60%;height:100%;
     background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0.55) 50%,rgba(255,255,255,0) 70%,transparent 100%);
     transform:skewX(-22deg);
-    animation:aurore-shimmer 4.5s ease-in-out infinite;
+    animation:aurore-shimmer 4.5s ease-in-out 3;
     pointer-events:none;
   }
-  .btn-gold:hover::before{animation-duration:.85s;}
+  .btn-gold:hover::before{animation-duration:.85s;animation-iteration-count:infinite;}
   @keyframes aurore-shimmer{
     0%{left:-150%;}
     28%{left:150%;}
@@ -119,6 +119,8 @@
     display:flex;
     flex-direction:column;
     gap:12px;
+    position:sticky;
+    z-index:20;
   }
   .search-row{
     display:flex;
@@ -1808,6 +1810,7 @@
     </div>
     <div class="filters-row">
       <select id="brandFilter"><option value="">Toutes les marques</option></select>
+      <select id="mouvementFilter"><option value="">Tous mouvements</option></select>
       <div class="genre-toggle" id="genreToggle">
         <button data-genre="" aria-pressed="true">Tous</button>
         <button data-genre="HOMME" aria-pressed="false">Homme</button>
@@ -1818,6 +1821,7 @@
         <option value="ref">Référence</option>
         <option value="priceAsc">Prix croissant</option>
         <option value="priceDesc">Prix décroissant</option>
+        <option value="new">Nouveautés</option>
       </select>
       <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> Mes favoris (<span id="favCount">0</span>)</button>
       <button type="button" id="shareFavBtn" class="fav-toggle-btn" style="display:none;">Partager mes favoris &#8631;</button>
@@ -2133,7 +2137,17 @@
     brandFilter.appendChild(opt);
   });
 
-  var state = { q:'', brand:'', genre:'', sort:'ref', priceBucket:null };
+  // ---------- filtre mouvement (donnees reelles, valeurs propres : QUARTZ / AUTOMATIQUE / MANUEL) ----------
+  var MOUVEMENT_ORDER = ['QUARTZ', 'AUTOMATIQUE', 'MANUEL'];
+  var mouvementsPresent = Array.from(new Set(DATA.map(function(d){ return d.mouvement; })));
+  var mouvementFilter = document.getElementById('mouvementFilter');
+  MOUVEMENT_ORDER.filter(function(m){ return mouvementsPresent.indexOf(m) !== -1; }).forEach(function(m){
+    var opt = document.createElement('option');
+    opt.value = m; opt.textContent = m.charAt(0) + m.slice(1).toLowerCase();
+    mouvementFilter.appendChild(opt);
+  });
+
+  var state = { q:'', brand:'', genre:'', mouvement:'', sort:'ref', priceBucket:null };
 
   var SITE_URL = "https://arieldadji.github.io/aurore-catalogue/";
 
@@ -2203,7 +2217,26 @@
     if (!pool.length) return [];
     var num = parseInt(item.reference.replace(/\D/g, ''), 10) || 0;
     var start = num % pool.length;
-    return pool.slice(start).concat(pool.slice(0, start)).slice(0, count);
+    var ordered = pool.slice(start).concat(pool.slice(0, start));
+    // Diversifie par marque (evite par ex. plusieurs Rolex d'affilee vu le nombre de references
+    // qui partagent la meme marque) : prend d'abord une montre par marque differente, puis
+    // complete avec le reste si le nombre de marques distinctes ne suffit pas a remplir "count".
+    var picked = [];
+    var usedBrands = {};
+    ordered.forEach(function(d){
+      if (picked.length >= count) return;
+      if (!usedBrands[d.marque]){
+        picked.push(d);
+        usedBrands[d.marque] = true;
+      }
+    });
+    if (picked.length < count){
+      ordered.forEach(function(d){
+        if (picked.length >= count) return;
+        if (picked.indexOf(d) === -1) picked.push(d);
+      });
+    }
+    return picked.slice(0, count);
   }
 
   function matches(item){
@@ -2213,6 +2246,7 @@
       if (hay.indexOf(q) === -1) return false;
     }
     if (state.brand && item.marque !== state.brand) return false;
+    if (state.mouvement && item.mouvement !== state.mouvement) return false;
     if (state.genre && item.genre !== state.genre) return false;
     if (state.priceBucket && !state.priceBucket.test(item.prix)) return false;
     if (routeShowFavorites && !isFavorite(item.reference)) return false;
@@ -2223,6 +2257,7 @@
     var arr = items.slice();
     if (state.sort === 'priceAsc') arr.sort(function(a,b){return a.prix - b.prix;});
     else if (state.sort === 'priceDesc') arr.sort(function(a,b){return b.prix - a.prix;});
+    else if (state.sort === 'new') arr.sort(function(a,b){return b.reference.localeCompare(a.reference);});
     else arr.sort(function(a,b){return a.reference.localeCompare(b.reference);});
     return arr;
   }
@@ -2773,8 +2808,8 @@
 
   var resetFiltersBtn = document.getElementById('resetFiltersBtn');
   if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', function(){
-    state.q = ''; state.brand = ''; state.genre = ''; state.sort = 'ref'; state.priceBucket = null;
-    search.value = ''; brandFilter.value = ''; sortBy.value = 'ref';
+    state.q = ''; state.brand = ''; state.mouvement = ''; state.genre = ''; state.sort = 'ref'; state.priceBucket = null;
+    search.value = ''; brandFilter.value = ''; mouvementFilter.value = ''; sortBy.value = 'ref';
     syncGenreToggleUI();
     syncPriceChipsUI();
     render();
@@ -2991,6 +3026,7 @@
 
   search.addEventListener('input', function(){ state.q = search.value; render(); });
   brandFilter.addEventListener('change', function(){ state.brand = brandFilter.value; render(); });
+  mouvementFilter.addEventListener('change', function(){ state.mouvement = mouvementFilter.value; render(); });
   sortBy.addEventListener('change', function(){ state.sort = sortBy.value; render(); });
   genreToggle.addEventListener('click', function(e){
     var btn = e.target.closest('button');
@@ -3190,11 +3226,22 @@
     }, { passive: true });
   }
 
+  // ---------- barre de filtres du catalogue collee sous la nav (sticky) : decale dynamiquement
+  // selon la hauteur reelle de la nav (qui peut passer sur 2 lignes sur certaines largeurs mobiles) ----------
+  var controlsEl = document.querySelector('.controls');
+  var topnavEl = document.getElementById('topnav');
+  function updateControlsStickyOffset(){
+    if (controlsEl && topnavEl) controlsEl.style.top = topnavEl.offsetHeight + 'px';
+  }
+  window.addEventListener('resize', updateControlsStickyOffset);
+  window.addEventListener('orientationchange', updateControlsStickyOffset);
+
   renderFeatured();
   renderBrandStrip();
   renderPriceChips();
   syncPriceChipsUI();
   updateFavCount();
+  updateControlsStickyOffset();
   render();
   router();
 })();
