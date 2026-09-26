@@ -228,6 +228,13 @@
     align-items:center;
     justify-content:center;
   }
+  .filters-detailed{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+  }
   .controls input[type="search"]{
     width:100%;
     background:var(--surface);
@@ -1637,9 +1644,9 @@
   /* ---------- mobile (<=700px) : la barre de filtres complete se replie derriere un bouton "Filtres" ----------
      compact par defaut pendant le defilement ; s'ouvre en plein ecran (bottom sheet) uniquement au tap. ---------- */
   @media (max-width:700px){
-    .controls{padding:10px 16px;gap:0;}
+    .controls{padding:10px 16px;gap:10px;}
     .filters-compact-bar{display:flex;}
-    .search-row,.filters-row,.chip-row{display:none;}
+    .filters-detailed,.chip-row{display:none;}
     body.filters-panel-open{overflow:hidden;}
     body.filters-panel-open .controls{
       position:fixed;
@@ -1650,8 +1657,7 @@
       gap:14px;
       align-content:flex-start;
     }
-    body.filters-panel-open .search-row,
-    body.filters-panel-open .filters-row,
+    body.filters-panel-open .filters-detailed,
     body.filters-panel-open .chip-row{display:flex;}
     body.filters-panel-open .filters-close-btn{
       display:flex;
@@ -1932,22 +1938,24 @@
       </div>
     </div>
     <div class="filters-row">
-      <select id="brandFilter"><option value="">Toutes les marques</option></select>
-      <select id="mouvementFilter"><option value="">Tous mouvements</option></select>
-      <div class="genre-toggle" id="genreToggle">
-        <button data-genre="" aria-pressed="true">Tous</button>
-        <button data-genre="HOMME" aria-pressed="false">Homme</button>
-        <button data-genre="FEMME" aria-pressed="false">Femme</button>
-        <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
-      </div>
       <select id="sortBy">
         <option value="ref">Référence</option>
         <option value="priceAsc">Prix croissant</option>
         <option value="priceDesc">Prix décroissant</option>
         <option value="new">Nouveautés</option>
       </select>
-      <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> Mes favoris (<span id="favCount">0</span>)</button>
-      <button type="button" id="shareFavBtn" class="fav-toggle-btn" style="display:none;">Partager mes favoris &#8631;</button>
+      <div class="filters-detailed" id="filtersDetailed">
+        <select id="brandFilter"><option value="">Toutes les marques</option></select>
+        <select id="mouvementFilter"><option value="">Tous mouvements</option></select>
+        <div class="genre-toggle" id="genreToggle">
+          <button data-genre="" aria-pressed="true">Tous</button>
+          <button data-genre="HOMME" aria-pressed="false">Homme</button>
+          <button data-genre="FEMME" aria-pressed="false">Femme</button>
+          <button data-genre="MIXTE" aria-pressed="false">Mixte</button>
+        </div>
+        <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> Mes favoris (<span id="favCount">0</span>)</button>
+        <button type="button" id="shareFavBtn" class="fav-toggle-btn" style="display:none;">Partager mes favoris &#8631;</button>
+      </div>
     </div>
     <div class="chip-row" id="priceChipRow"></div>
   </div>
@@ -2908,7 +2916,6 @@
     function focusSearch(){
       var s = document.getElementById('search');
       if (!s) return;
-      openFiltersPanel();
       s.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
       setTimeout(function(){ s.focus(); }, reduceMotion ? 0 : 320);
     }
@@ -2960,7 +2967,6 @@
     if (state.brand) chips.push({ type:'brand', label: state.brand });
     if (state.mouvement) chips.push({ type:'mouvement', label: humanMouvementLabel(state.mouvement) });
     if (state.priceBucket) chips.push({ type:'price', label: state.priceBucket.label });
-    if (state.q.trim()) chips.push({ type:'q', label: '« ' + state.q.trim() + ' »' });
     activeFilterChipsEl.innerHTML = chips.map(function(c){
       return '<span class="active-chip" data-filter-type="' + c.type + '">' + c.label +
         '<button type="button" class="chip-remove" data-filter-type="' + c.type + '" aria-label="Retirer ce filtre">&times;</button></span>';
