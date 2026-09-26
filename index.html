@@ -1797,10 +1797,17 @@
 
   var state = { q:'', brand:'', genre:'', sort:'ref', priceBucket:null };
 
+  var SITE_URL = "https://arieldadji.github.io/aurore-catalogue/";
+
+  function watchUrl(item){
+    return SITE_URL + "#/watch/" + item.reference;
+  }
+
   function waLink(item){
     var name = item.modele ? (item.marque + " " + item.modele) : item.marque;
     var msg = "Bonjour Aurore, je suis intéressé(e) par la montre " + name +
-      " — Réf " + item.reference + " (" + item.prix.toLocaleString('fr-FR') + " FCFA). Est-elle disponible ?";
+      " — Réf " + item.reference + " (" + item.prix.toLocaleString('fr-FR') + " FCFA). Est-elle disponible ?\n" +
+      watchUrl(item);
     return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
   }
 
