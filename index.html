@@ -1644,11 +1644,32 @@
   /* ---------- mobile (<=700px) : la barre de filtres complete se replie derriere un bouton "Filtres" ----------
      compact par defaut pendant le defilement ; s'ouvre en plein ecran (bottom sheet) uniquement au tap. ---------- */
   @media (max-width:700px){
-    .controls{padding:10px 16px;gap:10px;}
-    .filters-compact-bar{display:flex;}
+    /* Etat replie : Filtres + recherche + tri tiennent tous sur UNE seule ligne compacte
+       (demande explicite d'Ariel) — les 3 conteneurs d'origine (compact-bar/search-row/
+       filters-row) passent en display:contents pour que leurs enfants deviennent des
+       elements flex directs de .controls, reordonnables/redimensionnables librement,
+       sans dupliquer aucun element (un seul #search, un seul #sortBy dans le DOM). */
+    .controls{
+      padding:8px 16px;
+      gap:8px;
+      flex-direction:row;
+      flex-wrap:nowrap;
+      align-items:center;
+    }
+    .filters-compact-bar{display:contents;}
+    .search-row{display:contents;}
+    .filters-row{display:contents;}
+    .filters-toggle-btn{order:1;flex:0 0 auto;padding:8px 10px;font-size:12px;white-space:nowrap;}
+    .active-chips-row{display:none;}
+    .search-wrap{order:2;flex:1 1 auto;min-width:0;max-width:none;}
+    .search-wrap .search-icon{left:9px;width:13px;height:13px;}
+    .controls input[type="search"]{padding:8px 8px 8px 28px;font-size:12.5px;}
+    #sortBy{order:3;flex:0 0 auto;max-width:112px;font-size:11px;padding:8px 20px 8px 8px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
     .filters-detailed,.chip-row{display:none;}
     body.filters-panel-open{overflow:hidden;}
     body.filters-panel-open .controls{
+      display:flex;
+      flex-direction:column;
       position:fixed;
       inset:0;
       z-index:50;
@@ -1657,6 +1678,13 @@
       gap:14px;
       align-content:flex-start;
     }
+    body.filters-panel-open .filters-compact-bar,
+    body.filters-panel-open .search-row,
+    body.filters-panel-open .filters-row{display:flex;}
+    body.filters-panel-open .active-chips-row{display:flex;}
+    body.filters-panel-open .search-wrap{max-width:420px;}
+    body.filters-panel-open .controls input[type="search"]{padding:9px 14px 9px 38px;font-size:13.5px;}
+    body.filters-panel-open #sortBy{max-width:none;font-size:13px;padding:9px 12px;text-overflow:clip;overflow:visible;white-space:normal;}
     body.filters-panel-open .filters-detailed,
     body.filters-panel-open .chip-row{display:flex;}
     body.filters-panel-open .filters-close-btn{
