@@ -40,15 +40,34 @@
 
   /* ---------- buttons (shared) ---------- */
   .btn-gold{
+    position:relative;
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     background:var(--cta-bg);color:var(--cta-text);font-weight:600;font-size:13.5px;
     padding:12px 26px;border-radius:999px;text-decoration:none;letter-spacing:0.02em;
-    border:none;cursor:pointer;
+    border:none;cursor:pointer;overflow:hidden;
     transition:transform .18s ease, background .18s ease, box-shadow .18s ease;
   }
   .btn-gold:hover{transform:translateY(-2px);background:var(--cta-bg-hover);box-shadow:0 6px 16px rgba(200,155,60,0.35);}
   .btn-gold:active{transform:translateY(0);}
   .btn-gold svg{width:16px;height:16px;flex:none;}
+  /* ---------- effet "shimmer" (reflet lumineux discret) sur les boutons d'action dorés ---------- */
+  .btn-gold::before{
+    content:'';
+    position:absolute;top:0;left:-150%;width:60%;height:100%;
+    background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0.55) 50%,rgba(255,255,255,0) 70%,transparent 100%);
+    transform:skewX(-22deg);
+    animation:aurore-shimmer 4.5s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .btn-gold:hover::before{animation-duration:.85s;}
+  @keyframes aurore-shimmer{
+    0%{left:-150%;}
+    28%{left:150%;}
+    100%{left:150%;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .btn-gold::before{animation:none;display:none;}
+  }
   .btn-outline{
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     background:transparent;color:var(--text);font-weight:600;font-size:13.5px;
@@ -1158,6 +1177,78 @@
   /* ---------- empty state / réinitialiser les filtres ---------- */
   .empty .btn-gold-outline{margin-top:16px;}
 
+  /* ---------- skip link (accessibilité) ---------- */
+  .skip-link{
+    position:absolute;
+    left:-9999px;
+    top:0;
+    background:var(--gold);
+    color:#1c1204;
+    font-family:'Montserrat',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    padding:12px 20px;
+    z-index:999;
+    text-decoration:none;
+    border-radius:0 0 4px 0;
+  }
+  .skip-link:focus{left:0;}
+
+  /* ---------- "Nos marques" (parcourir par marque, sur la page d'accueil) ---------- */
+  .brand-pill-row{
+    display:flex;flex-wrap:wrap;gap:10px;
+    justify-content:center;
+    margin-top:8px;
+  }
+  .brand-pill{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Montserrat',sans-serif;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .brand-pill:hover{background:var(--gold);border-color:var(--gold);color:#1c1204;}
+
+  /* ---------- apparition au défilement (fade-in + léger déplacement, avec effet cascade via transition-delay) ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .55s ease, transform .55s ease;
+  }
+  .reveal.revealed{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  /* ---------- transition douce entre les vues (accueil / collection / fiche produit / pages) ---------- */
+  .view{transition:opacity .18s ease;}
+  .view.view-leaving,.view.view-entering{opacity:0;}
+  @media (prefers-reduced-motion: reduce){
+    .view{transition:none;}
+  }
+
+  /* ---------- crossfade vers la 2e photo au survol de la carte (desktop) ---------- */
+  .card .thumb img.thumb-alt{
+    position:absolute;top:0;left:0;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .card .thumb:hover img.thumb-alt{opacity:1;}
+
+  /* ---------- ouverture en fondu/zoom du visualiseur plein écran ---------- */
+  @media (prefers-reduced-motion: no-preference){
+    .zoom-overlay.open{animation:aurore-zoom-in .28s cubic-bezier(0.16,1,0.3,1);}
+  }
+  @keyframes aurore-zoom-in{
+    0%{opacity:0;transform:scale(0.97);}
+    100%{opacity:1;transform:scale(1);}
+  }
+
   @media (max-width:700px){
     .collections-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
     .collection-tile-label{font-size:13px;padding:12px 8px;}
@@ -1167,6 +1258,7 @@
   }
 </style>
 
+<a href="#" class="skip-link" id="skipLink">Aller au contenu principal</a>
 <nav class="topnav" id="topnav">
   <a class="topnav-brand" href="#/">
     <img class="topnav-logo" src="logo.png" alt="Aurore">
@@ -1232,6 +1324,16 @@
       <div class="section-cta-row">
         <a class="btn-gold-outline" href="#/collection">Voir toute la collection</a>
       </div>
+    </div>
+  </section>
+
+  <section class="section-black" id="brands">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow-label">Nos marques</p>
+        <h2>Parcourez par marque</h2>
+      </div>
+      <div class="brand-pill-row" id="brandPillRow"></div>
     </div>
   </section>
 
@@ -1939,11 +2041,14 @@
 
   function cardHTML(item){
     var title = titleOf(item);
-    var thumbSrc = item.photos && item.photos.length ? item.photos[0] : '';
+    var photos = item.photos || [];
+    var thumbSrc = photos.length ? photos[0] : '';
+    var altSrc = photos.length > 1 ? photos[1] : '';
     return (
       '<div class="thumb">' +
         '<span class="ref-badge">' + item.reference + '</span>' +
         '<img src="' + thumbSrc + '" alt="' + item.marque + ' ' + title + '" loading="lazy">' +
+        (altSrc ? '<img class="thumb-alt" src="' + altSrc + '" alt="" loading="lazy">' : '') +
       '</div>' +
       '<div class="body">' +
         '<div class="eyebrow">' + item.marque + '</div>' +
@@ -1958,10 +2063,28 @@
     );
   }
 
+  // ---------- apparition au défilement (fade-in + effet cascade), désactivée si "réduire les animations" ----------
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var revealObserver = (!reduceMotion && 'IntersectionObserver' in window) ? new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }) : null;
+  function reveal(el, index){
+    if (!el || reduceMotion) return;
+    el.classList.add('reveal');
+    el.style.transitionDelay = Math.min((index || 0) * 45, 360) + 'ms';
+    if (revealObserver) revealObserver.observe(el);
+    else el.classList.add('revealed');
+  }
+
   function render(){
     var filtered = sortItems(DATA.filter(matches));
     grid.innerHTML = '';
-    filtered.forEach(function(item){
+    filtered.forEach(function(item, i){
       var card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = cardHTML(item);
@@ -1970,6 +2093,7 @@
         location.hash = '#/watch/' + item.reference;
       });
       grid.appendChild(card);
+      reveal(card, i);
     });
     emptyState.style.display = filtered.length ? 'none' : 'block';
     countLine.textContent = filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée');
@@ -1985,7 +2109,7 @@
     }).filter(Boolean);
     items.sort(function(a, b){ return a.prix - b.prix; }); // moins chère en premier, plus chère en dernier
     featuredGrid.innerHTML = '';
-    items.forEach(function(item){
+    items.forEach(function(item, i){
       var card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = cardHTML(item);
@@ -1994,6 +2118,7 @@
         location.hash = '#/watch/' + item.reference;
       });
       featuredGrid.appendChild(card);
+      reveal(card, i);
     });
   }
 
@@ -2049,6 +2174,44 @@
     state.priceBucket = (idx === '-1') ? null : priceBuckets[idx];
     syncPriceChipsUI();
     render();
+  });
+
+  // ---------- "Nos marques" homepage strip — real distinct brand names from DATA, click filters the collection ----------
+  function renderBrandStrip(){
+    var el = document.getElementById('brandPillRow');
+    if (!el) return;
+    var brandsList = Array.from(new Set(DATA.map(function(d){ return d.marque; }))).sort();
+    el.innerHTML = brandsList.map(function(b){
+      return '<button type="button" class="brand-pill" data-brand="' + b + '">' + b.charAt(0) + b.slice(1).toLowerCase() + '</button>';
+    }).join('');
+  }
+  var brandPillRow = document.getElementById('brandPillRow');
+  if (brandPillRow) brandPillRow.addEventListener('click', function(e){
+    var btn = e.target.closest('.brand-pill');
+    if (!btn) return;
+    var b = btn.getAttribute('data-brand');
+    state.brand = b;
+    state.genre = '';
+    brandFilter.value = b;
+    syncGenreToggleUI();
+    if (parseHash().route === 'collection'){
+      render();
+      window.scrollTo(0, 0);
+    } else {
+      location.hash = '#/collection';
+    }
+  });
+
+  // ---------- skip link (accessibilité) — saute au contenu de la vue actuellement affichée ----------
+  var skipLink = document.getElementById('skipLink');
+  if (skipLink) skipLink.addEventListener('click', function(e){
+    e.preventDefault();
+    var visible = document.querySelector('.view:not([hidden])');
+    if (visible){
+      if (!visible.hasAttribute('tabindex')) visible.setAttribute('tabindex', '-1');
+      visible.focus();
+      visible.scrollIntoView();
+    }
   });
 
   // ---------- keeps the genre-toggle UI in sync when the filter is set programmatically (e.g. from #/collection/:genre) ----------
@@ -2298,17 +2461,41 @@
     });
   }
 
-  function showView(id){
-    views.forEach(function(v){ v.hidden = (v.id !== id); });
+  // ---------- transition douce entre vues : fondu de sortie/entrée sur navigation, jamais sur le tout premier affichage ----------
+  var routeCount = 0;
+  var pendingViewSwitch = null;
+  function showView(id, animate){
+    var next = document.getElementById(id);
+    // annule tout changement de vue déjà programmé et nettoie les classes de transition
+    // résiduelles, pour qu'une navigation rapide (deux hashchange coup sur coup) ne laisse
+    // jamais un minuteur périmé refermer la mauvaise vue plus tard.
+    if (pendingViewSwitch){ clearTimeout(pendingViewSwitch); pendingViewSwitch = null; }
+    views.forEach(function(v){ v.classList.remove('view-leaving'); v.classList.remove('view-entering'); });
+    var current = views.filter(function(v){ return !v.hidden; })[0];
+    if (!next || !animate || reduceMotion || !current || current === next){
+      views.forEach(function(v){ v.hidden = (v.id !== id); });
+      return;
+    }
+    current.classList.add('view-leaving');
+    pendingViewSwitch = setTimeout(function(){
+      pendingViewSwitch = null;
+      views.forEach(function(v){ v.hidden = (v.id !== id); });
+      next.classList.add('view-entering');
+      void next.offsetWidth; // force le reflow pour que la transition d'entrée s'applique
+      next.classList.remove('view-entering');
+      current.classList.remove('view-leaving');
+    }, 150);
   }
 
   function router(){
     var r = parseHash();
+    var animate = routeCount > 0;
+    routeCount++;
     if (r.route === 'watch' && r.param){
       var item = DATA.filter(function(d){ return d.reference === r.param; })[0];
       if (item){
         renderProductPage(item);
-        showView('view-product');
+        showView('view-product', animate);
         updateNavActive('');
       } else {
         location.hash = '#/';
@@ -2316,19 +2503,19 @@
       }
     } else if (r.route === 'about'){
       currentSlider = null;
-      showView('view-about');
+      showView('view-about', animate);
       updateNavActive('about');
     } else if (r.route === 'service'){
       currentSlider = null;
-      showView('view-service');
+      showView('view-service', animate);
       updateNavActive('service');
     } else if (r.route === 'complaint'){
       currentSlider = null;
-      showView('view-complaint');
+      showView('view-complaint', animate);
       updateNavActive('complaint');
     } else if (r.route === 'collection'){
       currentSlider = null;
-      showView('view-collection');
+      showView('view-collection', animate);
       updateNavActive('collection');
       var genreParam = r.param ? r.param.toUpperCase() : '';
       state.genre = (genreParam === 'HOMME' || genreParam === 'FEMME' || genreParam === 'MIXTE') ? genreParam : '';
@@ -2336,7 +2523,7 @@
       render();
     } else {
       currentSlider = null;
-      showView('view-home');
+      showView('view-home', animate);
       updateNavActive('home');
     }
     window.scrollTo(0, 0);
@@ -2344,7 +2531,32 @@
 
   window.addEventListener('hashchange', router);
 
+  // ---------- apparition au défilement pour les sections statiques (tuiles, cartes valeurs, étapes, histoire) ----------
+  Array.prototype.forEach.call(document.querySelectorAll('.collection-tile'), function(el, i){ reveal(el, i); });
+  Array.prototype.forEach.call(document.querySelectorAll('.value-card'), function(el, i){ reveal(el, i); });
+  Array.prototype.forEach.call(document.querySelectorAll('.process-step'), function(el, i){ reveal(el, i); });
+  reveal(document.querySelector('.story-media'), 0);
+  reveal(document.querySelector('.story-copy'), 1);
+
+  // ---------- effet parallaxe discret sur le hero (l'image de fond défile un peu plus lentement que le contenu) ----------
+  var heroEl = document.getElementById('hero');
+  if (heroEl && !reduceMotion){
+    var parallaxTicking = false;
+    window.addEventListener('scroll', function(){
+      if (parallaxTicking) return;
+      parallaxTicking = true;
+      requestAnimationFrame(function(){
+        var y = window.scrollY || 0;
+        if (y < heroEl.offsetHeight + 200){
+          heroEl.style.backgroundPosition = 'center calc(30% + ' + Math.round(y * 0.25) + 'px)';
+        }
+        parallaxTicking = false;
+      });
+    }, { passive: true });
+  }
+
   renderFeatured();
+  renderBrandStrip();
   renderPriceChips();
   syncPriceChipsUI();
   render();
