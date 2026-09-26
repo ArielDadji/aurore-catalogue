@@ -2048,12 +2048,14 @@
   // au premier chargement (coupure, timeout) — on retente une fois après un court délai
   // avant d'abandonner (évite les vignettes qui restent vides côté client alors que le
   // fichier existe bel et bien sur le serveur).
-  function aurImgRetry(img){
+  // Exposée sur window : appelée depuis des attributs HTML onerror="aurImgRetry(this)",
+  // qui s'exécutent dans le scope global — pas dans cette IIFE.
+  window.aurImgRetry = function(img){
     if (img.dataset.aurRetried) return;
     img.dataset.aurRetried = '1';
     var base = img.src.split('?')[0];
     setTimeout(function(){ img.src = base + '?r=' + Date.now(); }, 1200);
-  }
+  };
 
   function cardHTML(item){
     var title = titleOf(item);
