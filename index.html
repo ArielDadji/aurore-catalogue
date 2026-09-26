@@ -2099,6 +2099,11 @@
     else el.classList.add('revealed');
   }
 
+  // Position de défilement du catalogue à restaurer au prochain retour sur #/collection
+  // (posée juste avant d'ouvrir une fiche produit depuis la grille) — null = pas de
+  // restauration en attente, on revient en haut comme d'habitude.
+  var pendingCollectionScroll = null;
+
   function render(){
     var filtered = sortItems(DATA.filter(matches));
     grid.innerHTML = '';
@@ -2108,6 +2113,10 @@
       card.innerHTML = cardHTML(item);
       card.addEventListener('click', function(e){
         if (e.target.closest('.order-btn')) return;
+        // Mémorise la position de défilement du catalogue avant d'ouvrir la fiche,
+        // pour que "Retour au catalogue" puisse y replacer le visiteur au lieu de
+        // toujours renvoyer en haut de la liste (demande explicite d'Ariel, 2026-09-26).
+        pendingCollectionScroll = window.scrollY;
         location.hash = '#/watch/' + item.reference;
       });
       grid.appendChild(card);
@@ -2482,7 +2491,7 @@
   // ---------- transition douce entre vues : fondu de sortie/entrée sur navigation, jamais sur le tout premier affichage ----------
   var routeCount = 0;
   var pendingViewSwitch = null;
-  function showView(id, animate){
+  function showView(id, animate, onShown){
     var next = document.getElementById(id);
     // annule tout changement de vue déjà programmé et nettoie les classes de transition
     // résiduelles, pour qu'une navigation rapide (deux hashchange coup sur coup) ne laisse
@@ -2492,6 +2501,7 @@
     var current = views.filter(function(v){ return !v.hidden; })[0];
     if (!next || !animate || reduceMotion || !current || current === next){
       views.forEach(function(v){ v.hidden = (v.id !== id); });
+      if (onShown) onShown();
       return;
     }
     current.classList.add('view-leaving');
@@ -2502,6 +2512,7 @@
       void next.offsetWidth; // force le reflow pour que la transition d'entrée s'applique
       next.classList.remove('view-entering');
       current.classList.remove('view-leaving');
+      if (onShown) onShown();
     }, 150);
   }
 
@@ -2509,11 +2520,24 @@
     var r = parseHash();
     var animate = routeCount > 0;
     routeCount++;
+    // Décide où défiler une fois la vue cible effectivement visible (voir showView) —
+    // avec une transition animée, la vue ne devient réellement visible qu'après son
+    // délai de fondu de ~150ms, donc défiler avant ce moment-là mesurerait la hauteur
+    // de l'ancienne page et non celle de la nouvelle (le restore de scroll échouait
+    // silencieusement à cause de ça avant ce correctif).
+    function scrollAfterShown(){
+      if (r.route === 'collection' && !r.param && pendingCollectionScroll !== null){
+        window.scrollTo(0, pendingCollectionScroll);
+        pendingCollectionScroll = null;
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
     if (r.route === 'watch' && r.param){
       var item = DATA.filter(function(d){ return d.reference === r.param; })[0];
       if (item){
         renderProductPage(item);
-        showView('view-product', animate);
+        showView('view-product', animate, scrollAfterShown);
         updateNavActive('');
       } else {
         location.hash = '#/';
@@ -2521,30 +2545,29 @@
       }
     } else if (r.route === 'about'){
       currentSlider = null;
-      showView('view-about', animate);
+      showView('view-about', animate, scrollAfterShown);
       updateNavActive('about');
     } else if (r.route === 'service'){
       currentSlider = null;
-      showView('view-service', animate);
+      showView('view-service', animate, scrollAfterShown);
       updateNavActive('service');
     } else if (r.route === 'complaint'){
       currentSlider = null;
-      showView('view-complaint', animate);
+      showView('view-complaint', animate, scrollAfterShown);
       updateNavActive('complaint');
     } else if (r.route === 'collection'){
       currentSlider = null;
-      showView('view-collection', animate);
-      updateNavActive('collection');
       var genreParam = r.param ? r.param.toUpperCase() : '';
       state.genre = (genreParam === 'HOMME' || genreParam === 'FEMME' || genreParam === 'MIXTE') ? genreParam : '';
       syncGenreToggleUI();
       render();
+      showView('view-collection', animate, scrollAfterShown);
+      updateNavActive('collection');
     } else {
       currentSlider = null;
-      showView('view-home', animate);
+      showView('view-home', animate, scrollAfterShown);
       updateNavActive('home');
     }
-    window.scrollTo(0, 0);
   }
 
   window.addEventListener('hashchange', router);
