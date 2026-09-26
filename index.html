@@ -1453,6 +1453,96 @@
     .bottom-nav{display:flex;}
     body{padding-bottom:calc(58px + env(safe-area-inset-bottom,0px));}
   }
+  body.has-sticky-order .bottom-nav{display:none;}
+
+  /* ---------- partage (fiche produit) ---------- */
+  .product-actions-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:2px 0 14px;}
+  .product-actions-row .fav-btn-inline{margin:0;}
+  .share-btn{
+    border-radius:999px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'Montserrat',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    padding:8px 14px;
+    gap:7px;
+    display:inline-flex;
+    align-items:center;
+    cursor:pointer;
+  }
+  .share-btn:hover{border-color:var(--gold-deep);}
+  .share-btn svg{width:14px;height:14px;flex:none;}
+
+  /* ---------- bouton secondaire "Poser une question" ---------- */
+  .order-btn-secondary{
+    margin-top:8px;
+    background:transparent;
+    border:1px solid var(--gold-deep);
+    color:var(--gold-price);
+  }
+  .order-btn-secondary:hover{background:rgba(146,112,41,0.08);}
+
+  /* ---------- badges de confiance (fiche produit) ---------- */
+  .trust-badges{
+    list-style:none;
+    margin:12px 0 0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .trust-badges li{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-family:'Montserrat',sans-serif;
+    font-size:11.5px;
+    color:var(--ink-muted);
+  }
+  .trust-badges li .tb-check{color:var(--gold-deep);font-weight:700;}
+
+  /* ---------- barre de commande fixe (fiche produit, mobile) — remplace la bottom-nav sur cette page ---------- */
+  .sticky-order-bar{
+    display:none;
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:41;
+    background:#000;
+    border-top:1px solid var(--line);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .sob-price{
+    color:var(--text);
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:17px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .sob-price small{font-family:'Montserrat',sans-serif;font-size:10.5px;color:var(--text-muted,#B8B2A4);margin-left:2px;}
+  .sob-btn{
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:var(--gold);
+    color:#000;
+    text-decoration:none;
+    font-family:'Montserrat',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    padding:11px 18px;
+    border-radius:999px;
+  }
+  @media (max-width:700px){
+    .sticky-order-bar.visible{display:flex;}
+  }
 </style>
 
 <a href="#" class="skip-link" id="skipLink">Aller au contenu principal</a>
@@ -1489,6 +1579,11 @@
     <span>WhatsApp</span>
   </a>
 </nav>
+
+<div class="sticky-order-bar" id="stickyOrderBar">
+  <span class="sob-price" id="sobPrice"></span>
+  <a class="sob-btn" id="sobBtn" target="_blank" rel="noopener">Commander</a>
+</div>
 
 <main id="view-home" class="view">
   <section class="hero-v2" id="hero" style="background-image:url('carousel/AUR-004/2.jpg')">
@@ -1719,6 +1814,7 @@
         <option value="priceDesc">Prix décroissant</option>
       </select>
       <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> Mes favoris (<span id="favCount">0</span>)</button>
+      <button type="button" id="shareFavBtn" class="fav-toggle-btn" style="display:none;">Partager mes favoris &#8631;</button>
     </div>
     <div class="chip-row" id="priceChipRow"></div>
   </div>
@@ -2045,6 +2141,46 @@
       " — Réf " + item.reference + " (" + item.prix.toLocaleString('fr-FR') + " FCFA). Est-elle disponible ?\n" +
       watchUrl(item);
     return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+  }
+
+  // ---------- lien WhatsApp pour "Poser une question" (parcours distinct de la commande) ----------
+  function waQuestionLink(item){
+    var name = item.modele ? (item.marque + " " + item.modele) : item.marque;
+    var msg = "Bonjour Aurore, j'ai une question à propos de la montre " + name +
+      " — Réf " + item.reference + ".\n" + watchUrl(item);
+    return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
+  }
+
+  // ---------- partager une fiche montre (API de partage native si dispo, sinon copie du lien) ----------
+  function shareWatch(item, btnEl){
+    var name = item.modele ? (item.marque + " " + item.modele) : item.marque;
+    var url = watchUrl(item);
+    if (navigator.share){
+      navigator.share({ title: 'Aurore — ' + name, text: 'Regarde cette montre chez Aurore : ' + name, url: url }).catch(function(){});
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(function(){
+        if (btnEl){
+          var original = btnEl.textContent;
+          btnEl.textContent = 'Lien copié !';
+          setTimeout(function(){ btnEl.innerHTML = original; }, 1800);
+        }
+      }).catch(function(){});
+    }
+  }
+
+  // ---------- partager la liste des favoris sur WhatsApp (aucun numero pré-rempli — l'utilisateur choisit son propre contact) ----------
+  function shareFavoritesList(){
+    var favs = getFavorites();
+    var items = DATA.filter(function(d){ return favs.indexOf(d.reference) !== -1; });
+    if (!items.length) return;
+    var lines = items.map(function(it){
+      var n = it.modele ? (it.marque + " " + it.modele) : it.marque;
+      return "• " + n + " — " + it.prix.toLocaleString('fr-FR') + " FCFA\n" + watchUrl(it);
+    });
+    var msg = "Voici les montres Aurore que j'aime :\n\n" + lines.join("\n\n");
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
   }
 
   function titleOf(item){
@@ -2454,6 +2590,8 @@
     countLine.textContent = routeShowFavorites
       ? (filtered.length + (filtered.length > 1 ? ' favoris' : ' favori'))
       : (filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée'));
+    var shareFavBtnEl = document.getElementById('shareFavBtn');
+    if (shareFavBtnEl) shareFavBtnEl.style.display = (routeShowFavorites && filtered.length) ? 'inline-flex' : 'none';
   }
 
   // ---------- "Sélection Aurore" — curated homepage picks (real products, chosen for genre/price variety) ----------
@@ -2561,6 +2699,17 @@
 
   // ---------- favoris — écouteur délégué global, couvre toutes les cartes (grille, "Sélection Aurore", produits similaires) et le bouton inline de la fiche produit ----------
   document.addEventListener('click', function(e){
+    var shareBtn = e.target.closest('#shareWatchBtn');
+    if (shareBtn){
+      var r = parseHash();
+      if (r.route === 'watch' && r.param){
+        var shareItem = DATA.filter(function(d){ return d.reference === r.param; })[0];
+        if (shareItem) shareWatch(shareItem, shareBtn);
+      }
+      return;
+    }
+    var shareFavBtnEl = e.target.closest('#shareFavBtn');
+    if (shareFavBtnEl){ shareFavoritesList(); return; }
     var favBtn = e.target.closest('.fav-btn');
     if (!favBtn) return;
     e.preventDefault();
@@ -2663,7 +2812,10 @@
       '<div class="product-info">' +
         '<div class="eyebrow">' + item.marque + '</div>' +
         '<h1 class="product-title">' + title + '</h1>' +
-        '<button type="button" class="fav-btn fav-btn-inline' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span><span class="fav-label">' + (isFavorite(item.reference) ? 'Dans vos favoris' : 'Ajouter aux favoris') + '</span></button>' +
+        '<div class="product-actions-row">' +
+          '<button type="button" class="fav-btn fav-btn-inline' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span><span class="fav-label">' + (isFavorite(item.reference) ? 'Dans vos favoris' : 'Ajouter aux favoris') + '</span></button>' +
+          '<button type="button" class="share-btn" id="shareWatchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>Partager</button>' +
+        '</div>' +
         '<div class="fiche-specs-table">' +
           '<div class="cell"><span class="k">MARQUE</span><span class="v">' + item.marque + '</span></div>' +
           '<div class="cell"><span class="k">MATIÈRE</span><span class="v">' + item.matiere + '</span></div>' +
@@ -2677,6 +2829,12 @@
           '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.501c0 2.366.66 4.575 1.804 6.463L3 29l7.213-2.267a12.44 12.44 0 0 0 5.788 1.47h.005c6.893 0 12.5-5.607 12.5-12.5C28.506 8.607 22.899 3 16.001 3zm0 22.727h-.004a10.2 10.2 0 0 1-5.2-1.424l-.373-.222-3.868 1.216 1.24-3.77-.243-.387a10.2 10.2 0 0 1-1.566-5.44c0-5.646 4.596-10.24 10.246-10.24 2.737 0 5.31 1.067 7.244 3.003a10.17 10.17 0 0 1 2.995 7.244c0 5.646-4.596 10.24-10.47 10.02zm5.611-7.65c-.307-.154-1.816-.897-2.098-1-.281-.103-.486-.154-.69.154-.205.307-.792 1-.972 1.205-.179.205-.358.23-.665.077-.307-.154-1.296-.478-2.469-1.523-.912-.813-1.528-1.817-1.707-2.124-.179-.307-.019-.473.135-.626.138-.138.307-.358.46-.538.154-.179.205-.307.307-.512.103-.205.051-.384-.026-.538-.077-.154-.69-1.664-.945-2.28-.249-.6-.502-.518-.69-.528-.179-.009-.384-.011-.588-.011-.205 0-.538.077-.82.384-.281.307-1.074 1.05-1.074 2.561 0 1.51 1.099 2.97 1.252 3.175.154.205 2.163 3.305 5.24 4.634.732.316 1.303.505 1.748.646.734.233 1.402.2 1.93.121.589-.088 1.816-.743 2.072-1.46.256-.717.256-1.332.179-1.46-.077-.128-.281-.205-.588-.36z"/></svg>' +
           'Commander sur WhatsApp' +
         '</a>' +
+        '<a class="order-btn order-btn-secondary" style="display:flex;" href="' + waQuestionLink(item) + '" target="_blank" rel="noopener">Poser une question</a>' +
+        '<ul class="trust-badges">' +
+          '<li><span class="tb-check">&#10003;</span> Montre vérifiée avant l\'envoi</li>' +
+          '<li><span class="tb-check">&#10003;</span> Vérification possible à la livraison</li>' +
+          '<li><span class="tb-check">&#10003;</span> Garantie 45 jours</li>' +
+        '</ul>' +
         '<div class="fiche-text">' +
           '<div>' +
             '<div class="block-label">CONTENU</div>' +
@@ -2919,6 +3077,11 @@
     var animate = routeCount > 0;
     routeCount++;
     routeShowFavorites = false;
+    if (r.route !== 'watch'){
+      document.body.classList.remove('has-sticky-order');
+      var stickyBarElReset = document.getElementById('stickyOrderBar');
+      if (stickyBarElReset) stickyBarElReset.classList.remove('visible');
+    }
     // Décide où défiler une fois la vue cible effectivement visible (voir showView) —
     // avec une transition animée, la vue ne devient réellement visible qu'après son
     // délai de fondu de ~150ms, donc défiler avant ce moment-là mesurerait la hauteur
@@ -2939,6 +3102,13 @@
         showView('view-product', animate, scrollAfterShown);
         updateNavActive('');
         document.title = item.marque + ' ' + titleOf(item) + ' — Aurore';
+        var sobPriceEl = document.getElementById('sobPrice');
+        var sobBtnEl = document.getElementById('sobBtn');
+        var stickyBarEl = document.getElementById('stickyOrderBar');
+        if (sobPriceEl) sobPriceEl.innerHTML = item.prix.toLocaleString('fr-FR') + '<small>FCFA</small>';
+        if (sobBtnEl) sobBtnEl.href = waLink(item);
+        if (stickyBarEl) stickyBarEl.classList.add('visible');
+        document.body.classList.add('has-sticky-order');
       } else {
         location.hash = '#/';
         return;
