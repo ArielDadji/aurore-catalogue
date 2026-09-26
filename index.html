@@ -211,6 +211,22 @@
     color:#1c1204;
     font-weight:600;
   }
+  .fav-toggle-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'Montserrat',sans-serif;
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:border-color .18s ease;
+  }
+  .fav-toggle-btn:hover{border-color:var(--gold-deep);}
+  .fav-toggle-btn .fav-icon{color:var(--gold-price);}
   .genre-toggle button[aria-pressed="true"]:hover{
     background:var(--gold);
     color:#1c1204;
@@ -269,6 +285,48 @@
     border:1px solid var(--line);
     border-radius:999px;
   }
+  /* ---------- favoris (coeur) — sur les vignettes et en version texte sur la fiche produit ---------- */
+  .fav-btn{
+    position:absolute;top:8px;right:8px;
+    width:32px;height:32px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.55);
+    border:none;
+    color:#F8F5EE;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .15s ease, background .15s ease, color .15s ease;
+    z-index:2;
+  }
+  .fav-btn:hover{background:rgba(0,0,0,0.75);}
+  .fav-btn.active{color:var(--gold);}
+  .fav-btn.active .fav-icon{transform:scale(1.15);}
+  .fav-btn:active{transform:scale(0.88);}
+  .fav-icon{display:inline-block;transition:transform .18s ease;line-height:1;}
+  .fav-btn-inline{
+    position:static;
+    width:auto;height:auto;
+    border-radius:999px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'Montserrat',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    padding:8px 14px;
+    gap:7px;
+    display:inline-flex;
+    align-items:center;
+    margin:2px 0 14px;
+    align-self:flex-start;
+  }
+  .fav-btn-inline:hover{border-color:var(--gold-deep);background:var(--surface);}
+  .fav-btn-inline.active{border-color:var(--gold);color:var(--gold-price);}
+  .fav-btn-inline .fav-icon{font-size:15px;}
   .card .body{
     padding:14px 14px 16px;
     display:flex;
@@ -600,6 +658,21 @@
     flex-direction:column;
     gap:16px;
   }
+  .related-products{
+    max-width:1100px;
+    margin:44px auto 0;
+    padding:32px 0 8px;
+    border-top:1px solid var(--line);
+  }
+  .related-products-title{
+    font-family:'Playfair Display',Georgia,serif;
+    color:var(--gold-price);
+    font-size:19px;
+    margin:0 0 18px;
+    text-align:center;
+    letter-spacing:0.02em;
+  }
+  .related-products .grid{padding:0 0 10px;}
   .full-gallery-grid img{
     width:100%;
     max-height:82vh;
@@ -1095,6 +1168,47 @@
     gap:22px;
   }
   .step{text-align:center;}
+  .faq-list{
+    max-width:760px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .faq-item{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:4px 18px;
+  }
+  .faq-item summary{
+    cursor:pointer;
+    list-style:none;
+    padding:14px 28px 14px 0;
+    font-family:'Montserrat',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--ink);
+    position:relative;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:'+';
+    position:absolute;
+    right:0;top:50%;
+    transform:translateY(-50%);
+    font-size:20px;
+    color:var(--gold-price);
+    transition:transform .2s ease;
+  }
+  .faq-item[open] summary::after{content:'\2212';}
+  .faq-item p{
+    margin:0 0 16px;
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--ink-muted);
+  }
+  .faq-item p a{color:var(--gold-price);}
   .step-num{
     display:inline-flex;align-items:center;justify-content:center;
     width:34px;height:34px;border-radius:50%;
@@ -1447,6 +1561,45 @@
     </div>
   </section>
 
+  <section class="section-ivory" id="faq">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow-label">Questions fréquentes</p>
+        <h2>Vous vous posez une question ?</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Comment commander une montre ?</summary>
+          <p>Ouvrez la fiche de la montre qui vous plaît et appuyez sur « Commander sur WhatsApp ». Un message pré-rempli s'ouvre avec la référence, le prix et le lien de la montre — il ne vous reste qu'à l'envoyer.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment se passe le paiement ?</summary>
+          <p>Les modalités de paiement sont confirmées directement avec vous sur WhatsApp au moment de la commande.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Livrez-vous en dehors de Yaoundé ?</summary>
+          <p>Nous livrons à Yaoundé, généralement sous 3h à 48h, avec une option de livraison express moyennant des frais supplémentaires. Pour une livraison ailleurs, contactez-nous sur WhatsApp afin de vérifier la faisabilité.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Puis-je vérifier la montre à la livraison ?</summary>
+          <p>Oui — vous vérifiez toujours la montre à la réception, avant que la livraison soit finalisée.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Quelle garantie accompagne une montre Aurore ?</summary>
+          <p>Chaque montre est couverte par une garantie de 45 jours.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Ma montre présente un problème, que faire ?</summary>
+          <p>Rendez-vous sur la page <a href="#/complaint">Soumettre une plainte</a> — notre service client vous répond directement.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment contacter Aurore ?</summary>
+          <p>Le plus simple est WhatsApp : <a id="faqWa" target="_blank" rel="noopener">écrivez-nous ici</a> pour une question générale, ou utilisez le bouton « Commander sur WhatsApp » directement sur une montre.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <section class="section-ivory" id="gift">
     <div class="section-inner gift-band">
       <h2>À la recherche d'un cadeau ?</h2>
@@ -1472,8 +1625,8 @@
 <main id="view-collection" class="view" hidden>
   <section class="collection-hero">
     <div class="section-inner">
-      <p class="eyebrow-label">La collection Aurore</p>
-      <h1>LA COLLECTION AURORE</h1>
+      <p class="eyebrow-label" id="collectionEyebrow">La collection Aurore</p>
+      <h1 id="collectionH1">LA COLLECTION AURORE</h1>
       <p id="subCount">Découvrez les modèles disponibles.</p>
     </div>
   </section>
@@ -1498,6 +1651,7 @@
         <option value="priceAsc">Prix croissant</option>
         <option value="priceDesc">Prix décroissant</option>
       </select>
+      <button type="button" id="favToggleBtn" class="fav-toggle-btn"><span class="fav-icon">♡</span> Mes favoris (<span id="favCount">0</span>)</button>
     </div>
     <div class="chip-row" id="priceChipRow"></div>
   </div>
@@ -1506,9 +1660,16 @@
 
   <div class="grid" id="grid"></div>
   <div class="empty" id="emptyState">
-    Aucune montre ne correspond à ta recherche. Essaie un autre filtre.
-    <br>
-    <button type="button" class="btn-gold-outline" id="resetFiltersBtn">Réinitialiser les filtres</button>
+    <div id="emptyDefault">
+      Aucune montre ne correspond à ta recherche. Essaie un autre filtre.
+      <br>
+      <button type="button" class="btn-gold-outline" id="resetFiltersBtn">Réinitialiser les filtres</button>
+    </div>
+    <div id="emptyFav" style="display:none;">
+      Tu n'as pas encore de favoris. Parcours la collection et appuie sur ♡ pour en ajouter.
+      <br>
+      <a class="btn-gold-outline" href="#/collection">Découvrir la collection</a>
+    </div>
   </div>
 </main>
 
@@ -1740,7 +1901,11 @@
   var genreToggle = document.getElementById('genreToggle');
   var sortBy = document.getElementById('sortBy');
   var emptyState = document.getElementById('emptyState');
+  var emptyDefaultEl = document.getElementById('emptyDefault');
+  var emptyFavEl = document.getElementById('emptyFav');
   var countLine = document.getElementById('countLine');
+  var collectionEyebrowEl = document.getElementById('collectionEyebrow');
+  var collectionH1El = document.getElementById('collectionH1');
   var subCount = document.getElementById('subCount');
   var viewProduct = document.getElementById('view-product');
   var topnavLinks = document.getElementById('topnavLinks');
@@ -1765,6 +1930,8 @@
   if (finalWaEl) finalWaEl.href = waHref;
   var footerWaEl = document.getElementById('footerWa');
   if (footerWaEl) footerWaEl.href = waHref;
+  var faqWaEl = document.getElementById('faqWa');
+  if (faqWaEl) faqWaEl.href = waHref;
 
   var footerBottomEl = document.getElementById('footerBottom');
   if (footerBottomEl){
@@ -1815,6 +1982,19 @@
     return item.modele && item.modele.trim() ? item.modele : (item.marque.charAt(0) + item.marque.slice(1).toLowerCase());
   }
 
+  // ---------- "Vous pourriez également aimer" — même genre en priorité, jamais la montre courante ----------
+  function getRelatedItems(item, count){
+    var pool = DATA.filter(function(d){ return d.reference !== item.reference && d.genre === item.genre; });
+    if (pool.length < count){
+      var others = DATA.filter(function(d){ return d.reference !== item.reference && d.genre !== item.genre; });
+      pool = pool.concat(others);
+    }
+    if (!pool.length) return [];
+    var num = parseInt(item.reference.replace(/\D/g, ''), 10) || 0;
+    var start = num % pool.length;
+    return pool.slice(start).concat(pool.slice(0, start)).slice(0, count);
+  }
+
   function matches(item){
     var q = state.q.trim().toLowerCase();
     if (q){
@@ -1824,6 +2004,7 @@
     if (state.brand && item.marque !== state.brand) return false;
     if (state.genre && item.genre !== state.genre) return false;
     if (state.priceBucket && !state.priceBucket.test(item.prix)) return false;
+    if (routeShowFavorites && !isFavorite(item.reference)) return false;
     return true;
   }
 
@@ -2095,6 +2276,32 @@
     setTimeout(function(){ img.src = base + '?r=' + Date.now(); }, 1200);
   };
 
+  // ---------- favoris (localStorage, propre a chaque visiteur, aucun compte requis) ----------
+  var FAV_KEY = 'aurFavoris';
+  function getFavorites(){
+    try {
+      var raw = localStorage.getItem(FAV_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  function isFavorite(ref){
+    return getFavorites().indexOf(ref) !== -1;
+  }
+  function toggleFavorite(ref){
+    var favs = getFavorites();
+    var i = favs.indexOf(ref);
+    var nowFav;
+    if (i === -1) { favs.push(ref); nowFav = true; }
+    else { favs.splice(i, 1); nowFav = false; }
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch (e) {}
+    updateFavCount();
+    return nowFav;
+  }
+  function updateFavCount(){
+    var el = document.getElementById('favCount');
+    if (el) el.textContent = getFavorites().length;
+  }
+
   function cardHTML(item){
     var title = titleOf(item);
     var photos = item.photos || [];
@@ -2103,6 +2310,7 @@
     return (
       '<div class="thumb">' +
         '<span class="ref-badge">' + item.reference + '</span>' +
+        '<button type="button" class="fav-btn' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '" aria-label="Ajouter aux favoris"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span></button>' +
         '<img src="' + thumbSrc + '" alt="' + item.marque + ' ' + title + '" loading="lazy" onerror="aurImgRetry(this)">' +
         (altSrc ? '<img class="thumb-alt" src="' + altSrc + '" alt="" loading="lazy" onerror="aurImgRetry(this)">' : '') +
       '</div>' +
@@ -2142,6 +2350,9 @@
   // restauration en attente, on revient en haut comme d'habitude.
   var pendingCollectionScroll = null;
 
+  // true uniquement pendant l'affichage de #/favoris — matches() filtre alors sur les favoris
+  var routeShowFavorites = false;
+
   function render(){
     var filtered = sortItems(DATA.filter(matches));
     grid.innerHTML = '';
@@ -2150,7 +2361,7 @@
       card.className = 'card';
       card.innerHTML = cardHTML(item);
       card.addEventListener('click', function(e){
-        if (e.target.closest('.order-btn')) return;
+        if (e.target.closest('.order-btn') || e.target.closest('.fav-btn')) return;
         // Mémorise la position de défilement du catalogue avant d'ouvrir la fiche,
         // pour que "Retour au catalogue" puisse y replacer le visiteur au lieu de
         // toujours renvoyer en haut de la liste (demande explicite d'Ariel, 2026-09-26).
@@ -2161,7 +2372,13 @@
       reveal(card, i);
     });
     emptyState.style.display = filtered.length ? 'none' : 'block';
-    countLine.textContent = filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée');
+    if (!filtered.length && emptyDefaultEl && emptyFavEl){
+      emptyDefaultEl.style.display = routeShowFavorites ? 'none' : 'block';
+      emptyFavEl.style.display = routeShowFavorites ? 'block' : 'none';
+    }
+    countLine.textContent = routeShowFavorites
+      ? (filtered.length + (filtered.length > 1 ? ' favoris' : ' favori'))
+      : (filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée'));
   }
 
   // ---------- "Sélection Aurore" — curated homepage picks (real products, chosen for genre/price variety) ----------
@@ -2179,7 +2396,7 @@
       card.className = 'card';
       card.innerHTML = cardHTML(item);
       card.addEventListener('click', function(e){
-        if (e.target.closest('.order-btn')) return;
+        if (e.target.closest('.order-btn') || e.target.closest('.fav-btn')) return;
         location.hash = '#/watch/' + item.reference;
       });
       featuredGrid.appendChild(card);
@@ -2267,6 +2484,28 @@
     }
   });
 
+  // ---------- favoris — écouteur délégué global, couvre toutes les cartes (grille, "Sélection Aurore", produits similaires) et le bouton inline de la fiche produit ----------
+  document.addEventListener('click', function(e){
+    var favBtn = e.target.closest('.fav-btn');
+    if (!favBtn) return;
+    e.preventDefault();
+    var ref = favBtn.getAttribute('data-ref');
+    if (!ref) return;
+    var nowFav = toggleFavorite(ref);
+    favBtn.classList.toggle('active', nowFav);
+    favBtn.setAttribute('aria-pressed', nowFav ? 'true' : 'false');
+    var iconEl = favBtn.querySelector('.fav-icon');
+    if (iconEl) iconEl.textContent = nowFav ? '\u2665' : '\u2661';
+    var labelEl = favBtn.querySelector('.fav-label');
+    if (labelEl) labelEl.textContent = nowFav ? 'Dans vos favoris' : 'Ajouter aux favoris';
+    if (routeShowFavorites) render();
+  });
+
+  var favToggleBtn = document.getElementById('favToggleBtn');
+  if (favToggleBtn) favToggleBtn.addEventListener('click', function(){
+    location.hash = '#/favoris';
+  });
+
   // ---------- skip link (accessibilité) — saute au contenu de la vue actuellement affichée ----------
   var skipLink = document.getElementById('skipLink');
   if (skipLink) skipLink.addEventListener('click', function(e){
@@ -2310,6 +2549,16 @@
     var countBadge = photos.length > 1 ? '<div class="carousel-count" id="lbCount">1 / ' + photos.length + '</div>' : '';
     var arrowsHTMLStr = photos.length > 1 ? arrowsHTML() : '';
 
+    var relatedItems = getRelatedItems(item, 3);
+    var relatedSectionHTML = relatedItems.length ? (
+      '<section class="related-products">' +
+        '<h2 class="related-products-title">Vous pourriez également aimer</h2>' +
+        '<div class="grid related-grid" id="relatedGrid">' +
+          relatedItems.map(function(r){ return '<div class="card" data-ref="' + r.reference + '">' + cardHTML(r) + '</div>'; }).join('') +
+        '</div>' +
+      '</section>'
+    ) : '';
+
     viewProduct.innerHTML =
       '<div class="product-page">' +
       '<a href="#/collection" class="back-link">&larr; Retour au catalogue</a>' +
@@ -2323,6 +2572,7 @@
       '<div class="product-info">' +
         '<div class="eyebrow">' + item.marque + '</div>' +
         '<h1 class="product-title">' + title + '</h1>' +
+        '<button type="button" class="fav-btn fav-btn-inline' + (isFavorite(item.reference) ? ' active' : '') + '" data-ref="' + item.reference + '" aria-pressed="' + (isFavorite(item.reference) ? 'true' : 'false') + '"><span class="fav-icon">' + (isFavorite(item.reference) ? '\u2665' : '\u2661') + '</span><span class="fav-label">' + (isFavorite(item.reference) ? 'Dans vos favoris' : 'Ajouter aux favoris') + '</span></button>' +
         '<div class="fiche-specs-table">' +
           '<div class="cell"><span class="k">MARQUE</span><span class="v">' + item.marque + '</span></div>' +
           '<div class="cell"><span class="k">MATIÈRE</span><span class="v">' + item.matiere + '</span></div>' +
@@ -2367,6 +2617,7 @@
           '</div>' +
         '</section>'
       ) : '') +
+      relatedSectionHTML +
       '</div>';
 
     if (photos.length){
@@ -2400,6 +2651,18 @@
       }
     } else {
       currentSlider = null;
+    }
+
+    // ---------- navigation depuis "Vous pourriez également aimer" (mêmes règles que la grille catalogue) ----------
+    var relatedGridEl = document.getElementById('relatedGrid');
+    if (relatedGridEl){
+      Array.prototype.forEach.call(relatedGridEl.querySelectorAll('.card'), function(card){
+        card.addEventListener('click', function(e){
+          if (e.target.closest('.order-btn') || e.target.closest('.fav-btn')) return;
+          var ref = card.getAttribute('data-ref');
+          if (ref) location.hash = '#/watch/' + ref;
+        });
+      });
     }
   }
 
@@ -2558,6 +2821,7 @@
     var r = parseHash();
     var animate = routeCount > 0;
     routeCount++;
+    routeShowFavorites = false;
     // Décide où défiler une fois la vue cible effectivement visible (voir showView) —
     // avec une transition animée, la vue ne devient réellement visible qu'après son
     // délai de fondu de ~150ms, donc défiler avant ce moment-là mesurerait la hauteur
@@ -2597,8 +2861,21 @@
       showView('view-complaint', animate, scrollAfterShown);
       updateNavActive('complaint');
       document.title = 'Soumettre une plainte — Aurore';
+    } else if (r.route === 'favoris'){
+      currentSlider = null;
+      routeShowFavorites = true;
+      state.genre = '';
+      syncGenreToggleUI();
+      if (collectionEyebrowEl) collectionEyebrowEl.textContent = 'Vos favoris';
+      if (collectionH1El) collectionH1El.textContent = 'VOS FAVORIS';
+      render();
+      showView('view-collection', animate, scrollAfterShown);
+      updateNavActive('favoris');
+      document.title = 'Mes favoris — Aurore';
     } else if (r.route === 'collection'){
       currentSlider = null;
+      if (collectionEyebrowEl) collectionEyebrowEl.textContent = 'La collection Aurore';
+      if (collectionH1El) collectionH1El.textContent = 'LA COLLECTION AURORE';
       var genreParam = r.param ? r.param.toUpperCase() : '';
       state.genre = (genreParam === 'HOMME' || genreParam === 'FEMME' || genreParam === 'MIXTE') ? genreParam : '';
       syncGenreToggleUI();
@@ -2644,6 +2921,7 @@
   renderBrandStrip();
   renderPriceChips();
   syncPriceChipsUI();
+  updateFavCount();
   render();
   router();
 })();
