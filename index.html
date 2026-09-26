@@ -3029,17 +3029,25 @@
 
   var bnSearchBtn = document.getElementById('bnSearchBtn');
   if (bnSearchBtn) bnSearchBtn.addEventListener('click', function(){
-    function focusSearch(){
+    function focusSearchNow(){
+      var s = document.getElementById('search');
+      if (!s) return;
+      // Scroll instantly (no smooth animation) and focus synchronously, in the
+      // same tick as the click, so mobile browsers raise the keyboard.
+      s.scrollIntoView({ behavior: 'auto', block: 'center' });
+      s.focus();
+    }
+    function focusSearchDeferred(){
       var s = document.getElementById('search');
       if (!s) return;
       s.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
       setTimeout(function(){ s.focus(); }, reduceMotion ? 0 : 320);
     }
     if (location.hash === '#/collection' || location.hash.indexOf('#/collection/') === 0){
-      focusSearch();
+      focusSearchNow();
     } else {
       location.hash = '#/collection';
-      setTimeout(focusSearch, 360);
+      setTimeout(focusSearchDeferred, 360);
     }
   });
 
