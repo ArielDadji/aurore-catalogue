@@ -122,6 +122,80 @@
     position:sticky;
     z-index:20;
   }
+
+  /* ---------- barre de filtres compacte mobile (bouton "Filtres" + chips actifs) - masquee sur desktop ---------- */
+  .filters-compact-bar{
+    display:none;
+    align-items:center;
+    gap:10px;
+  }
+  .filters-toggle-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    flex:none;
+    background:var(--gold);
+    color:#1c1204;
+    font-family:'Montserrat',sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    padding:9px 14px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    letter-spacing:0.02em;
+  }
+  .filters-toggle-btn svg{width:15px;height:15px;flex:none;}
+  .filters-count-badge{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    min-width:16px;
+    height:16px;
+    padding:0 4px;
+    background:#1c1204;
+    color:var(--gold);
+    border-radius:999px;
+    font-size:10.5px;
+    font-weight:700;
+  }
+  .active-chips-row{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    flex:1;
+    scrollbar-width:none;
+  }
+  .active-chips-row::-webkit-scrollbar{display:none;}
+  .active-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    flex:none;
+    background:rgba(200,155,60,0.16);
+    color:var(--ink);
+    font-family:'Montserrat',sans-serif;
+    font-size:11.5px;
+    padding:6px 8px 6px 12px;
+    border-radius:999px;
+    white-space:nowrap;
+    border:1px solid rgba(200,155,60,0.35);
+  }
+  .active-chip .chip-remove{
+    background:none;
+    border:none;
+    color:var(--ink-muted);
+    cursor:pointer;
+    font-size:15px;
+    line-height:1;
+    padding:2px;
+    display:flex;
+  }
+  .active-chip .chip-remove:hover{color:var(--ink);}
+  .filters-close-btn{
+    display:none;
+  }
+
   .search-row{
     display:flex;
     justify-content:center;
@@ -1553,6 +1627,38 @@
   @media (max-width:700px){
     .sticky-order-bar.visible{display:flex;}
   }
+
+  /* ---------- mobile (<=700px) : la barre de filtres complete se replie derriere un bouton "Filtres" ----------
+     compact par defaut pendant le defilement ; s'ouvre en plein ecran (bottom sheet) uniquement au tap. ---------- */
+  @media (max-width:700px){
+    .controls{padding:10px 16px;gap:0;}
+    .filters-compact-bar{display:flex;}
+    .search-row,.filters-row,.chip-row{display:none;}
+    body.filters-panel-open{overflow:hidden;}
+    body.filters-panel-open .controls{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      overflow-y:auto;
+      padding:64px 16px 28px;
+      gap:14px;
+      align-content:flex-start;
+    }
+    body.filters-panel-open .search-row,
+    body.filters-panel-open .filters-row,
+    body.filters-panel-open .chip-row{display:flex;}
+    body.filters-panel-open .filters-close-btn{
+      display:flex;
+      position:fixed;
+      top:14px;right:16px;
+      z-index:51;
+      width:36px;height:36px;
+      align-items:center;justify-content:center;
+      background:var(--surface);color:var(--ink);
+      border-radius:999px;border:1px solid var(--line);
+      font-size:17px;cursor:pointer;
+    }
+  }
 </style>
 
 <a href="#" class="skip-link" id="skipLink">Aller au contenu principal</a>
@@ -1804,6 +1910,15 @@
   </section>
 
   <div class="controls">
+    <div class="filters-compact-bar" id="filtersCompactBar">
+      <button type="button" id="filtersToggleBtn" class="filters-toggle-btn" aria-expanded="false" aria-controls="controlsPanel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"></line><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"></circle><line x1="4" y1="12" x2="20" y2="12"></line><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"></circle><line x1="4" y1="18" x2="20" y2="18"></line><circle cx="11" cy="18" r="2" fill="currentColor" stroke="none"></circle></svg>
+        Filtres
+        <span class="filters-count-badge" id="filtersCountBadge"></span>
+      </button>
+      <div class="active-chips-row" id="activeFilterChips"></div>
+    </div>
+    <button type="button" class="filters-close-btn" id="filtersCloseBtn" aria-label="Fermer les filtres">&times;</button>
     <div class="search-row">
       <div class="search-wrap">
         <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -2637,6 +2752,7 @@
       : (filtered.length + (filtered.length > 1 ? ' pièces affichées' : ' pièce affichée'));
     var shareFavBtnEl = document.getElementById('shareFavBtn');
     if (shareFavBtnEl) shareFavBtnEl.style.display = (routeShowFavorites && filtered.length) ? 'inline-flex' : 'none';
+    renderActiveFilterChips();
   }
 
   // ---------- "Sélection Aurore" — curated homepage picks (real products, chosen for genre/price variety) ----------
@@ -2744,6 +2860,12 @@
 
   // ---------- favoris — écouteur délégué global, couvre toutes les cartes (grille, "Sélection Aurore", produits similaires) et le bouton inline de la fiche produit ----------
   document.addEventListener('click', function(e){
+    var chipRemoveBtn = e.target.closest('.chip-remove');
+    if (chipRemoveBtn){
+      clearFilterByType(chipRemoveBtn.getAttribute('data-filter-type'));
+      render();
+      return;
+    }
     var shareBtn = e.target.closest('#shareWatchBtn');
     if (shareBtn){
       var r = parseHash();
@@ -2780,6 +2902,7 @@
     function focusSearch(){
       var s = document.getElementById('search');
       if (!s) return;
+      openFiltersPanel();
       s.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
       setTimeout(function(){ s.focus(); }, reduceMotion ? 0 : 320);
     }
@@ -2809,6 +2932,58 @@
       b.setAttribute('aria-pressed', b.getAttribute('data-genre') === state.genre ? 'true' : 'false');
     });
   }
+
+  // ---------- barre de filtres compacte mobile : chips reflentant les filtres actifs + ouverture/fermeture du panneau ----------
+  function humanGenreLabel(g){
+    if (g === 'HOMME') return 'Homme';
+    if (g === 'FEMME') return 'Femme';
+    if (g === 'MIXTE') return 'Mixte';
+    return g;
+  }
+  function humanMouvementLabel(m){
+    return m ? (m.charAt(0) + m.slice(1).toLowerCase()) : m;
+  }
+  var filtersToggleBtn = document.getElementById('filtersToggleBtn');
+  var filtersCloseBtn = document.getElementById('filtersCloseBtn');
+  var filtersCountBadge = document.getElementById('filtersCountBadge');
+  var activeFilterChipsEl = document.getElementById('activeFilterChips');
+  function renderActiveFilterChips(){
+    if (!activeFilterChipsEl) return;
+    var chips = [];
+    if (state.genre) chips.push({ type:'genre', label:'Montre ' + humanGenreLabel(state.genre).toLowerCase() });
+    if (state.brand) chips.push({ type:'brand', label: state.brand });
+    if (state.mouvement) chips.push({ type:'mouvement', label: humanMouvementLabel(state.mouvement) });
+    if (state.priceBucket) chips.push({ type:'price', label: state.priceBucket.label });
+    if (state.q.trim()) chips.push({ type:'q', label: '« ' + state.q.trim() + ' »' });
+    activeFilterChipsEl.innerHTML = chips.map(function(c){
+      return '<span class="active-chip" data-filter-type="' + c.type + '">' + c.label +
+        '<button type="button" class="chip-remove" data-filter-type="' + c.type + '" aria-label="Retirer ce filtre">&times;</button></span>';
+    }).join('');
+    if (filtersCountBadge){
+      if (chips.length){ filtersCountBadge.textContent = String(chips.length); filtersCountBadge.style.display = 'inline-flex'; }
+      else { filtersCountBadge.style.display = 'none'; }
+    }
+  }
+  function clearFilterByType(type){
+    if (type === 'genre'){ state.genre = ''; syncGenreToggleUI(); }
+    else if (type === 'brand'){ state.brand = ''; brandFilter.value = ''; }
+    else if (type === 'mouvement'){ state.mouvement = ''; mouvementFilter.value = ''; }
+    else if (type === 'price'){ state.priceBucket = null; syncPriceChipsUI(); }
+    else if (type === 'q'){ state.q = ''; search.value = ''; }
+  }
+  function openFiltersPanel(){
+    document.body.classList.add('filters-panel-open');
+    if (filtersToggleBtn) filtersToggleBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeFiltersPanel(){
+    document.body.classList.remove('filters-panel-open');
+    if (filtersToggleBtn) filtersToggleBtn.setAttribute('aria-expanded', 'false');
+  }
+  if (filtersToggleBtn) filtersToggleBtn.addEventListener('click', function(){
+    if (document.body.classList.contains('filters-panel-open')) closeFiltersPanel();
+    else openFiltersPanel();
+  });
+  if (filtersCloseBtn) filtersCloseBtn.addEventListener('click', closeFiltersPanel);
 
   var resetFiltersBtn = document.getElementById('resetFiltersBtn');
   if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', function(){
@@ -3013,6 +3188,7 @@
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape'){
       if (zoomOverlay.classList.contains('open')) closeZoomViewer();
+      if (document.body.classList.contains('filters-panel-open')) closeFiltersPanel();
       return;
     }
     // Left/Right arrow keys browse whichever carousel is open — the fullscreen zoom viewer
@@ -3123,6 +3299,7 @@
     var animate = routeCount > 0;
     routeCount++;
     routeShowFavorites = false;
+    closeFiltersPanel();
     if (r.route !== 'watch'){
       document.body.classList.remove('has-sticky-order');
       var stickyBarElReset = document.getElementById('stickyOrderBar');
