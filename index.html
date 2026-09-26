@@ -445,6 +445,7 @@
     justify-content:center;
     background:#F4EEE0;
     cursor:zoom-in;
+    overflow:hidden;
   }
   .carousel-track .slide img{
     max-width:100%;
@@ -455,6 +456,11 @@
     -webkit-user-drag:none;
     user-select:none;
     pointer-events:none;
+  }
+  /* ---------- leger zoom au survol de la photo principale (desktop uniquement, tres discret) ---------- */
+  @media (hover:hover) and (prefers-reduced-motion: no-preference){
+    .carousel-track .slide img{transition:transform .45s ease;}
+    .carousel-track .slide:hover img{transform:scale(1.045);}
   }
   .carousel-dots{
     position:absolute;
